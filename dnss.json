@@ -1,0 +1,5 @@
+{
+    "db": "/var/www/json/db.json",
+    "json": "/var/www/json/%s.json",
+    "static": "http://static.localdomain.com"
+}
