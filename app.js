@@ -15,8 +15,12 @@ app.set('view engine', 'jade')
 app.use(cookieParser())
 app.use('/', router)
 
-// settings json
+// settings
 var settings = JSON.parse(fs.readFileSync('/dnss/dnss.json', 'utf8'))
+var static = {
+  css: function(path) { return settings.static+'/css/'+path+'.css' },
+  js: function(path) { return settings.static+'/js/'+path+'.js' }
+}
 
 //=======================================
 // CUSTOM DATA GATHERING INTO MEM
@@ -49,11 +53,19 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
   }
 })
 
-/* GET home page. */
-router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
+var jobRoute = function(req, res) {
   if (!routeJobs[req.params.job]) throw "job " + req.params.job + " not found"
+  if (!routeJobs[req.params.level]) throw "level " + req.params.level + " not found"
+  res.render('index', { title: 'Dragon Nest Skill Simulator', db: db, static: static })
+}
 
-  res.render('index', { title: 'Dragon Nest Skill Simulator', db: db, settings: settings })
+/* GET home page. */
+router.get('/:job([a-z]+)', function(req, res) {
+  req.params.level = db.Levels.length
+  jobRoute(req, res)
 })
+
+router.get('/:job([a-z]+)-:level([1-9][0-9]*)', jobRoute)
+
 
 
