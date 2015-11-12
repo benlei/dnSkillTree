@@ -37,12 +37,17 @@ var routeJobs = {}
 // the last job = show in index page
 var lastJobID = 0
 
+// the list of jobs
+var jobs = []
+
 fs.readFile(settings.db, 'utf8', function(err, $) {
   if (err) throw err
   db = JSON.parse($)
 
   for (jobID in db.Jobs) {
     var job = db.Jobs[jobID]
+    jobs[jobID] = job
+    
     if (lastJobID < jobID) { // used to redirect to newest class
       lastJobID = jobID
     }
@@ -53,10 +58,19 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
   }
 })
 
+
 var jobRoute = function(req, res) {
   if (!routeJobs[req.params.job]) throw "job " + req.params.job + " not found"
-  if (!routeJobs[req.params.level]) throw "level " + req.params.level + " not found"
-  res.render('index', { title: 'Dragon Nest Skill Simulator', db: db, static: static })
+  if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
+  res.render('simulator',
+             {
+               title: 'Dragon Nest Skill Simulator',
+               static: static,
+               jobs: jobs,
+               cap: req.params.level,
+               job: jobs[routeJobs[req.params.job]]
+             }
+            )
 }
 
 /* GET home page. */
@@ -66,6 +80,4 @@ router.get('/:job([a-z]+)', function(req, res) {
 })
 
 router.get('/:job([a-z]+)-:level([1-9][0-9]*)', jobRoute)
-
-
 
