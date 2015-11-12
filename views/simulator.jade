@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  nav(class='navbar navbar-inverse navbar-static-top')
+  nav(class='navbar navbar-default navbar-static-top')
     div(class='container')
       div(id='navbar')
         ul(class='nav navbar-nav')
@@ -15,3 +15,8 @@ block content
                   each job2 in jobs.filter(function(j) { return jobs[j.ParentJob] == job1 })
                     li
                       a(href='/' + job2.EnglishName + '-' + cap)= job2.JobName
+  div(class='container')
+    div(class='row')
+      div(class='col-md-4', style='background-color: #999') AAA
+      div(class='col-md-4', style='background-color: #666') BBB
+      div(class='col-md-4', style='background-color: #333') DDD
