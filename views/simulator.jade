@@ -1,13 +1,13 @@
 extends layout
 
 block content
-  nav(class='navbar navbar-default navbar-static-top')
+  nav(class='navbar navbar-inverse navbar-static-top')
     div(class='container')
       div(id='navbar')
         ul(class='nav navbar-nav')
           each job0 in jobs.filter(function(j) { return j.JobNumber == 0 })
             li(class='dropdown' + (job0 == jobs[jobs[job.ParentJob].ParentJob] ? ' active' : ''))
-              a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-has-popup='true', aria-expanded='false')= job0.JobName
+              a(href='#')= job0.JobName
                 span(class='caret')
               ul(class='dropdown-menu')
                 each job1 in jobs.filter(function(j) { return jobs[j.ParentJob] == job0 })
