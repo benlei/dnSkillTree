@@ -6,7 +6,7 @@ block content
       div(id='navbar')
         ul(class='nav navbar-nav')
           each job0 in jobs.filter(function(j) { return j.JobNumber == 0 })
-            li(class='dropdown' + (job0 == jobs[jobs[job.ParentJob].ParentJob] ? ' active' : ''))
+            li(class='dropdown' + (job0 == line[0] ? ' active' : ''))
               a(href='#')= job0.JobName
                 span(class='caret')
               ul(class='dropdown-menu')
@@ -17,6 +17,15 @@ block content
                       a(href='/' + job2.EnglishName + '-' + cap)= job2.JobName
   div(class='container')
     div(class='row')
-      div(class='col-md-4', style='background-color: #999') AAA
-      div(class='col-md-4', style='background-color: #666') BBB
-      div(class='col-md-4', style='background-color: #333') DDD
+      div(class='col-md-4')
+        div(class='panel panel-default')
+          div(class='panel-heading')= line[0].JobName
+          div(class='panel-body') Whaaaat
+      div(class='col-md-4')
+        div(class='panel panel-default')
+          div(class='panel-heading')= line[1].JobName
+          div(class='panel-body') Whaaaat
+      div(class='col-md-4')
+        div(class='panel panel-default')
+          div(class='panel-heading')= line[1].JobName
+          div(class='panel-body') Whaaaat

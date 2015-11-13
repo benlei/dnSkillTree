@@ -62,13 +62,14 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
 var jobRoute = function(req, res) {
   if (!routeJobs[req.params.job]) throw "job " + req.params.job + " not found"
   if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
+  var job = jobs[routeJobs[req.params.job]]
   res.render('simulator',
              {
                title: 'Dragon Nest Skill Simulator',
                static: static,
                jobs: jobs,
                cap: req.params.level,
-               job: jobs[routeJobs[req.params.job]]
+               line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job]
              }
             )
 }
