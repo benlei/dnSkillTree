@@ -1,3 +1,7 @@
+body {
+#    background-color: #222 !important;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
@@ -5,4 +9,36 @@
 
 .caret {
     margin-left: 5px;
+}
+
+.panel-default {
+
+}
+
+.panel-heading {
+
+}
+
+.panel-body {
+    background-color: #000 !important;
+}
+
+.skill-table {
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-position: -5px -12px;
+    background-size: 315px 510px;
+}
+
+.skill-td {
+    padding: 0 10px 28px 10px;
+}
+
+.skill-tr:last-of-type .skill-td {
+    padding: 0 10px;
+}
+
+.skill {
+    height: 50px;
+    width: 50px;
 }

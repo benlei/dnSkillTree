@@ -19,7 +19,9 @@ app.use('/', router)
 var settings = JSON.parse(fs.readFileSync('/dnss/dnss.json', 'utf8'))
 var static = {
   css: function(path) { return settings.static+'/css/'+path+'.css' },
-  js: function(path) { return settings.static+'/js/'+path+'.js' }
+  js: function(path) { return settings.static+'/js/'+path+'.js' },
+  skillicon: function(skill) { if(skill) return util.format("background: url('%s/images/mainbar/skillicon%s.png') %dpx %dpx", settings.static, skill.Sprite, skill.IconCol * -50, skill.IconRow * -50) },
+  skilltree: function(job) { return util.format("background-image: url('%s/images/skill/%s.png')", settings.static, job.EnglishName) }
 }
 
 //=======================================
@@ -54,6 +56,12 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
         
     if (job.JobNumber == 2) { // keep track of 2nd adv eng name for faster lookup
       routeJobs[job.EnglishName] = jobID
+    }
+
+    var tree = job.SkillTree
+    var row = tree[tree.length -1]
+    if (row[0] == null && row[1] == null && row[2] == null && row[3] == null) {
+      job.SkillTree = job.SkillTree.splice(0, tree.length - 1)
     }
   }
 })

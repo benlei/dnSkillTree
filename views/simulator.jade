@@ -17,15 +17,19 @@ block content
                       a(href='/' + job2.EnglishName + '-' + cap)= job2.JobName
   div(class='container')
     div(class='row')
-      div(class='col-md-4')
-        div(class='panel panel-default')
-          div(class='panel-heading')= line[0].JobName
-          div(class='panel-body') Whaaaat
-      div(class='col-md-4')
-        div(class='panel panel-default')
-          div(class='panel-heading')= line[1].JobName
-          div(class='panel-body') Whaaaat
-      div(class='col-md-4')
-        div(class='panel panel-default')
-          div(class='panel-heading')= line[1].JobName
-          div(class='panel-body') Whaaaat
+      each job in line
+        div(class='col-md-4')
+          div(class='panel panel-default')
+            div(class='panel-heading')= job.JobName
+            div(class='panel-body', )
+              table(class='skill-table', style=static.skilltree(job))
+                each skillRow in job.SkillTree
+                  tr(class='skill-tr')
+                    td(class='skill-td')
+                      div(class='skill', style=static.skillicon(job.Skills[skillRow[0]]))
+                    td(class='skill-td')
+                      div(class='skill', style=static.skillicon(job.Skills[skillRow[1]]))
+                    td(class='skill-td')
+                      div(class='skill', style=static.skillicon(job.Skills[skillRow[2]]))
+                    td(class='skill-td')
+                      div(class='skill', style=static.skillicon(job.Skills[skillRow[3]]))
