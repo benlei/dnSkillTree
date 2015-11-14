@@ -25,11 +25,9 @@ block content
               table(class='skill-table', style=static.skilltree(job))
                 each skillRow in job.SkillTree
                   tr(class='skill-tr')
-                    td(class='skill-td')
-                      div(class='skill', style=static.skillicon(job.Skills[skillRow[0]]))
-                    td(class='skill-td')
-                      div(class='skill', style=static.skillicon(job.Skills[skillRow[1]]))
-                    td(class='skill-td')
-                      div(class='skill', style=static.skillicon(job.Skills[skillRow[2]]))
-                    td(class='skill-td')
-                      div(class='skill', style=static.skillicon(job.Skills[skillRow[3]]))
+                    each skillID in skillRow
+                      td(class='skill-td')
+                        div(class='skill', style=static.skillicon(job.Skills[skillID]))
+                          if job.Skills[skillID]
+                            div(class='badge skill-level') 16/29
+
