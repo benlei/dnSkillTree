@@ -20,7 +20,7 @@ var settings = JSON.parse(fs.readFileSync('/dnss/dnss.json', 'utf8'))
 var static = {
   css: function(path) { return settings.static+'/css/'+path+'.css' },
   js: function(path) { return settings.static+'/js/'+path+'.js' },
-  skillicon: function(skill) { if(skill) return util.format("background: url('%s/images/mainbar/skillicon%s.png') %dpx %dpx", settings.static, skill.Sprite, skill.IconCol * -50, skill.IconRow * -50) },
+  skillicon: function(skill) { if(skill) return util.format("background: url('%s/images/uit_gesturebutton.png') 100px 0px,url('%s/images/mainbar/skillicon%s.png') %dpx %dpx", settings.static, settings.static, skill.Sprite, skill.IconCol * -50, skill.IconRow * -50) },
   skilltree: function(job) { return util.format("background-image: url('%s/images/skill/%s.png')", settings.static, job.EnglishName) }
 }
 
