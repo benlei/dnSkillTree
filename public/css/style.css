@@ -10,8 +10,8 @@
 .skill-table {
     margin: 0 auto;
     background-repeat: no-repeat;
-    background-position: -5px -8px;
-    background-size: 315px 510px;
+    background-position: -5px -9px;
+    background-size: 317px 510px;
 }
 
 .skill-td {
@@ -30,7 +30,7 @@
 .skill-level {
     position: relative;
     font-size: 9px;
-    margin: 41px 0 0 0;
+    margin: 43px 0 0 0;
     left: 51%;
     transform: translateX(-50%);
     padding: 2px 3px;
