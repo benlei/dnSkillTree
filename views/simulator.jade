@@ -1,33 +1,29 @@
 extends layout
 
+block custom_script                            
+  script(type='text/javascript', src=static.js('dnss'))
+  script(type='text/javascript').
+    var skillicons="#{static.url()}/images/ui/mainbar"
+    dnss()
+
 block content
-  nav(class='navbar navbar-default navbar-static-top')
-    div(class='container')
-      div(id='navbar')
-        ul(class='nav navbar-nav')
-          each job0 in jobs.filter(function(j) { return j.JobNumber == 0 })
-            li(class='dropdown' + (job0 == line[0] ? ' active' : ''))
-              a(href='#')= job0.JobName
-                span(class='caret')
-              ul(class='dropdown-menu')
-                each job1 in jobs.filter(function(j) { return jobs[j.ParentJob] == job0 })
-                  li(class='dropdown-header')= job1.JobName
-                  each job2 in jobs.filter(function(j) { return jobs[j.ParentJob] == job1 })
-                    li
-                      a(href='/' + job2.EnglishName + '-' + cap)= job2.JobName
   div(class='container')
     div(class='row')
       each job in line
         div(class='col-md-4')
           div(class='panel panel-default')
             div(class='panel-heading')= job.JobName
-            div(class='panel-body', )
+              div(class='jobsprite', style=static.jobicon(job))
+            div(class='panel-body')
               table(class='skill-table', style=static.skilltree(job))
                 each skillRow in job.SkillTree
                   tr(class='skill-tr')
                     each skillID in skillRow
                       td(class='skill-td')
-                        div(class='skill', style=static.skillicon(job.Skills[skillID]))
-                          if job.Skills[skillID]
+                        if job.Skills[skillID]
+                          div(class='skill', data-skill=skillID, data-init=skillData(job.Skills[skillID]))
+                            div(class='skill-bdr')
                             div(class='badge skill-level') 16/29
+                        else
+                          div(class='skill')
 

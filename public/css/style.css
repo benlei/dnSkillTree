@@ -1,3 +1,7 @@
+nav {
+    padding-top: 10px;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
@@ -5,6 +9,16 @@
 
 .caret {
     margin-left: 5px;
+}
+
+.jobsprite {
+    background: url('/images/ui/mainbar/jobicon_pvp.png') no-repeat;
+    width: 28.5px;
+    height: 28.5px;
+    float: left;
+    margin-top: -4px;
+    margin-left: -8px;
+    margin-right: 2px;
 }
 
 .skill-table {
@@ -25,6 +39,13 @@
 .skill {
     height: 50px;
     width: 50px;
+}
+
+.skill-bdr {
+    background: url('/images/uitemplatetexture/uit_gesturebutton.png') 100px 0px;
+    width: 50px;
+    height: 50px;
+    position: absolute;
 }
 
 .skill-level {

@@ -18,10 +18,14 @@ app.use('/', router)
 // settings
 var settings = JSON.parse(fs.readFileSync('/dnss/dnss.json', 'utf8'))
 var static = {
+  url: function() { return settings.static },
   css: function(path) { return settings.static+'/css/'+path+'.css' },
   js: function(path) { return settings.static+'/js/'+path+'.js' },
-  skillicon: function(skill) { if(skill) return util.format("background: url('%s/images/uit_gesturebutton.png') 100px 0px,url('%s/images/mainbar/skillicon%s.png') %dpx %dpx", settings.static, settings.static, skill.Sprite, skill.IconCol * -50, skill.IconRow * -50) },
-  skilltree: function(job) { return util.format("background-image: url('%s/images/skill/%s.png')", settings.static, job.EnglishName) }
+  jobicon: function(job) {
+    return util.format("background-position:%dpx %dpx", job.IconCol * -28.5, job.IconRow * -28.5)
+  },
+  skillicon: function(skill) { if(skill) return util.format("background:url('%s/images/ui/mainbar/skillicon%s.png') %dpx %dpx", settings.static, skill.Sprite, skill.IconCol * -50, skill.IconRow * -50) },
+  skilltree: function(job) { return util.format("background-image: url('%s/images/ui/skill/%s.png')", settings.static, job.EnglishName) }
 }
 
 //=======================================
@@ -58,14 +62,12 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
       routeJobs[job.EnglishName] = jobID
     }
 
-    var tree = job.SkillTree
-    var row = tree[tree.length -1]
-    if (row[0] == null && row[1] == null && row[2] == null && row[3] == null) {
-      job.SkillTree = job.SkillTree.splice(0, tree.length - 1)
-    }
   }
 })
 
+var skillData = function(skill) {
+  return util.format("%s,%d,%d",skill.Sprite,skill.IconCol, skill.IconRow)
+}
 
 var jobRoute = function(req, res) {
   if (!routeJobs[req.params.job]) throw "job " + req.params.job + " not found"
@@ -76,6 +78,7 @@ var jobRoute = function(req, res) {
                title: 'Dragon Nest Skill Simulator',
                static: static,
                jobs: jobs,
+               skillData: skillData,
                cap: req.params.level,
                line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job]
              }
