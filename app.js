@@ -65,8 +65,8 @@ fs.readFile(settings.db, 'utf8', function(err, $) {
   }
 })
 
-var skillData = function(skill) {
-  return util.format("%s,%d,%d",skill.Sprite,skill.IconCol, skill.IconRow)
+var spriteImplode = function(skill) {
+  return skill.Sprite + "," + skill.IconCol + "," + skill.IconRow
 }
 
 var jobRoute = function(req, res) {
@@ -78,7 +78,7 @@ var jobRoute = function(req, res) {
                title: 'Dragon Nest Skill Simulator',
                static: static,
                jobs: jobs,
-               skillData: skillData,
+               spriteImplode: spriteImplode,
                cap: req.params.level,
                line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job]
              }

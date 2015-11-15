@@ -21,7 +21,7 @@ block content
                     each skillID in skillRow
                       td(class='skill-td')
                         if job.Skills[skillID]
-                          div(class='skill', data-skill=skillID, data-init=skillData(job.Skills[skillID]))
+                          div(class='skill',data-skill=skillID, data-sprite=spriteImplode(job.Skills[skillID]))
                             div(class='skill-bdr')
                             div(class='badge skill-level') 16/29
                         else
