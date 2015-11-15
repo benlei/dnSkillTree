@@ -1,5 +1,12 @@
 {
     "db": "/var/www/json/db.json",
-    "json": "/var/www/json/%s.json",
-    "static": "http://static.localdomain.com"
+    "static": {
+        "url": "http://static.localdomain.com",
+        "path": {
+            "mainbar": "images/ui/mainbar",
+            "skill": "images/ui/skill",
+            "uitemplatetexture": "images/uitemplatetexture",
+            "json": "json"
+        }
+    }
 }

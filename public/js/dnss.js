@@ -4,7 +4,7 @@ function dnss() {
     sprite[1] *= -50
     sprite[2] *= -50
     var grayed = $(this).find('.gray').length ? '_b' : ''
-    $(this).css('background', "url('"+ skillicons  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px")
+    $(this).css('background', "url('"+ mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px")
   })
 }
 
