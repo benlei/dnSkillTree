@@ -25,8 +25,13 @@ for (i in db.Jobs) {
   jobs[i] = db.Jobs[i]
 }
 
+/* redirect to job with level specified */
+router.get('/:job([a-z]+)', function(req, res) {
+  res.redirect(302, '/' + req.params.job + '-' + db.Levels.length)
+})
 
-var jobRoute = function(req, res) {
+/* main simulator page */
+router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
   if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
   var job = jobs.filter(function(j) { return j != null && j.JobNumber == 2 && j.EnglishName == req.params.job })[0]
   if (!job) throw "job " + req.params.job + " not found"
@@ -38,14 +43,5 @@ var jobRoute = function(req, res) {
     line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job],
     fn: dnss.fn
   })
-  
-}
-
-/* GET home page. */
-router.get('/:job([a-z]+)', function(req, res) {
-  req.params.level = db.Levels.length
-  jobRoute(req, res)
 })
-
-router.get('/:job([a-z]+)-:level([1-9][0-9]*)', jobRoute)
 

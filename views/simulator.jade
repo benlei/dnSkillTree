@@ -1,10 +1,13 @@
 extends layout
 
-block custom_script                            
+block custom_script
+  - var urls  = {}
+  - urls.mainbar = fn.url.mainbar()
+  - urls.border = fn.url.uitemplatetexture('uit_gesturebutton')
+  - urls.job = fn.url.json(line[2].EnglishName)
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript').
-    var mainbar="#{fn.url.mainbar()}",uitemplatetexture="#{fn.url.uitemplatetexture()}"
-    dnss()
+    dnss(!{JSON.stringify(urls)})
 
 block content
   div(class='container')
