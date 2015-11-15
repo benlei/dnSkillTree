@@ -3,7 +3,7 @@ extends layout
 block custom_script                            
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript').
-    var mainbar="#{fn.url.mainbar()}"
+    var mainbar="#{fn.url.mainbar()}",uitemplatetexture="#{fn.url.uitemplatetexture()}"
     dnss()
 
 block content

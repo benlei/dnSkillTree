@@ -1,12 +1,14 @@
 {
     "db": "/var/www/json/db.json",
-    "static": {
-        "url": "http://static.localdomain.com",
-        "path": {
-            "mainbar": "images/ui/mainbar",
-            "skill": "images/ui/skill",
-            "uitemplatetexture": "images/uitemplatetexture",
-            "json": "json"
-        }
+    "server": "",
+    "static": "http://static.localdomain.com",
+    "uri": {
+        "mainbar": "$static/images/ui/mainbar",
+        "skill": "$static/images/ui/skill",
+        "uitemplatetexture": "$static/images/uitemplatetexture",
+        "json": "$static/json",
+        "js": "$server/js",
+        "css": "$server/css"
     }
+
 }

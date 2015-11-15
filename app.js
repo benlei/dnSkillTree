@@ -4,7 +4,6 @@ var app = express()
 module.exports = app;
 
 // installed libs
-var compress = require('compression')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var router = express.Router()
@@ -15,7 +14,6 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
 // middleware
-app.use(compress())
 app.use(cookieParser())
 app.use('/', router)
 

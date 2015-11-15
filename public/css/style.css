@@ -12,7 +12,6 @@ nav {
 }
 
 .jobsprite {
-    background: url('/images/ui/mainbar/jobicon_pvp.png') no-repeat;
     width: 28.5px;
     height: 28.5px;
     float: left;
@@ -42,7 +41,6 @@ nav {
 }
 
 .skill-bdr {
-    background: url('/images/uitemplatetexture/uit_gesturebutton.png') 100px 0px;
     width: 50px;
     height: 50px;
     position: absolute;
