@@ -8,6 +8,7 @@ block custom_script
       job: fn.url.json(line[2].EnglishName)
     })
   script(type='text/javascript', src=fn.url.js('dnss'))
+  script(type='text/javascript', src=fn.url.js('skill'))
   script(type='text/javascript')!= "var db;dnss(" + urls +")"
 
 block content
