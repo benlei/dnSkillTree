@@ -35,7 +35,7 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
   if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
   var job = jobs.filter(function(j) { return j != null && j.JobNumber == 2 && j.EnglishName == req.params.job })[0]
   if (!job) throw "job " + req.params.job + " not found"
-  
+
   res.render('simulator', {
     title: 'Dragon Nest Skill Simulator',
     jobs: jobs,
@@ -46,4 +46,3 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
     max_sp: db.Levels.reduce(function(p,c) { return p+c }, 0)
   })
 })
-
