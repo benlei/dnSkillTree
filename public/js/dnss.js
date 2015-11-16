@@ -6,9 +6,9 @@ function dnss(urls) {
 
   // is async, don't care when we get it
   $.getJSON(urls.job, function(data) {
-    db = data;    
+    db = data;
   });
-  
+
   $('.skill[data-skill]').each(function() {
     var dom = $(this);
     var lvl = dom.data('lvl').split(',');
@@ -16,7 +16,7 @@ function dnss(urls) {
     sprite[1] *= -50;
     sprite[2] *= -50;
     var grayed = lvl[0] == 0 ? '_b' : '';
-    dom.css('background', "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px");
+    dom.css('background', "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"); // initial setup
     dom.find('.skill-bdr').css('background', "url('" + urls.border + "') 100px 0").addClass(lvl[0] > 0 ? null : 'gray');
     dom.find('.skill-lvl').text(lvl[0] + '/' + lvl[1]);
     bind_skill(dom.data('skill'), dom);
@@ -24,4 +24,3 @@ function dnss(urls) {
 
 
 }
-
