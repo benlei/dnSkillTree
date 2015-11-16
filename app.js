@@ -41,7 +41,9 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
     jobs: jobs,
     cap: req.params.level,
     line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job],
-    fn: dnss.fn
+    fn: dnss.fn,
+    sp_ratios: db.SP,
+    max_sp: db.Levels.reduce(function(p,c) { return p+c }, 0)
   })
 })
 
