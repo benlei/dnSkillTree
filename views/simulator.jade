@@ -9,7 +9,7 @@ block custom_script
     })
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
-  script(type='text/javascript')!= "var db;dnss(" + urls +")"
+  script(type='text/javascript') var db;dnss(!{urls})
 
 block content
   div(class='container')
@@ -17,27 +17,35 @@ block content
       each job, index in line
         div(class='col-md-4')
           div(class='panel panel-default')
-            - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
-            div(class='panel-heading', data-sp=sp.join(','))= job.JobName
-              div(class='jobsprite', style=fn.image.job(job))
-              span(class='label pull-right')= sp[0] + "/" + sp[1]
-            div(class='panel-body')
-              table(class='skill-table', style=fn.image.skilltree(job))
-                each skillRow in job.SkillTree
-                  tr(class='skill-tr')
-                    each skillID in skillRow
-                      - var skill = job.Skills[skillID]
-                      td(class='skill-td')
-                        if skill
-                          -
-                            var sprite = [skill.Sprite, skill.IconCol, skill.IconRow].join(',')
-                            var lvl = [
-                              skill.Levels[1].LevelLimit == 1 ? 1 : 0,
-                              skill.MaxLevel - skill.SPMaxLevel,
-                              0
-                            ].join(',')
-                          div(class='skill', data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
-                            div(class='skill-bdr')
-                            div(class='badge skill-lvl')
-                        else
-                          div(class='skill')
+            +panel_header(job, index)
+            +panel_body(job)
+
+mixin panel_header(job, index)
+  - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
+  div(class='panel-heading', data-sp=sp.join(','))= job.JobName
+    div(class='jobsprite', style=fn.image.job(job))
+    span(class='label pull-right') #{sp[0]}/#{sp[1]}
+
+mixin panel_body(job)
+  div(class='panel-body')
+    table(class='skill-table', style=fn.image.skilltree(job))
+      each skillRow in job.SkillTree
+        tr(class='skill-tr')
+          each skillID in skillRow
+            +skill(job.Skills[skillID], skillID)
+
+mixin skill(skill, skillID)
+  td(class='skill-td')
+    if skill
+      - var sprite = [skill.Sprite, skill.IconCol, skill.IconRow].join(',')
+      -
+        var lvl = [
+          skill.Levels[1].LevelLimit == 1 ? 1 : 0,
+          skill.MaxLevel - skill.SPMaxLevel,
+          0
+        ].join(',')
+      div(class='skill', data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
+        div(class='skill-bdr')
+        div(class='badge skill-lvl')
+    else
+      div(class='skill')
