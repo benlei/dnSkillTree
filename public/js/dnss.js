@@ -4,11 +4,6 @@ function dnss(urls) {
     $(this).css('background-image', "url('" + urls.mainbar + "/jobicon_pvp.png')")
   });
   
-  $('.panel-heading[data-sp]').each(function() {
-    var sp = $(this).data('sp').split(',')
-    $(this).find('.label').text(sp[0] + '/' + sp[1])
-  });
-  
   $('.skill[data-skill]').each(function() {
     var lvl = $(this).data('lvl').split(',')
     var sprite = $(this).data('sprite').split(',')

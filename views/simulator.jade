@@ -16,10 +16,10 @@ block content
       each job, index in line
         div(class='col-md-4')
           div(class='panel panel-default')
-            - var sp = [0, Math.floor(max_sp * sp_ratios[index])].join(',')
-            div(class='panel-heading', data-sp=sp)= job.JobName
+            - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
+            div(class='panel-heading', data-sp=sp.join(','))= job.JobName
               div(class='jobsprite', style=fn.image.job(job))
-              span(class='label label-default pull-right')
+              span(class='label label-default pull-right')= sp[0] + "/" + sp[1]
             div(class='panel-body')
               table(class='skill-table', style=fn.image.skilltree(job))
                 each skillRow in job.SkillTree
