@@ -46,3 +46,6 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
     max_sp: db.Levels.reduce(function(p,c) { return p+c }, 0)
   })
 })
+
+var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+";
+var techChars = "'\""; // ' = 1 tech, " = 2 tech

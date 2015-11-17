@@ -16,15 +16,15 @@ block content
     div(class='row')
       each job, index in line
         div(class='col-md-4')
-          div(class='panel panel-default')
+          div(class='panel panel-default noselect')
             +panel_header(job, index)
             +panel_body(job)
 
 mixin panel_header(job, index)
   - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
-  div(class='panel-heading', data-sp=sp.join(','))= job.JobName
+  div(class='panel-heading')= job.JobName
     div(class='jobsprite', style=fn.image.job(job))
-    span(class='label pull-right') #{sp[0]}/#{sp[1]}
+    span(class='label pull-right') #{sp.join('/')}
 
 mixin panel_body(job)
   div(class='panel-body')
@@ -41,8 +41,7 @@ mixin skill(skill, skillID)
       -
         var lvl = [
           skill.Levels[1].LevelLimit == 1 ? 1 : 0,
-          skill.MaxLevel - skill.SPMaxLevel,
-          0
+          skill.MaxLevel - skill.SPMaxLevel
         ].join(',')
       div(class='skill', data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
         div(class='skill-bdr')
