@@ -1,4 +1,3 @@
-var $persist;
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
@@ -24,30 +23,9 @@ function dnss(urls) {
         content: "<p>Hello, world</p><p>What</p><p>now</p>",
         container: $('body')
       })
-      .on('mouseenter', function() {
-        var dom = $(this), trigger = dom.data('desc');
-        if (trigger == 'hover' && !$persist) {
-          dom.popover('show');
-        }
-      })
-      .on('mouseleave', function() {
-        var dom = $(this), trigger = dom.data('desc');
-        if (trigger == 'hover') {
-          dom.popover('hide');
-        }
-      })
-      .on('mousedown', function(e) {
-        if (e.button == 1) {
-          var dom = $(this), trigger = dom.data('desc');
-          if (trigger == 'hover') {
-            dom.data('desc', 'mclick');
-            $persist = dom;
-          } else {
-            dom.data('desc', 'hover');
-            $persist = null;
-          }
-        }
-      });
+      .on('mouseenter', $popover.mouseenter)
+      .on('mouseleave', $popover.mouseleave)
+      .on('mousedown', $popover.mousedown);
     });
   });
 
@@ -73,3 +51,31 @@ function dnss(urls) {
 function int(v) {
   return parseInt(v);
 }
+
+var $popover = {
+  persist: null,
+  mouseenter: function () {
+    var dom = $(this), trigger = dom.data('desc');
+    if (trigger == 'hover' && !$popover.persist) {
+      dom.popover('show');
+    }
+  },
+  mouseleave: function() {
+    var dom = $(this), trigger = dom.data('desc');
+    if (trigger == 'hover') {
+      dom.popover('hide');
+    }
+  },
+  mousedown: function(e) {
+    if (e.button == 1) {
+      var dom = $(this), trigger = dom.data('desc');
+      if (trigger == 'hover') {
+        dom.data('desc', 'mclick');
+        $popover.persist = dom;
+      } else {
+        dom.data('desc', 'hover');
+        $popover.persist = null;
+      }
+    }
+  }
+};
