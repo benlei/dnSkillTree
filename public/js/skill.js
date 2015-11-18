@@ -4,7 +4,7 @@ function skill_adj(e) {
   var lvl = dom.data('lvl').split(',').map(int);
   var image = dom.css('background-image').replace('_b.png', '.png');
   var skill = db.Skills[dom.data('skill')];
-  dom.find('.skill-bdr').removeClass('gray');
+
 
   var prev = lvl[0];
   if (e.button == 0) { // left click
@@ -43,8 +43,9 @@ function skill_adj(e) {
   sp[0] += diff;
 
   // icon update
+  var bdr = dom.find('.skill-bdr');
   dom.css('background-image', lvl[0] ? image : image.replace('.png', '_b.png'));
-  lvl[0] || dom.find('.skill-bdr').addClass('gray');
+  lvl[0] && bdr.removeClass('gray') || bdr.addClass('gray');
   spdom.text(sp.join('/'));
 
   dom.data('lvl', lvl.join(','));
