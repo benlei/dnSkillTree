@@ -50,11 +50,3 @@ function skill_adj(e) {
   dom.data('lvl', lvl.join(','));
   dom.find('.skill-lvl').text(lvl.join('/'));
 }
-
-function skill_description() {
-
-}
-
-function int(v) {
-  return parseInt(v);
-}

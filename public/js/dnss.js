@@ -1,3 +1,4 @@
+var $persist;
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
@@ -7,6 +8,47 @@ function dnss(urls) {
   // is async, don't care when we get it
   $.getJSON(urls.job, function(data) {
     db = data;
+
+    // have it stay a little
+    $('.skill[data-skill]').each(function() {
+      var dom = $(this);
+      dom.data('desc', 'hover');
+      var skillID = int(dom.data('skill'));
+      dom.popover({
+        animation: false,
+        html: true,
+        placement: 'right',
+        trigger: 'manual',
+        title: db.Lookup[db.Skills[skillID].NameID],
+        placement: 'auto right',
+        content: "<p>Hello, world</p><p>What</p><p>now</p>",
+        container: $('body')
+      })
+      .on('mouseenter', function() {
+        var dom = $(this), trigger = dom.data('desc');
+        if (trigger == 'hover' && !$persist) {
+          dom.popover('show');
+        }
+      })
+      .on('mouseleave', function() {
+        var dom = $(this), trigger = dom.data('desc');
+        if (trigger == 'hover') {
+          dom.popover('hide');
+        }
+      })
+      .on('mousedown', function(e) {
+        if (e.button == 1) {
+          var dom = $(this), trigger = dom.data('desc');
+          if (trigger == 'hover') {
+            dom.data('desc', 'mclick');
+            $persist = dom;
+          } else {
+            dom.data('desc', 'hover');
+            $persist = null;
+          }
+        }
+      });
+    });
   });
 
   $('.skill[data-skill]').each(function() {
@@ -26,4 +68,8 @@ function dnss(urls) {
     // disable right click; maybe disable whole panel body?
     dom.on({contextmenu:function(e) {e.preventDefault()}});
   });
+}
+
+function int(v) {
+  return parseInt(v);
 }
