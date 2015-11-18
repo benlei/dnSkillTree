@@ -1,4 +1,5 @@
 {
+    "title": "DragonNest Skill Calculator",
     "db": "/var/www/json/db.json",
     "server": "",
     "static": "http://static.localdomain.com",

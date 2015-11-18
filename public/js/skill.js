@@ -5,7 +5,6 @@ function skill_adj(e) {
   var image = dom.css('background-image').replace('_b.png', '.png');
   var skill = db.Skills[dom.data('skill')];
 
-
   var prev = lvl[0];
   if (e.button == 0) { // left click
     lvl[0] = Math.min(lvl[1], max ? lvl[1] : lvl[0] + 1);

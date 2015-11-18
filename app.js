@@ -1,3 +1,4 @@
+/*global  */
 // export express
 var express = require('express')
 var app = express()
@@ -37,13 +38,14 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
   if (!job) throw "job " + req.params.job + " not found"
 
   res.render('simulator', {
-    title: 'Dragon Nest Skill Simulator',
+    title: dnss.settings.title,
     jobs: jobs,
     cap: req.params.level,
     line: [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job],
     fn: dnss.fn,
     sp_ratios: db.SP,
-    max_sp: db.Levels.reduce(function(p,c) { return p+c }, 0)
+    levels: db.Levels,
+    max_sp: db.Levels.slice(0, req.params.level).reduce(function(p,c) { return p+c }, 0)
   })
 })
 

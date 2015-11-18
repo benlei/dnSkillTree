@@ -6,10 +6,16 @@ block custom_script
       mainbar: fn.url.mainbar(),
       border: fn.url.uitemplatetexture('uit_gesturebutton'),
       job: fn.url.json(line[2].EnglishName)
-    })
+    });
+    var job = JSON.stringify({
+      EnglishName: line[2].EnglishName,
+      MaxLevel: cap,
+      Levels: levels,
+      SP: sp_ratios
+    });
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
-  script(type='text/javascript') var db;dnss(!{urls})
+  script(type='text/javascript') var db;dnss(!{urls});var Job=!{job};
 
 block content
   div(class='container')
