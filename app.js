@@ -1,4 +1,3 @@
-/*global  */
 // export express
 var express = require('express')
 var app = express()
