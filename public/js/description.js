@@ -6,43 +6,43 @@ function desc_map(class, field) {
   return tag('div', class).append(tag('span', 'o', field + ':'), tag('span'));
 }
 
+var desc_fields = [
+  desc_map('dlvl', 'Skill Lv.'),
+  desc_map('dmp', 'Fee MP'),
+  desc_map('dweap', 'Required Weapon'),
+  desc_map('dtype', 'Skill Type'),
+  desc_map('dele', 'Attribute'),
+  desc_map('dcd', 'Cooldown'),
+  desc_map('dlimit', 'Level Limit'),
+  desc_map('dtsp', 'Total SP'),
+  tag('div', 'divider'),
+  tag('div', 'dreq o', 'Level Up Requirements:'),
+  tag('div', 'dreqlvl').append(tag('span', null, 'Character Level '), tag('span')),
+  tag('div', 'dreqskills'),
+  tag('div', 'dreqtsp'),
+  tag('div', 'dreqsp').append(tag('span', null, 'SP '), tag('span')),
+  tag('div', 'divider'),
+  tag('div', 'dnow o', 'Skill Descrption'),
+  tag('div', 'dnow'),
+  tag('div', 'dnext t', 'Next Description'), // t for tangerine
+  tag('div', 'dnext')
+].reduce(function(p,c) { p.append(c); return p }, tag('div')).children();
+
 function init_description(dom) {
-  var fields = [
-    desc_map('dlvl', 'Skill Lv.'),
-    desc_map('dmp', 'Fee MP'),
-    desc_map('dweap', 'Required Weapon'),
-    desc_map('dtype', 'Skill Type'),
-    desc_map('dele', 'Attribute'),
-    desc_map('dcd', 'Cooldown'),
-    desc_map('dlimit', 'Level Limit'),
-    desc_map('dtsp', 'Total SP'),
-    tag('div', 'divider'),
-    tag('div', 'dreq o', 'Level Up Requirements:'),
-    tag('div', 'dreqlvl').append(tag('span', null, 'Character Level '), tag('span')),
-    tag('div', 'dreqskills'),
-    tag('div', 'dreqtsp'),
-    tag('div', 'dreqsp').append(tag('span', null, 'SP '), tag('span')),
-    tag('div', 'divider'),
-    tag('div', 'dnow o', 'Skill Descrption'),
-    tag('div', 'dnow'),
-    tag('div', 'dnext t', 'Next Description'), // t for tangerine
-    tag('div', 'dnext')
-  ];
 
   dom.popover({
     animation: false,
     html: true,
     trigger: 'manual',
     placement: 'auto right',
-//    content: 'Loading...',
-    content: $(document.createElement('div')).text('Hellllloooo'),
+    content: desc_fields.clone(),
     container: $('body')
   })
   .on('mouseenter', _popover.mouseenter)
   .on('mouseleave', _popover.mouseleave)
   .on('mousedown', _popover.mousedown);
 
-  dom.data('bs.popover').options.content.html('Goodbye');
+//  dom.data('bs.popover').options.content.html('Goodbye');
 //  update_description(dom);
 }
 
