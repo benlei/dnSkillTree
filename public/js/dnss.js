@@ -11,21 +11,8 @@ function dnss(urls) {
     // have it stay a little
     $('.skill[data-skill]').each(function() {
       var dom = $(this);
-      dom.data('desc', 'hover');
-      var skillID = int(dom.data('skill'));
-      dom.popover({
-        animation: false,
-        html: true,
-        placement: 'right',
-        trigger: 'manual',
-        title: db.Lookup[db.Skills[skillID].NameID],
-        placement: 'auto right',
-        content: "<p>Hello, world</p><p>What</p><p>now</p>",
-        container: $('body')
-      })
-      .on('mouseenter', $popover.mouseenter)
-      .on('mouseleave', $popover.mouseleave)
-      .on('mousedown', $popover.mousedown);
+      dom.data('desc', 'hover'); // initialize desc
+      init_description(dom);
     });
   });
 
@@ -41,41 +28,13 @@ function dnss(urls) {
     dom.find('.skill-bdr').css('background', "url('" + urls.border + "') 100px 0").addClass(lvl[0] > 0 ? null : 'gray');
     dom.find('.skill-lvl').text(lvl.join('/'));
 
-    dom.bind({mousedown: skill_adj, mouseenter: skill_description});
+    dom.on('mousedown', skill_adj);
 
     // disable right click; maybe disable whole panel body?
-    dom.on({contextmenu:function(e) {e.preventDefault()}});
+    dom.on('contextmenu', function(e) {e.preventDefault()});
   });
 }
 
 function int(v) {
   return parseInt(v);
 }
-
-var $popover = {
-  persist: null,
-  mouseenter: function () {
-    var dom = $(this), trigger = dom.data('desc');
-    if (trigger == 'hover' && !$popover.persist) {
-      dom.popover('show');
-    }
-  },
-  mouseleave: function() {
-    var dom = $(this), trigger = dom.data('desc');
-    if (trigger == 'hover') {
-      dom.popover('hide');
-    }
-  },
-  mousedown: function(e) {
-    if (e.button == 1) {
-      var dom = $(this), trigger = dom.data('desc');
-      if (trigger == 'hover') {
-        dom.data('desc', 'mclick');
-        $popover.persist = dom;
-      } else {
-        dom.data('desc', 'hover');
-        $popover.persist = null;
-      }
-    }
-  }
-};

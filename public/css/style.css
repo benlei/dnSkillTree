@@ -79,3 +79,11 @@ nav {
     letter-spacing: .5px;
 
 }
+
+.popover, .popover-title {
+    font-size: 13px;
+}
+
+.popover-title {
+    text-align: center;
+}
