@@ -1,24 +1,56 @@
+function tag(t, class, text) {
+  return $(document.createElement(t)).addClass(class).text(text);
+}
+
+function desc_map(class, field) {
+  return tag('div', class).append(tag('span', 'o', field + ':'), tag('span'));
+}
+
 function init_description(dom) {
+  var fields = [
+    desc_map('dlvl', 'Skill Lv.'),
+    desc_map('dmp', 'Fee MP'),
+    desc_map('dweap', 'Required Weapon'),
+    desc_map('dtype', 'Skill Type'),
+    desc_map('dele', 'Attribute'),
+    desc_map('dcd', 'Cooldown'),
+    desc_map('dlimit', 'Level Limit'),
+    desc_map('dtsp', 'Total SP'),
+    tag('div', 'divider'),
+    tag('div', 'dreq o', 'Level Up Requirements:'),
+    tag('div', 'dreqlvl').append(tag('span', null, 'Character Level '), tag('span')),
+    tag('div', 'dreqskills'),
+    tag('div', 'dreqtsp'),
+    tag('div', 'dreqsp').append(tag('span', null, 'SP '), tag('span')),
+    tag('div', 'divider'),
+    tag('div', 'dnow o', 'Skill Descrption'),
+    tag('div', 'dnow'),
+    tag('div', 'dnext t', 'Next Description'), // t for tangerine
+    tag('div', 'dnext')
+  ];
+
   dom.popover({
     animation: false,
     html: true,
     trigger: 'manual',
     placement: 'auto right',
-    content: 'Loading...',
+//    content: 'Loading...',
+    content: $(document.createElement('div')).text('Hellllloooo'),
     container: $('body')
   })
   .on('mouseenter', _popover.mouseenter)
   .on('mouseleave', _popover.mouseleave)
   .on('mousedown', _popover.mousedown);
 
-  update_description(dom);
+  dom.data('bs.popover').options.content.html('Goodbye');
+//  update_description(dom);
 }
 
 function update_description(dom) {
   var skill = db.Skills[dom.data('skill')];
   var description = [
     '<div><span class="o">Skill Lv.:</span></div>',
-    '<div><span class="o">Required Weapons:</span></div>'
+    '<div class=""><span class="o">Required Weapons:</span></div>',
   ].join('');
 
   var p = dom.data('bs.popover').options;
