@@ -12,18 +12,21 @@ function skill_adj(e) {
     lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
     if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
       lvl[0] = 1;
+    } else {
+      lvl[3] = 0; // reset techs
     }
   }
 
-  var spdom = dom.closest('.panel').find('.panel-heading span'); // do something later
+  var panel = dom.closest('.panel');
+  var spdom = panel.find('.panel-heading span'); // do something later
   var sp = spdom.text().split('/').map(int);
 
   // find SP difference
-  var diff = 0, end = Math.max(prev, lvl[0]), inc = prev < lvl[0];
+  var diff = 0, end = Math.max(prev, lvl[0]), inc = prev < lvl[0], currMaxSP = get_curr_max_sp(), maxSP = get_max_sp();
   for (var i = Math.min(prev, lvl[0]) + 1; i <= end; i++) {
     var s = skill.Levels[i].SkillPoint;
     if (inc) {
-      if (sp[0] + diff + s > sp[1]) {
+      if (sp[0] + diff + s > sp[1] || currMaxSP + diff + s > maxSP) {
         lvl[0] = i - 1;
         break;
       }
@@ -41,6 +44,8 @@ function skill_adj(e) {
   // SP adjustment
   sp[0] += diff;
   lvl[2] += diff;
+  Job.TSP[panel.data('job')] += diff;
+
 
   // icon update
   var bdr = dom.find('.skill-bdr');

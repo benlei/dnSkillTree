@@ -80,7 +80,7 @@ nav {
 }
 
 .popover {
-    width: 230px;
+    width: 240px;
 }
 
 .popover, .popover-title {
@@ -94,7 +94,7 @@ nav {
 .popover .divider {
     border-bottom: 1px solid #666;
     width: 95%;
-    margin: 5px auto;
+    margin: 5px 0;
 }
 
 .popover .o {
@@ -127,9 +127,10 @@ nav {
 
 .popover .dnow {
     border: 1px solid orange;
+    margin-top: 5px;
     position: relative;
     left: -3px;
-    padding-left: 2px;
+    padding: 2px;
 }
 
 .popover .dnextv {

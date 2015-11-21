@@ -11,7 +11,9 @@ block custom_script
       EnglishName: line[2].EnglishName,
       MaxLevel: cap,
       Levels: levels,
-      SP: sp_ratios
+      SP: sp_ratios,
+      TSP: [0,0,0],
+      Line: line.map(function(l) { return l.JobName })
     });
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
@@ -23,7 +25,7 @@ block content
     div(class='row')
       each job, index in line
         div(class='col-md-4')
-          div(class='panel panel-default noselect')
+          div(class='panel panel-default noselect', data-job=index)
             +panel_header(job, index)
             +panel_body(job)
 
