@@ -1,14 +1,12 @@
 function init_description(dom) {
-  dom.popover({
-    animation: false,
-    html: true,
-    trigger: 'manual',
-    placement: 'auto right',
-    container: $('body')
-  })
-  .on('mouseenter', _popover.mouseenter)
-  .on('mouseleave', _popover.mouseleave)
-  .on('mousedown', _popover.mousedown);
+  dom.popover({animation: false,
+               html: true,
+               trigger: 'manual',
+               placement: 'auto right',
+               container: $('body')})
+     .on('mouseenter', _popover.mouseenter)
+     .on('mouseleave', _popover.mouseleave)
+     .on('mousedown', _popover.mousedown);
 }
 
 function update_description(dom) {
@@ -26,7 +24,6 @@ function update_description(dom) {
   } else {
     d.find('.dtsp').hide();
   }
-
 
   // non-level related fields - with conditions
   if (skill.NeedWeaponType) {
@@ -48,17 +45,16 @@ function update_description(dom) {
   }
   d.find('.dtype span:last').text(skillType);
 
-  if (skill.Element !== undefined) {
-    var ele = 'Fire';
-    switch(skill.Element) {
-      case 1: ele = 'Water'; break;
-      case 2: ele = 'Light'; break;
-      case 3: ele = 'Dark'; break;
-    }
-    d.find('.dele span:last').text(ele);
-  } else {
-    d.find('.dele').remove();
+
+  var ele = 'None';
+  switch(skill.Element) {
+    case 0: ele = 'Fire'; break;
+    case 1: ele = 'Water'; break;
+    case 2: ele = 'Light'; break;
+    case 3: ele = 'Dark'; break;
   }
+  d.find('.dele span:last').text(ele);
+
 
   // level related fields
   var curr = lvl[0] + lvl[3], currLevel, nextLevel, currApply, nextApply;
@@ -72,51 +68,78 @@ function update_description(dom) {
   }
 
   // level up req stuff
-  d.find('.dreq, .dreq span:last').removeClass('r');
-  var limit = nextLevel ? nextLevel.LevelLimit : currLevel.LevelLimit;
-  d.find('.dreqlvl span:last').addClass(Job.MaxLevel < limit ? 'r' : null).text(limit);
-
-  // sp by job req
-  if (skill.NeedSP) {
-    d.find('.dreqtsp').empty().append(skill.NeedSP.map($d.sp));
-  } else {
-    d.find('.dreqtsp').remove();
-  }
-
-  // skill level req
-  if (skill.ParentSkills) {
-    d.find('.dreqskills')
-  } else {
-    d.find('.dreqskills').remove();
-  }
-
-
-  // stuff that shouldn't show when unnecessary
   if (nextLevel) {
-    var jobNum = dom.closest('.panel').data('job');
-    var maxSP = get_max_sp();
-    var jobSP = Job.TSP[jobNum];
-    var currMaxSP = get_curr_max_sp();
+    d.find('.dreq').show();
+    d.find('.dreqlvl')
+     .show()
+     .find('span:last')
+     .removeClass('r')
+     .addClass(Job.MaxLevel < nextLevel.LevelLimit ? 'r' : null)
+     .text(nextLevel.LevelLimit);
 
-    d.find('.dreqsp').show().find('span:last').text(nextLevel.SkillPoint).addClass(
-      (jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
-       currMaxSP + nextLevel.SkillPoint > maxSP) ? 'r' : null
-    );
+    // sp by job req
+    if (skill.NeedSP) {
+      d.find('.dreqtsp')
+       .empty()
+       .append(skill.NeedSP.map($d.sp));
+    } else {
+      d.find('.dreqtsp').remove();
+    }
+
+    // skill level req
+    if (skill.ParentSkills) {
+      var arr = [];
+      for (var skillID in skill.ParentSkills) {
+        var reqlvl = skill.ParentSkills[skillID]
+        var $lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(int);
+        arr.push(tag('div',
+                     $lvl[0] < reqlvl ? 'r' : null,
+                     db.Lookup[db.Skills[skillID].NameID] + " Lv. " + reqlvl));
+      }
+      d.find('.dreqskills')
+       .empty()
+       .append(arr);
+    } else {
+      d.find('.dreqskills').remove();
+    }
+
+
+    // stuff that shouldn't show when unnecessary
+    if (nextLevel) {
+      var jobNum = dom.closest('.panel').data('job');
+      var maxSP = get_max_sp();
+      var jobSP = Job.TSP[jobNum];
+      var currMaxSP = get_curr_max_sp();
+
+      d.find('.dreqsp')
+       .show()
+       .find('span:last')
+       .text(nextLevel.SkillPoint)
+       .addClass((jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
+                  currMaxSP + nextLevel.SkillPoint > maxSP) ? 'r' : null);
+    } else {
+      d.find('.dreqsp').hide();
+    }
   } else {
-    d.find('.dreqsp').hide();
+    d.find('.dreq').hide();
   }
 
   // apply type specific
   var decreaseSP = currApply ? currApply.DecreaseSP : nextApply.DecreaseSP;
   if (decreaseSP) {
-    d.find('.dmp span:last').show().text(decreaseSP);
+    d.find('.dmp span:last')
+     .show().
+      text(decreaseSP);
   } else {
     d.find('.dmp').hide();
   }
 
   var delayTime = (currApply ? currApply.DelayTime : nextApply.DelayTime) / 1000;
   if (delayTime) {
-    d.find('.dcd').show().find('span:last').text(delayTime);
+    d.find('.dcd')
+     .show()
+     .find('span:last')
+     .text(delayTime);
   } else {
     d.find('.dcd').hide();
   }
@@ -140,7 +163,9 @@ function update_description(dom) {
 }
 
 function tag(t, cls, text) {
-  return $(document.createElement(t)).addClass(cls).text(text);
+  return $(document.createElement(t))
+                   .addClass(cls)
+                   .text(text);
 }
 
 function desc_tag(cls, field) {
