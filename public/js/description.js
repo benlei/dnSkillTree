@@ -1,40 +1,11 @@
-function tag(t, class, text) {
-  return $(document.createElement(t)).addClass(class).text(text);
-}
-
-function desc_map(class, field) {
-  return tag('div', class).append(tag('span', 'o', field + ':'), tag('span'));
-}
-
-var desc_fields = [
-  desc_map('dlvl', 'Skill Lv.'),
-  desc_map('dmp', 'Fee MP'),
-  desc_map('dweap', 'Required Weapon'),
-  desc_map('dtype', 'Skill Type'),
-  desc_map('dele', 'Attribute'),
-  desc_map('dcd', 'Cooldown'),
-  desc_map('dlimit', 'Level Limit'),
-  desc_map('dtsp', 'Total SP'),
-  tag('div', 'divider'),
-  tag('div', 'dreq o', 'Level Up Requirements:'),
-  tag('div', 'dreqlvl').append(tag('span', null, 'Character Level '), tag('span')),
-  tag('div', 'dreqskills'),
-  tag('div', 'dreqtsp'),
-  tag('div', 'dreqsp').append(tag('span', null, 'SP '), tag('span')),
-  tag('div', 'divider'),
-  tag('div', 'dnow o', 'Skill Descrption'),
-  tag('div', 'dnow'),
-  tag('div', 'dnext t', 'Next Description'), // t for tangerine
-  tag('div', 'dnext')
-].reduce(function(p,c) { p.append(c); return p }, tag('div')).children();
-
 function init_description(dom) {
-
+  var skillID = int();
   dom.popover({
     animation: false,
     html: true,
     trigger: 'manual',
     placement: 'auto right',
+    title: db.Lookup[db.Skills[dom.data('skill')].NameID],
     content: desc_fields.clone(),
     container: $('body')
   })
@@ -46,7 +17,7 @@ function init_description(dom) {
 //  update_description(dom);
 }
 
-function update_description(dom) {
+/*function update_description(dom) {
   var skill = db.Skills[dom.data('skill')];
   var description = [
     '<div><span class="o">Skill Lv.:</span></div>',
@@ -56,6 +27,14 @@ function update_description(dom) {
   var p = dom.data('bs.popover').options;
   p.title = db.Lookup[skill.NameID];
   p.content = description;
+}*/
+
+function tag(t, cls, text) {
+  return $(document.createElement(t)).addClass(cls).text(text);
+}
+
+function desc_map(cls, field) {
+  return tag('div', cls).append(tag('span', 'o', field + ':'), tag('span'));
 }
 
 var _popover = {
@@ -85,3 +64,34 @@ var _popover = {
     }
   }
 };
+
+var desc_fields = [
+  desc_map('dlvl', 'Skill Lv.'),
+  desc_map('dmp', 'Fee MP'),
+  desc_map('dweap', 'Required Weapon'),
+  desc_map('dtype', 'Skill Type'),
+  desc_map('dele', 'Attribute'),
+  desc_map('dcd', 'Cooldown'),
+  desc_map('dlimit', 'Level Limit'),
+  desc_map('dtsp', 'Total SP'),
+  tag('div', 'divider'),
+  tag('div', 'dreq o', 'Level Up Requirements:'),
+  tag('div', 'dreqlvl').append(
+    tag('span', null, 'Character Level '),
+    tag('span')
+  ),
+  tag('div', 'dreqskills'),
+  tag('div', 'dreqtsp'),
+  tag('div', 'dreqsp').append(
+    tag('span', null, 'SP '),
+    tag('span')
+  ),
+  tag('div', 'dnow').append(
+    tag('div', 'dnowf o', 'Skill Descrption'),
+    tag('div', 'dnowv')
+  ),
+  tag('div', 'dnext').append(
+    tag('div', 'dnextf o', 'Next Description'),
+    tag('div', 'dnextv')
+  )
+].reduce(function(p,c) { p.append(c); return p }, tag('div')).children();

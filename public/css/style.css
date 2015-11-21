@@ -80,10 +80,60 @@ nav {
 
 }
 
+.popover {
+    width: 230px;
+}
+
 .popover, .popover-title {
     font-size: 13px;
 }
 
 .popover-title {
     text-align: center;
+}
+
+.popover .divider {
+    border-bottom: 1px solid #666;
+    width: 95%;
+    margin: 5px auto;
+}
+
+.popover .o {
+    color: orange;
+}
+
+.popover .y {
+    color: yellow;
+}
+
+.popover .p {
+    color: palegoldenrod;
+}
+
+.popover .r {
+    color: red;
+}
+
+.popover .s {
+    color: skyblue;
+}
+
+.popover .v {
+    color: violet;
+}
+
+.popover .dnextv .v {
+    color: midnightblue;
+}
+
+.popover .dnow {
+    border: 1px solid orange;
+    position: relative;
+    left: -3px;
+    padding-left: 2px;
+}
+
+.popover .dnextv {
+    opacity: .8;
+    filter: alpha(opacity = 80);
 }
