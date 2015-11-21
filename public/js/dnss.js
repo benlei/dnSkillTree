@@ -18,7 +18,7 @@ function dnss(urls) {
 
   $('.skill[data-skill]').each(function() {
     var dom = $(this);
-    var lvl = dom.data('lvl').split(',');
+    var lvl = dom.data('lvl').split(',').map(int);
     var grayed = lvl[0] == 0 ? '_b' : '';
     var sprite = dom.data('sprite').split(',');
     sprite[1] *= -50;
@@ -26,7 +26,7 @@ function dnss(urls) {
 
     dom.css('background', "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"); // initial setup
     dom.find('.skill-bdr').css('background', "url('" + urls.border + "') 100px 0").addClass(lvl[0] > 0 ? null : 'gray');
-    dom.find('.skill-lvl').text(lvl.join('/'));
+    dom.find('.skill-lvl').text([lvl[0] + lvl[2], lvl[1]].join('/'));
 
     dom.on('mousedown', skill_adj);
 

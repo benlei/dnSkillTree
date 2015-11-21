@@ -40,6 +40,7 @@ function skill_adj(e) {
 
   // SP adjustment
   sp[0] += diff;
+  lvl[2] += diff;
 
   // icon update
   var bdr = dom.find('.skill-bdr');
@@ -48,5 +49,6 @@ function skill_adj(e) {
   spdom.text(sp.join('/'));
 
   dom.data('lvl', lvl.join(','));
-  dom.find('.skill-lvl').text(lvl.join('/'));
+  dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[1]].join('/'));
+  update_description(dom);
 }

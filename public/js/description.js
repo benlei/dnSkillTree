@@ -1,40 +1,34 @@
 function init_description(dom) {
-  var skillID = int();
   dom.popover({
     animation: false,
     html: true,
     trigger: 'manual',
-    placement: 'auto right',
-    title: db.Lookup[db.Skills[dom.data('skill')].NameID],
-    content: desc_fields.clone(),
+    placement: 'auto left',
     container: $('body')
   })
   .on('mouseenter', _popover.mouseenter)
   .on('mouseleave', _popover.mouseleave)
   .on('mousedown', _popover.mousedown);
-
-//  dom.data('bs.popover').options.content.html('Goodbye');
-//  update_description(dom);
 }
 
-/*function update_description(dom) {
+function update_description(dom) {
+  var lvl = dom.data('lvl').split(',').map(int);
   var skill = db.Skills[dom.data('skill')];
-  var description = [
-    '<div><span class="o">Skill Lv.:</span></div>',
-    '<div class=""><span class="o">Required Weapons:</span></div>',
-  ].join('');
-
-  var p = dom.data('bs.popover').options;
-  p.title = db.Lookup[skill.NameID];
-  p.content = description;
-}*/
+  var opts = dom.data('bs.popover').options;
+  opts.title = db.Lookup[skill.NameID];
+  var d = opts.content ? opts.content : desc_fields.clone(true);
+  d.find('.dlvl span:last').text(lvl[0] + lvl[3]);
+  d.find('.dlimit span:last').text(lvl[1]);
+  d.find('.dtsp span:last').text(lvl[2])
+  opts.content = d;
+}
 
 function tag(t, cls, text) {
   return $(document.createElement(t)).addClass(cls).text(text);
 }
 
 function desc_map(cls, field) {
-  return tag('div', cls).append(tag('span', 'o', field + ':'), tag('span'));
+  return tag('div', cls).append(tag('span', 'o', field + ': '), tag('span'));
 }
 
 var _popover = {
@@ -42,6 +36,7 @@ var _popover = {
   mouseenter: function () {
     var dom = $(this), trigger = dom.data('desc');
     if (trigger == 'hover' && !_popover.persist) {
+      update_description(dom);
       dom.popover('show');
     }
   },
@@ -94,4 +89,48 @@ var desc_fields = [
     tag('div', 'dnextf o', 'Next Description'),
     tag('div', 'dnextv')
   )
-].reduce(function(p,c) { p.append(c); return p }, tag('div')).children();
+].reduce(function(p,c) { p.append(c); return p }, tag('div'));
+
+
+function desc_format(str) {
+  if (str == -1) {
+    return -1;
+  }
+
+  var c = 0, w = 0, p = 0, newStr = "", startPos = 0;
+  for (var i = 0; i < str.length - 1; i++) {
+    switch (str.substr(i, 2)) {
+      case "#y": case "#p": case "#r": case "#s": case "#v":
+      if (c - w == 1) { // needed a closing </span>
+        newStr += str.substring(startPos, i) + "</span><span class=\"" + str.substr(i+1,1) + "\">";
+      } else {
+        newStr += str.substring(startPos, i) + "<span class=\"" + str.substr(i+1,1) + "\">";
+        c++;
+      }
+
+      startPos = i + 2;
+      ++i;
+      break;
+      case "#w":
+      if (w == c) { // early #w
+        newStr +=  str.substring(startPos, i);
+      } else {
+        newStr += str.substring(startPos, i) + "</span>";
+        w++;
+      }
+
+      startPos = i + 2;
+      ++i;
+      default:
+      break;
+    }
+  }
+
+  newStr = newStr + str.substr(startPos);
+
+  if (c != w) {
+    newStr = newStr + "</span>";
+  }
+
+  return "<p>" + newStr.replace(/\\n/g, "</p><p>") + "</p>";
+}
