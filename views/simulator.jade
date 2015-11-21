@@ -13,7 +13,7 @@ block custom_script
       Levels: levels,
       SP: sp_ratios,
       TSP: [0,0,0],
-      Line: line.map(function(l) { return l.JobName })
+      Names: line.map(function(l) { return l.JobName })
     });
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))

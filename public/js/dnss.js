@@ -39,9 +39,44 @@ function int(v) {
   return parseInt(v);
 }
 
+function sum(p, c) {
+  return p+c
+}
+
 function get_curr_max_sp() {
-  return Job.TSP.reduce(function(p, c) { return p+c });
+  return Job.TSP.reduce(sum);
 }
+
 function get_max_sp() {
-  return Job.Levels.slice(0, Job.MaxLevel).reduce(function(p,c) { return p+c });
+  return Job.Levels.slice(0, Job.MaxLevel).reduce(sum);
 }
+
+function tag(t, cls, text) {
+  return $(document.createElement(t)).addClass(cls).text(text);
+}
+
+function desc_tag(cls, field) {
+  return tag('div', cls).append(tag('span', 'o', field + ': '), tag('span'));
+}
+
+var $h = {
+  params: function(p) {
+    if (p.startsWith('{')) {
+      return db.Lookup[p.substring(1, p.length - 1)];
+    } else {
+      return p;
+    }
+  },
+  weapon: function(w) {
+    return db.Weapons[w];
+  },
+  sp: function(sp,i) {
+    if (sp > 0) {
+      return tag('span',
+                 Job.TSP[i] < sp ? 'r' : null,
+                 Job.Names[i] + " SP Total " + sp + " or above");
+    } else {
+      return null;
+    }
+  }
+};

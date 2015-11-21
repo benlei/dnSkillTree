@@ -3,7 +3,7 @@ function init_description(dom) {
     animation: false,
     html: true,
     trigger: 'manual',
-    placement: 'auto left',
+    placement: 'auto right',
     container: $('body')
   })
   .on('mouseenter', _popover.mouseenter)
@@ -19,16 +19,19 @@ function update_description(dom) {
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
-  d.find('.dlvl span:last').text(lvl[0] + lvl[3]);
+  d.find('.dlvl span:last').text(Math.max(1, lvl[0] + lvl[3]));
   d.find('.dlimit span:last').text(lvl[1]);
-  d.find('.dtsp span:last').text(lvl[2]);
+  if (lvl[2]) {
+    d.find('.dtsp').show().find('span:last').text(lvl[2]);
+  } else {
+    d.find('.dtsp').hide();
+  }
+
 
   // non-level related fields - with conditions
   if (skill.NeedWeaponType) {
     d.find('.dweaps span:last').text(
-      skill.NeedWeaponType.map(function(w) {
-        return db.Weapons[w];
-      }).join(', '));
+      skill.NeedWeaponType.map($d.weapon).join(', '));
   } else {
     d.find('.dweaps').remove();
   }
@@ -69,32 +72,38 @@ function update_description(dom) {
   }
 
   // level up req stuff
-  if (nextLevel) {
-    var target;
-    d.find('.dreq').show();
-    d.find('.dreq, .dreq span:last').removeClass('r');
-    target = d.find('.dreqlvl span:last');
-    target.text(nextLevel.LevelLimit);
-    if (Job.MaxLevel < nextLevel.LevelLimit) {
-      target.addClass('r');
-    }
+  d.find('.dreq, .dreq span:last').removeClass('r');
+  var limit = nextLevel ? nextLevel.LevelLimit : currLevel.LevelLimit;
+  d.find('.dreqlvl span:last').addClass(Job.MaxLevel < limit ? 'r' : null).text(limit);
 
+  // sp by job req
+  if (skill.NeedSP) {
+    d.find('.dreqtsp').empty().append(skill.NeedSP.map($d.sp));
+  } else {
+    d.find('.dreqtsp').remove();
+  }
+
+  // skill level req
+  if (skill.ParentSkills) {
+    d.find('.dreqskills')
+  } else {
+    d.find('.dreqskills').remove();
+  }
+
+
+  // stuff that shouldn't show when unnecessary
+  if (nextLevel) {
     var jobNum = dom.closest('.panel').data('job');
     var maxSP = get_max_sp();
     var jobSP = Job.TSP[jobNum];
     var currMaxSP = get_curr_max_sp();
 
-    target = d.find('.dreqsp span:last');
-    target.text(nextLevel.SkillPoint);
-    if (jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] || currMaxSP + nextLevel.SkillPoint > maxSP) {
-      target.addClass('r');
-    }
-
-    // sp by job req
-
-    // skill level req
+    d.find('.dreqsp').show().find('span:last').text(nextLevel.SkillPoint).addClass(
+      (jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
+       currMaxSP + nextLevel.SkillPoint > maxSP) ? 'r' : null
+    );
   } else {
-    d.find('.dreq').hide();
+    d.find('.dreqsp').hide();
   }
 
   // apply type specific
@@ -105,8 +114,13 @@ function update_description(dom) {
     d.find('.dmp').hide();
   }
 
-  var delayTime = currApply ? currApply.DelayTime : nextApply.DelayTime;
-  d.find('.dcd span:last').text(delayTime / 1000);
+  var delayTime = (currApply ? currApply.DelayTime : nextApply.DelayTime) / 1000;
+  if (delayTime) {
+    d.find('.dcd').show().find('span:last').text(delayTime);
+  } else {
+    d.find('.dcd').hide();
+  }
+
 
   // descriptions
   var explID = currApply ? currApply.SkillExplanationID : nextApply.SkillExplanationID;
@@ -129,9 +143,31 @@ function tag(t, cls, text) {
   return $(document.createElement(t)).addClass(cls).text(text);
 }
 
-function desc_map(cls, field) {
+function desc_tag(cls, field) {
   return tag('div', cls).append(tag('span', 'o', field + ': '), tag('span'));
 }
+
+var $d = {
+  params: function(p) {
+    if (p.startsWith('{')) {
+      return db.Lookup[p.substring(1, p.length - 1)];
+    } else {
+      return p;
+    }
+  },
+  weapon: function(w) {
+    return db.Weapons[w];
+  },
+  sp: function(sp,i) {
+    if (sp > 0) {
+      return tag('span',
+                 Job.TSP[i] < sp ? 'r' : null,
+                 Job.Names[i] + " SP Total " + sp + " or above");
+    } else {
+      return null;
+    }
+  }
+};
 
 var _popover = {
   persist: null,
@@ -162,15 +198,15 @@ var _popover = {
   }
 };
 
-var desc_fields = [
-  desc_map('dlvl', 'Skill Lv.'),
-  desc_map('dmp', 'Fee MP'),
-  desc_map('dweaps', 'Required Weapon'),
-  desc_map('dtype', 'Skill Type'),
-  desc_map('dele', 'Attribute'),
-  desc_map('dcd', 'Cooldown'),
-  desc_map('dlimit', 'Level Limit'),
-  desc_map('dtsp', 'Total SP'),
+var desc_fields = tag('div').append(
+  desc_tag('dlvl', 'Skill Lv.'),
+  desc_tag('dmp', 'Fee MP'),
+  desc_tag('dweaps', 'Required Weapon'),
+  desc_tag('dtype', 'Skill Type'),
+  desc_tag('dele', 'Attribute'),
+  desc_tag('dcd', 'Cooldown'),
+  desc_tag('dlimit', 'Level Limit'),
+  desc_tag('dtsp', 'Total SP'),
   tag('div', 'divider dreq'),
   tag('div', 'dreq o', 'Level Up Requirements:'),
   tag('div', 'dreq dreqlvl').append(
@@ -192,17 +228,11 @@ var desc_fields = [
     tag('div', 'dnextf o', 'Next Description'),
     tag('div', 'dnextv')
   )
-].reduce(function(p,c) { p.append(c); return p }, tag('div'));
+);
 
 
 function desc_format(str, params) {
-  params = params.split(',').map(function(p) {
-             if (p.startsWith('{')) {
-               return db.Lookup[p.substring(1, p.length - 1)];
-             } else {
-               return p;
-             }
-           });
+  params = params.split(',').map($d.params);
 
   for (var i = 0; i < params.length; i++) {
     str = str.replace('{' + i + '}', params[i]);

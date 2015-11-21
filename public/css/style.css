@@ -3,12 +3,12 @@ nav {
 }
 
 .noselect {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  unselectable: on;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    unselectable: on;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -25,8 +25,6 @@ nav {
     height: 28.5px;
     float: left;
     margin-top: -4px;
-    margin-left: -8px;
-    margin-right: 2px;
 }
 
 .label {
@@ -80,11 +78,11 @@ nav {
 }
 
 .popover {
-    width: 240px;
+    width: 280px;
 }
 
 .popover, .popover-title {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .popover-title {
@@ -110,7 +108,7 @@ nav {
 }
 
 .popover .r {
-    color: red;
+    color: #ff3232;
 }
 
 .popover .s {
@@ -122,7 +120,7 @@ nav {
 }
 
 .popover .dnextv .v {
-    color: midnightblue;
+    color: royalblue;
 }
 
 .popover .dnow {

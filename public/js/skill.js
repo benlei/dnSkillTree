@@ -55,5 +55,8 @@ function skill_adj(e) {
 
   dom.data('lvl', lvl.join(','));
   dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[1]].join('/'));
+  dom.popover('hide');
   update_description(dom);
+  dom.popover('show');
+
 }
