@@ -36,7 +36,10 @@ var _popover = {
   mouseenter: function () {
     var dom = $(this), trigger = dom.data('desc');
     if (trigger == 'hover' && !_popover.persist) {
-      update_description(dom);
+      if (! dom.data('bs.popover').options.content) {
+        update_description(dom);
+      }
+
       dom.popover('show');
     }
   },
