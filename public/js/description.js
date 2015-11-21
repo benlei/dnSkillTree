@@ -4,9 +4,9 @@ function init_description(dom) {
                trigger: 'manual',
                placement: 'auto right',
                container: $('body')})
-     .on('mouseenter', _popover.mouseenter)
-     .on('mouseleave', _popover.mouseleave)
-     .on('mousedown', _popover.mousedown);
+     .on('mouseenter', $dpop.mouseenter)
+     .on('mouseleave', $dpop.mouseleave)
+     .on('mousedown', $dpop.mousedown);
 }
 
 function update_description(dom) {
@@ -194,11 +194,11 @@ var $d = {
   }
 };
 
-var _popover = {
+var $dpop = {
   persist: null,
   mouseenter: function () {
     var dom = $(this), trigger = dom.data('desc');
-    if (trigger == 'hover' && !_popover.persist) {
+    if (trigger == 'hover' && !$dpop.persist) {
       update_description(dom);
       dom.popover('show');
     }
@@ -212,14 +212,25 @@ var _popover = {
   mousedown: function(e) {
     if (e.button == 1) {
       var dom = $(this), trigger = dom.data('desc');
+      $dpop.update(dom);
       if (trigger == 'hover') {
         dom.data('desc', 'mclick');
-        _popover.persist = dom;
+        $dpop.persist = dom;
       } else {
         dom.data('desc', 'hover');
-        _popover.persist = null;
+        $dpop.persist = null;
       }
     }
+  },
+  update: function(dom) {
+    if ($dpop.persist) {
+      $dpop.persist.data('desc', 'hover').popover('hide');
+      $dpop.persist = null;
+    }
+
+    dom.popover('hide');
+    update_description(dom);
+    dom.popover('show');
   }
 };
 
