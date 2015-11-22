@@ -18,7 +18,7 @@ block custom_script
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
   script(type='text/javascript', src=fn.url.js('description'))
-  script(type='text/javascript') var db;dnss(!{urls});var Job=!{job};
+  script(type='text/javascript') var db;var Job=!{job};dnss(!{urls});
 
 block content
   div.container
@@ -43,6 +43,7 @@ mixin panel_header(job, index)
     div.jobsprite(style=fn.image.job(job))
     span.label.pull-right #{sp.join('/')}
 
+
 mixin panel_body(job)
   div.panel-body
     table.skill-table(style=fn.image.skilltree(job))
@@ -50,6 +51,7 @@ mixin panel_body(job)
         tr.skill-tr
           each skillID in skillRow
             +skill(job.Skills[skillID], skillID)
+
 
 mixin skill(skill, skillID)
   td(class='skill-td')

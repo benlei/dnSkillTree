@@ -57,11 +57,12 @@ function update_description(dom) {
 
 
   // level related fields
+  var applyType = $('#pve').hasClass('btn-info') ? 0 : 1;
   var curr = lvl[0] + lvl[3], currLevel, nextLevel, currApply, nextApply;
   currLevel = skill.Levels[curr];
-  currApply = currLevel ? currLevel.ApplyType[0] : null;
+  currApply = currLevel ? currLevel.ApplyType[applyType] : null;
   nextLevel = skill.Levels[curr + 1];
-  nextApply = nextLevel ? nextLevel.ApplyType[0] : null;
+  nextApply = nextLevel ? nextLevel.ApplyType[applyType] : null;
   if (curr == 0) {
     currLevel = nextLevel;
     currApply = nextApply;
@@ -161,12 +162,6 @@ function update_description(dom) {
   }
 
   opts.content = d;
-}
-
-function tag(t, cls, text) {
-  return $(document.createElement(t))
-                   .addClass(cls)
-                   .text(text);
 }
 
 function desc_tag(cls, field) {

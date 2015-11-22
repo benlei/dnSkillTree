@@ -13,9 +13,7 @@ nav.navbar.navbar-static-top
                   li: a(href='/#{job2.EnglishName}-#{cap}')= job2.JobName
       div.nav.navbar-right
         div.form-group.pull-left
-          select.form-control#level
-            option(value=cap)= cap
-            option(value=80) 80
+          select.form-control#levels
         div.btn-group.pull-right
-          button.btn.btn-sm.btn-default(type='button') PvP
-          button.btn.btn-sm.btn-info(type='button') PvE
+          button#pve.btn.btn-sm.btn-info(type='button') PvE
+          button#pvp.btn.btn-sm.btn-default(type='button') PvP

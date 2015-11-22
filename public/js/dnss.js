@@ -35,6 +35,24 @@ function dnss(urls) {
     // disable right click; maybe disable whole panel body?
     dom.on('contextmenu', preventDefault);
   });
+
+  // level selection
+  var levels = $('#levels');
+  for (var level = Job.Levels.length; level > 0; level--) {
+    levels.append(tag('option', null, 'Lv. ' + level).val(level));
+  }
+  levels.val(Job.MaxLevel);
+
+  // the apply type
+  $('#pvp').click(function () {
+    $('#pve').removeClass('btn-info').addClass('btn-default');
+    $(this).addClass('btn-info');
+  });
+
+  $('#pve').click(function () {
+    $('#pvp').removeClass('btn-info').addClass('btn-default');
+    $(this).addClass('btn-info');
+  });
 }
 
 function preventDefault(e) {
@@ -55,4 +73,10 @@ function get_total_sp() {
 
 function get_max_sp() {
   return Job.Levels.slice(0, Job.MaxLevel).reduce(sum);
+}
+
+function tag(t, cls, text) {
+  return $(document.createElement(t))
+                   .addClass(cls)
+                   .text(text);
 }
