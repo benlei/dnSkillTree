@@ -23,11 +23,20 @@ block custom_script
 block content
   div(class='container')
     div(class='row')
+      div(class='col-md-12')
+        div(class='progress')
+          div(class='progress-bar progress-bar-info', style={width: '50%'}) 127
+          span= max_sp
+
+
+
+    div(class='row')
       each job, index in line
         div(class='col-md-4')
           div(class='panel panel-default noselect', data-job=index)
             +panel_header(job, index)
             +panel_body(job)
+
 
 mixin panel_header(job, index)
   - var sp = [0, Math.floor(max_sp * sp_ratios[index])]

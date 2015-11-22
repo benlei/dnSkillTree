@@ -1,4 +1,3 @@
-include nav
 doctype html
 html
   head
@@ -7,7 +6,7 @@ html
     link(rel='stylesheet', href=fn.url.css('bootstrap.min'))
     link(rel='stylesheet', href=fn.url.css('style'))
   body
-    block nav
+    include nav
     block content
     script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
     script(type='text/javascript', src=fn.url.js('bootstrap.min'))

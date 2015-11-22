@@ -1,5 +1,6 @@
 nav {
     padding-top: 10px;
+    margin-bottom: 0 !important;
 }
 
 .noselect {
@@ -25,6 +26,7 @@ nav {
     height: 28.5px;
     float: left;
     margin-top: -4px;
+    margin-right: 2px;
 }
 
 .label {
@@ -134,4 +136,29 @@ nav {
 .popover .dnextv {
     opacity: .8;
     filter: alpha(opacity = 80);
+}
+
+.progress {
+    margin: 5px 0 15px 0;
+    height: 20px;
+    text-align: center;
+    color: #000;
+    font-size: 14px;
+}
+
+.progress-bar {
+    font-size: 14px !important;
+    padding-top: 5px;
+}
+
+.btn-sm {
+    font-size: 14px;
+}
+
+.navbar-right {
+    padding-right: 15px;
+}
+
+.nav-pills {
+    float: left;
 }
