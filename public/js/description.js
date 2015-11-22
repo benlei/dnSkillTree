@@ -10,7 +10,7 @@ function init_description(dom) {
 }
 
 function update_description(dom) {
-  var lvl = dom.data('lvl').split(',').map(int);
+  var lvl = dom.data('lvl').split(',').map(num);
   var skill = db.Skills[dom.data('skill')];
   var opts = dom.data('bs.popover').options;
   opts.title = db.Lookup[skill.NameID];
@@ -91,7 +91,7 @@ function update_description(dom) {
       var arr = [];
       for (var skillID in skill.ParentSkills) {
         var reqlvl = skill.ParentSkills[skillID]
-        var $lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(int);
+        var $lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
         arr.push(tag('div',
                      $lvl[0] < reqlvl ? 'r' : null,
                      db.Lookup[db.Skills[skillID].NameID] + " Lv. " + reqlvl));
@@ -109,14 +109,15 @@ function update_description(dom) {
       var jobNum = dom.closest('.panel').data('job');
       var maxSP = get_max_sp();
       var jobSP = Job.TSP[jobNum];
-      var currMaxSP = get_curr_max_sp();
+      var totalSP = get_total_sp();
 
       d.find('.dreqsp')
        .show()
        .find('span:last')
        .text(nextLevel.SkillPoint)
+       .removeClass('r')
        .addClass((jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
-                  currMaxSP + nextLevel.SkillPoint > maxSP) ? 'r' : null);
+                  totalSP + nextLevel.SkillPoint > maxSP) ? 'r' : null);
     } else {
       d.find('.dreqsp').hide();
     }

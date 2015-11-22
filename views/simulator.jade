@@ -24,9 +24,11 @@ block content
   div.container
     div.row
       div.col-md-12
-        div.progress
-          div.progress-bar.progress-bar-info(style={width: '50%'}) 127
-          span= max_sp
+        div.progress.progress-striped
+          span.curr-progress 0 SP
+          span.max-progress #{max_sp} SP
+          div.progress-bar.progress-bar-info(style={width: '0%'})
+          span.rem-progress #{max_sp} SP
     div.row
       each job, index in line
         div.col-md-4

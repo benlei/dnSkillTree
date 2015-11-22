@@ -18,7 +18,7 @@ function dnss(urls) {
 
   $('.skill[data-skill]').each(function() {
     var dom = $(this);
-    var lvl = dom.data('lvl').split(',').map(int);
+    var lvl = dom.data('lvl').split(',').map(num);
     var grayed = lvl[0] == 0 ? '_b' : '';
     var sprite = dom.data('sprite').split(',');
     sprite[1] *= -50;
@@ -41,15 +41,15 @@ function preventDefault(e) {
   e.preventDefault();
 }
 
-function int(v) {
+function num(v) {
   return parseInt(v);
 }
 
 function sum(p, c) {
-  return p+c
+  return p+c;
 }
 
-function get_curr_max_sp() {
+function get_total_sp() {
   return Job.TSP.reduce(sum);
 }
 

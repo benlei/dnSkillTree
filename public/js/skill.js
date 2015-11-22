@@ -1,7 +1,7 @@
 function skill_adj(e) {
   var dom = $(this);
   var max = e.shiftKey || e.ctrlKey;
-  var lvl = dom.data('lvl').split(',').map(int);
+  var lvl = dom.data('lvl').split(',').map(num);
   var image = dom.css('background-image').replace('_b.png', '.png');
   var skill = db.Skills[dom.data('skill')];
 
@@ -19,14 +19,14 @@ function skill_adj(e) {
 
   var panel = dom.closest('.panel');
   var spdom = panel.find('.panel-heading span'); // do something later
-  var sp = spdom.text().split('/').map(int);
+  var sp = spdom.text().split('/').map(num);
 
   // find SP difference
-  var diff = 0, end = Math.max(prev, lvl[0]), inc = prev < lvl[0], currMaxSP = get_curr_max_sp(), maxSP = get_max_sp();
+  var diff = 0, end = Math.max(prev, lvl[0]), inc = prev < lvl[0], totalSP = get_total_sp(), maxSP = get_max_sp();
   for (var i = Math.min(prev, lvl[0]) + 1; i <= end; i++) {
     var s = skill.Levels[i].SkillPoint;
     if (inc) {
-      if (sp[0] + diff + s > sp[1] || currMaxSP + diff + s > maxSP) {
+      if (sp[0] + diff + s > sp[1] || totalSP + diff + s > maxSP) {
         lvl[0] = i - 1;
         break;
       }
@@ -44,8 +44,13 @@ function skill_adj(e) {
   // SP adjustment
   sp[0] += diff;
   lvl[2] += diff;
+  totalSP += diff;
   Job.TSP[panel.data('job')] += diff;
+  var percent = (totalSP / maxSP) * 100;
 
+  $('.progress-bar').css('width', percent + '%');
+  $('.curr-progress').text(totalSP + ' SP');
+  $('.rem-progress').text((maxSP - totalSP) + ' SP');
 
   // icon update
   var bdr = dom.find('.skill-bdr');

@@ -84,7 +84,7 @@ nav {
 }
 
 .popover, .popover-title {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .popover-title {
@@ -141,9 +141,25 @@ nav {
 .progress {
     margin: 5px 0 15px 0;
     height: 20px;
-    text-align: center;
-    color: #000;
     font-size: 14px;
+    color: #000;
+}
+
+.curr-progress {
+    position: absolute;
+    left: 20px;
+}
+
+.max-progress {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.rem-progress {
+    position: absolute;
+    right: 20px;
 }
 
 .progress-bar {
@@ -169,6 +185,6 @@ nav {
     height: 37px;
 }
 
-.btn-group {
+.form-group {
     margin-right: 10px;
 }
