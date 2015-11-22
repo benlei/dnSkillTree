@@ -79,16 +79,22 @@ nav {
     letter-spacing: .5px;
 }
 
-.popover {
-    width: 280px;
+.skill-lvl.g {
+    color: greenyellow;
 }
 
-.popover, .popover-title {
+.skill-lvl.b {
+    color: skyblue;
+}
+
+.popover {
+    width: 250px;
     font-size: 11px;
 }
 
 .popover-title {
     text-align: center;
+    font-size: 12px;
 }
 
 .popover .divider {

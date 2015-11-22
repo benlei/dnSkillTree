@@ -13,11 +13,12 @@ function update_description(dom) {
   var lvl = dom.data('lvl').split(',').map(num);
   var skill = db.Skills[dom.data('skill')];
   var opts = dom.data('bs.popover').options;
-  opts.title = db.Lookup[skill.NameID];
+  var applyType = $('#pve').hasClass('btn-info') ? 0 : 1;
+  opts.title = tag('span', applyType ? 's' :null, db.Lookup[skill.NameID] + (applyType ? '(PVP)' : ''));
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
-  d.find('.dlvl span:last').text(Math.max(1, lvl[0] + lvl[3]));
+  d.find('.dlvl span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
   d.find('.dlimit span:last').text(lvl[1]);
   if (lvl[2]) {
     d.find('.dtsp').show().find('span:last').text(lvl[2]);
@@ -57,7 +58,6 @@ function update_description(dom) {
 
 
   // level related fields
-  var applyType = $('#pve').hasClass('btn-info') ? 0 : 1;
   var curr = lvl[0] + lvl[3], currLevel, nextLevel, currApply, nextApply;
   currLevel = skill.Levels[curr];
   currApply = currLevel ? currLevel.ApplyType[applyType] : null;

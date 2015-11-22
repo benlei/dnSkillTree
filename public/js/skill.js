@@ -28,7 +28,7 @@ function skill_adj(e) {
       lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
       if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
         lvl[0] = 1;
-      } else {
+      } else if (max) {
         lvl[3] = 0; // reset techs
       }
     }
@@ -86,7 +86,10 @@ function skill_adj(e) {
   spdom.text(sp.join('/'));
 
   dom.data('lvl', lvl.join(','));
-  dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[1]].join('/'));
+  dom.find('.skill-lvl')
+     .removeClass('g b')
+     .text([lvl[0] + lvl[3], lvl[1]].join('/'))
+     .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
   $dpop.update(dom);
 }
