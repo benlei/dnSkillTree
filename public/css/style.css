@@ -162,3 +162,13 @@ nav {
 .nav-pills {
     float: left;
 }
+
+#level {
+    font-size: 14px;
+    text-align: right;
+    height: 37px;
+}
+
+.btn-group {
+    margin-right: 10px;
+}

@@ -21,34 +21,31 @@ block custom_script
   script(type='text/javascript') var db;dnss(!{urls});var Job=!{job};
 
 block content
-  div(class='container')
-    div(class='row')
-      div(class='col-md-12')
-        div(class='progress')
-          div(class='progress-bar progress-bar-info', style={width: '50%'}) 127
+  div.container
+    div.row
+      div.col-md-12
+        div.progress
+          div.progress-bar.progress-bar-info(style={width: '50%'}) 127
           span= max_sp
-
-
-
-    div(class='row')
+    div.row
       each job, index in line
-        div(class='col-md-4')
-          div(class='panel panel-default noselect', data-job=index)
+        div.col-md-4
+          div.panel.panel-default.noselect(data-job=index)
             +panel_header(job, index)
             +panel_body(job)
 
 
 mixin panel_header(job, index)
   - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
-  div(class='panel-heading')= job.JobName
-    div(class='jobsprite', style=fn.image.job(job))
-    span(class='label pull-right') #{sp.join('/')}
+  div.panel-heading= job.JobName
+    div.jobsprite(style=fn.image.job(job))
+    span.label.pull-right #{sp.join('/')}
 
 mixin panel_body(job)
-  div(class='panel-body')
-    table(class='skill-table', style=fn.image.skilltree(job))
+  div.panel-body
+    table.skill-table(style=fn.image.skilltree(job))
       each skillRow in job.SkillTree
-        tr(class='skill-tr')
+        tr.skill-tr
           each skillID in skillRow
             +skill(job.Skills[skillID], skillID)
 
@@ -63,8 +60,8 @@ mixin skill(skill, skillID)
           0, // total SP
           0 // tech
         ].join(',')
-      div(class='skill', data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
-        div(class='skill-bdr')
-        div(class='badge skill-lvl')
+      div.skill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
+        div.skill-bdr
+        div.badge.skill-lvl
     else
-      div(class='skill')
+      div.skill

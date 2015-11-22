@@ -1,16 +1,21 @@
-nav(class='navbar navbar-static-top')
-  div(class='container')
-    div(id='navbar-main')
-      ul(class='nav nav-pills')
+nav.navbar.navbar-static-top
+  div.container
+    div#navbar-main
+      ul.nav.nav-pills
         each job0 in jobs.filter(function(j) { return j.JobNumber == 0 })
-          li(class='dropdown', class={active: job0 == line[0]})
+          li.dropdown(class={active: job0 == line[0]})
             a(href='javascript:void(0)')= job0.JobName
-              span(class='caret')
-            ul(class='dropdown-menu')
+              span.caret
+            ul.dropdown-menu
               each job1 in jobs.filter(function(j) { return jobs[j.ParentJob] == job0 })
-                li(class='dropdown-header')= job1.JobName
+                li.dropdown-header= job1.JobName
                 each job2 in jobs.filter(function(j) { return jobs[j.ParentJob] == job1 })
                   li: a(href='/#{job2.EnglishName}-#{cap}')= job2.JobName
-      div(class='btn-group nav navbar-right')
-        button(type='button', class='btn btn-sm btn-info') PvE
-        button(type='button', class='btn btn-sm btn-default') PvP
+      div.nav.navbar-right
+        div.pull-left.btn-group
+          button.btn.btn-sm.btn-info(type='button') PvE
+          button.btn.btn-sm.btn-default(type='button') PvP
+        div.form-group.pull-right
+          select.form-control#level
+            option(value=cap)= cap
+            option(value=80) 80
