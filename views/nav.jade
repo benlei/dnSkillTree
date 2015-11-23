@@ -11,3 +11,6 @@ nav.navbar.navbar-static-top.navbar-default
                 li.dropdown-header= job1.JobName
                 each job2 in jobs.filter(function(j) { return jobs[j.ParentJob] == job1 })
                   li: a(href='/#{job2.EnglishName}-#{cap}')= job2.JobName
+      div.navbar-form.pull-right(role='search')
+        div.input-group
+          input#s.form-control(type='search', placeholder='Search', name='s')

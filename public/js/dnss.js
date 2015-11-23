@@ -49,13 +49,45 @@ function dnss(urls) {
 
   // the strictness
   $('#free').click(reverse('#strict', function() { Job.Free = true }));
-  $('#strict').click(reverse('#free', function() {
-                       if (!strict_checker(true)) {
-                         alert('Cannot set to strict because some skill requirements have not been fulfilled.');
-                         return false;
-                       }
-                     }));
+  $('#strict').click(reverse('#free', strict_switch));
+
+  $('#s').val('').on('input', function() {
+    var str = $('#s').val();
+    var re;
+    try {
+       re = new RegExp(str, 'im');
+    } catch (x) {
+      return;
+    }
+
+    $('div[data-skill]').each(function() {
+      var dom = $(this);
+      if (str.length > 2) {
+        update_description(dom)
+        var opts = dom.data('bs.popover').options;
+
+        // check title
+        var text = opts.title.text();
+        if (set_opacity(dom, re.test(text)  ? 1 : .33) == 1) { // matched
+          return;
+        }
+
+        set_opacity(dom, re.test(opts.content.text()) ? 1 : .33);
+      } else {
+        set_opacity(dom, 1);
+      }
+    });
+  });
 }
+
+function set_opacity(dom, o) {
+  if (o < 0 || o > 1) {
+    return;
+  }
+
+  dom.css("opacity", o);
+  return o;
+};
 
 function prevent_default(e) {
   e.preventDefault();
@@ -165,4 +197,11 @@ function strict_checker(setFree) {
   }
 
   return changeable;
+}
+
+function strict_switch() {
+  if (!strict_checker(true)) {
+    alert('Cannot set to strict because some skill requirements have not been fulfilled.');
+    return false;
+  }
 }

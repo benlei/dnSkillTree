@@ -140,7 +140,7 @@ function update_description(dom) {
     d.find('.dcd')
      .show()
      .find('span:last')
-     .text(delayTime);
+     .text(delayTime + ' sec');
   } else {
     d.find('.dcd').hide();
   }
@@ -229,38 +229,6 @@ var $dpop = {
   }
 };
 
-var desc_fields = tag('div').append(
-  desc_tag('dlvl', 'Skill Lv.'),
-  desc_tag('dmp', 'Fee MP'),
-  desc_tag('dweaps', 'Required Weapon'),
-  desc_tag('dtype', 'Skill Type'),
-  desc_tag('dele', 'Attribute'),
-  desc_tag('dcd', 'Cooldown'),
-  desc_tag('dlimit', 'Level Limit'),
-  desc_tag('dtsp', 'Total SP'),
-  tag('div', 'divider dreq'),
-  tag('div', 'dreq o', 'Level Up Requirements:'),
-  tag('div', 'dreq dreqlvl').append(
-    tag('span', null, 'Character Level '),
-    tag('span')
-  ),
-  tag('div', 'dreq dreqskills'),
-  tag('div', 'dreq dreqtsp'),
-  tag('div', 'dreq dreqsp').append(
-    tag('span', null, 'SP '),
-    tag('span')
-  ),
-  tag('div', 'dnow').append(
-    tag('div', 'dnowf o', 'Skill Descrption'),
-    tag('div', 'dnowv')
-  ),
-  tag('div', 'divider dnextdiv'),
-  tag('div', 'dnext').append(
-    tag('div', 'dnextf o', 'Next Description'),
-    tag('div', 'dnextv')
-  )
-);
-
 
 function desc_format(str, params) {
   params = params.split(',').map($d.params);
@@ -306,3 +274,36 @@ function desc_format(str, params) {
 
   return newStr.replace(/\\n/g, "<br />");
 }
+
+
+var desc_fields = tag('div').append(
+  desc_tag('dlvl', 'Skill Lv.'),
+  desc_tag('dmp', 'Fee MP'),
+  desc_tag('dweaps', 'Required Weapon'),
+  desc_tag('dtype', 'Skill Type'),
+  desc_tag('dele', 'Attribute'),
+  desc_tag('dcd', 'Cooldown'),
+  desc_tag('dlimit', 'Level Limit'),
+  desc_tag('dtsp', 'Total SP'),
+  tag('div', 'divider dreq'),
+  tag('div', 'dreq o', 'Level Up Requirements:'),
+  tag('div', 'dreq dreqlvl').append(
+    tag('span', null, 'Character Level '),
+    tag('span')
+  ),
+  tag('div', 'dreq dreqskills'),
+  tag('div', 'dreq dreqtsp'),
+  tag('div', 'dreq dreqsp').append(
+    tag('span', null, 'SP '),
+    tag('span')
+  ),
+  tag('div', 'dnow').append(
+    tag('div', 'dnowf o', 'Skill Descrption'),
+    tag('div', 'dnowv')
+  ),
+  tag('div', 'divider dnextdiv'),
+  tag('div', 'dnext').append(
+    tag('div', 'dnextf o', 'Next Description'),
+    tag('div', 'dnextv')
+  )
+);

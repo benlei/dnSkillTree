@@ -196,14 +196,20 @@
     height: 37px;
 }
 
-.form-group {
-    margin-right: 10px;
-}
-
 .level-btn {
     margin-left: 5px;
 }
 
 .btn-group {
     margin-left: 15px;
+}
+
+#s {
+    font-size: 14px;
+    height: 25px;
+    margin-top: 6px;
+    padding: 5px;
+}
+.navbar-form {
+    padding-right: 0;
 }
