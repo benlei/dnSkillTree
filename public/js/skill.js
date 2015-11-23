@@ -233,7 +233,6 @@ function can_reduce_skill(skillID, skill, newLevel, jobNum, newJobSP) {
       // is this skill a parent of any other valid skill?
       if ($skill.ParentSkills && $skill.ParentSkills[skillID]) {
         if (lvl[0] && newLevel < $skill.ParentSkills[skillID]) {
-          console.log('nope cant do it guy');
           return false;
         }
       }

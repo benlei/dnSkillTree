@@ -79,6 +79,49 @@ function dnss(urls) {
       }
     });
   });
+
+  $('#level-btn').mousedown(function() {
+    $('div[data-skill]').each(function() {
+      var dom = $(this);
+      var skillID = num(dom.data('skill'));
+      var lvl = Job.Cache[skillID];
+
+      // update skill lvl
+      lvl[0] = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
+      lvl[2] = 0;
+      lvl[3] = 0;
+
+      var image = dom.css('background-image').replace('_b.png', '.png');
+      dom.css('background-image', lvl[0] ? image : image.replace('.png', '_b.png'));
+      dom.find('.skill-bdr')
+         .removeClass('gray')
+         .addClass(lvl[0] ? null : 'gray');
+
+      dom.find('.skill-lvl')
+         .removeClass('g b')
+         .text([lvl[0], lvl[1]].join('/'))
+
+      dom.data('lvl', lvl.join(','));
+    });
+
+    // update panels
+    $('.panel').each(function() {
+      var spdom = $(this).find('.panel-heading span');
+      var sp = spdom.text().split('/');
+      spdom.text([0,sp[1]].join('/'));
+    });
+
+    // update progress bar related stuff
+    $('.progress-bar').css('width', '0%');
+    $('.curr-progress').text('0 SP');
+    $('.rem-progress').text(get_max_sp() + ' SP');
+
+    // other caches to reset
+    Job.TSP = [0,0,0];
+    Job.SkillGroups = {};
+    Job.BaseSkills = {};
+
+  });
 }
 
 function set_opacity(dom, o) {
