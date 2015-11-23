@@ -18,11 +18,13 @@ function dnss(urls) {
 
   $('.skill[data-skill]').each(function() {
     var dom = $(this);
+    var skillID = dom.data('skill');
     var lvl = dom.data('lvl').split(',').map(num);
     var grayed = lvl[0] == 0 ? '_b' : '';
     var sprite = dom.data('sprite').split(',');
     sprite[1] *= -50;
     sprite[2] *= -50;
+    Job.Cache[skillID] = lvl;
 
     dom.css('background', "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"); // initial setup
     dom.find('.skill-bdr')
@@ -126,13 +128,11 @@ function reverse(rev, handler) {
   };
 }
 
-
-
 function strict_checker(setFree) {
   var changeable = true;
   $('div[data-skill]').each(function() {
     var skillID = num($(this).data('skill'));
-    var lvl = $(this).data('lvl').split(',').map(num);
+    var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
 
     // make sure needsp is fine

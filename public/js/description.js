@@ -10,8 +10,9 @@ function init_description(dom) {
 }
 
 function update_description(dom) {
-  var lvl = dom.data('lvl').split(',').map(num);
-  var skill = db.Skills[dom.data('skill')];
+  var skillID = num(dom.data('skill'));
+  var lvl = Job.Cache[skillID];
+  var skill = db.Skills[skillID];
   var opts = dom.data('bs.popover').options;
   opts.title = tag('span', Job.ApplyType ? 's' :null, db.Lookup[skill.NameID] + (Job.ApplyType ? '(PVP)' : ''));
   var d = opts.content ? opts.content : desc_fields.clone(true);
@@ -89,12 +90,12 @@ function update_description(dom) {
     // skill level req
     if (skill.ParentSkills) {
       var arr = [];
-      for (var skillID in skill.ParentSkills) {
-        var reqlvl = skill.ParentSkills[skillID]
-        var $lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
+      for (var $skillID in skill.ParentSkills) {
+        var reqlvl = skill.ParentSkills[$skillID]
+        var $lvl = Job.Cache[$skillID];
         arr.push(tag('div',
                      $lvl[0] < reqlvl ? 'r' : null,
-                     db.Lookup[db.Skills[skillID].NameID] + " Lv. " + reqlvl));
+                     db.Lookup[db.Skills[$skillID].NameID] + " Lv. " + reqlvl));
       }
       d.find('.dreqskills')
        .empty()

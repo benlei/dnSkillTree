@@ -2,7 +2,7 @@ function skill_adj(e) {
   var dom = $(this);
   var skillID = num(dom.data('skill'));
   var max = e.shiftKey || e.ctrlKey;
-  var lvl = dom.data('lvl').split(',').map(num);
+  var lvl = Job.Cache[skillID].slice(0); // clone it
   var image = dom.css('background-image').replace('_b.png', '.png');
   var skill = db.Skills[skillID];
   var tech = e.altKey;
@@ -132,12 +132,13 @@ function skill_adj(e) {
      .text([lvl[0] + lvl[3], lvl[1]].join('/'))
      .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
+  Job.Cache[skillID] = lvl;
   $dpop.update(dom);
 }
 
 
 function level_satisfied(skillID, level) {
-  var lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
+  var lvl = Job.Cache[skillID];
   return lvl[0] >= level;
 }
 
@@ -212,7 +213,7 @@ function can_reduce_skill(skillID, skill, newLevel, jobNum, newJobSP) {
     }
 
     var $skill = db.Skills[$skillID];
-    var lvl = $('div[data-skill=' + $skillID +']').data('lvl').split(',').map(num);
+    var lvl = Job.Cache[$skillID];
 
     // will this create an SP violation to any other skill?
     if ($skill.NeedSP) {
