@@ -1,25 +1,26 @@
 function skill_adj(e) {
   var dom = $(this);
+  var skillID = num(dom.data('skill'));
   var max = e.shiftKey || e.ctrlKey;
-  var tech = e.altKey;
   var lvl = dom.data('lvl').split(',').map(num);
   var image = dom.css('background-image').replace('_b.png', '.png');
-  var skill = db.Skills[dom.data('skill')];
+  var skill = db.Skills[skillID];
+  var tech = e.altKey;
 
   var prev = lvl[0];
   if (e.button == 0) { // left click
     if (tech) {
-      if (lvl[3] == 2) { // can't tech any higher
+      if (lvl[3] == 2 || !skill.SPMaxLevel) { // can't tech any higher
         return;
       }
 
-      lvl[3] = !lvl[3] ? 1 : 2;
+      lvl[3] = !lvl[3] ? 1 : Math.min(skill.SPMaxLevel, 2);
     } else {
       lvl[0] = Math.min(lvl[1], max ? lvl[1] : lvl[0] + 1);
     }
   } else if (e.button == 2) { // right click
     if (tech) {
-      if (!lvl[3]) { // can't tech any lower
+      if (!lvl[3] || !skill.SPMaxLevel) { // can't tech any lower
         return;
       }
 

@@ -2,7 +2,7 @@ function init_description(dom) {
   dom.popover({animation: false,
                html: true,
                trigger: 'manual',
-               placement: 'auto right',
+               placement: 'auto left',
                container: $('body')})
      .on('mouseenter', $dpop.mouseenter)
      .on('mouseleave', $dpop.mouseleave)
@@ -13,8 +13,7 @@ function update_description(dom) {
   var lvl = dom.data('lvl').split(',').map(num);
   var skill = db.Skills[dom.data('skill')];
   var opts = dom.data('bs.popover').options;
-  var applyType = $('#pve').hasClass('btn-info') ? 0 : 1;
-  opts.title = tag('span', applyType ? 's' :null, db.Lookup[skill.NameID] + (applyType ? '(PVP)' : ''));
+  opts.title = tag('span', Job.ApplyType ? 's' :null, db.Lookup[skill.NameID] + (Job.ApplyType ? '(PVP)' : ''));
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
@@ -60,9 +59,9 @@ function update_description(dom) {
   // level related fields
   var curr = lvl[0] + lvl[3], currLevel, nextLevel, currApply, nextApply;
   currLevel = skill.Levels[curr];
-  currApply = currLevel ? currLevel.ApplyType[applyType] : null;
+  currApply = currLevel ? currLevel.ApplyType[Job.ApplyType] : null;
   nextLevel = skill.Levels[curr + 1];
-  nextApply = nextLevel ? nextLevel.ApplyType[applyType] : null;
+  nextApply = nextLevel ? nextLevel.ApplyType[Job.ApplyType] : null;
   if (curr == 0) {
     currLevel = nextLevel;
     currApply = nextApply;

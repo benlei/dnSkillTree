@@ -33,29 +33,31 @@ function dnss(urls) {
     dom.on('mousedown', skill_adj);
 
     // disable right click; maybe disable whole panel body?
-    dom.on('contextmenu', preventDefault);
+    dom.on('contextmenu', prevent_default);
   });
 
   // level selection
-  var levels = $('#levels');
+  var ldom = $('#level');
   for (var level = Job.Levels.length; level > 0; level--) {
-    levels.append(tag('option', null, 'Lv. ' + level).val(level));
+    ldom.append(tag('option', null, 'Lv. ' + level).val(level));
   }
-  levels.val(Job.MaxLevel);
+  ldom.val(Job.MaxLevel);
 
   // the apply type
-  $('#pvp').click(function () {
-    $('#pve').removeClass('btn-info').addClass('btn-default');
-    $(this).addClass('btn-info');
-  });
+  $('#pvp').click(reverse('#pve', function() { Job.ApplyType = 1 }));
+  $('#pve').click(reverse('#pvp', function() { Job.ApplyType = 0 }));
 
-  $('#pve').click(function () {
-    $('#pvp').removeClass('btn-info').addClass('btn-default');
-    $(this).addClass('btn-info');
-  });
+  // the strictness
+  $('#free').click(reverse('#strict', function() { Job.Free = true }));
+  $('#strict').click(reverse('#free', function() {
+                       if (!strict_checker(true)) {
+                         alert('Cannot set to strict because some skill requirements have not been fulfilled.');
+                         return false;
+                       }
+                     }));
 }
 
-function preventDefault(e) {
+function prevent_default(e) {
   e.preventDefault();
 }
 
@@ -79,4 +81,88 @@ function tag(t, cls, text) {
   return $(document.createElement(t))
                    .addClass(cls)
                    .text(text);
+}
+
+function reverse(rev, handler) {
+  var ON = 'btn-primary', OFF = 'btn-default';
+  return function() {
+    if (handler() === false) {
+      return;
+    }
+    $(rev).removeClass(ON).addClass(OFF);
+    $(this).addClass(ON);
+  };
+}
+
+
+function level_satisfied(skillID, level) {
+  var lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
+  return lvl[0] >= level;
+}
+
+function strict_checker(setFree) {
+  var changeable = true;
+  $('div[data-skill]').each(function() {
+    var skillID = num($(this).data('skill'));
+    var lvl = $(this).data('lvl').split(',').map(num);
+    var skill = db.Skills[skillID];
+
+    // make sure needsp is fine
+    if (lvl[0] > 0) {
+      if (skill.NeedSP) {
+        for (var i = 0; i < 3; i++) {
+          if (Job.TSP[i] < skill.NeedSP[i]) {
+            changeable = false;
+            return;
+          }
+        }
+      }
+
+      // make sure parent skill is fine
+      if (skill.ParentSkills && skill.SkillGroup != 1) { // doesn't matter for ults
+        for (var $skillID in skill.ParentSkills) {
+          if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
+            changeable = false;
+            return;
+          }
+        }
+      }
+    }
+  });
+
+  // BaseSkillID check
+  for (var skillID in Job.BaseSkills) {
+    if (Job.BaseSkills[skillID].length > 1) {
+      changeable = false;
+      break;
+    }
+  }
+
+  // check skill group
+  for (var g in Job.SkillGroups) {
+    if (g == 1) {
+      changeable = Job.SkillGroups[1].reduce(function(p, c) {
+                     var skill = db.Skills[c];
+                     var b = true;
+                     for (var skillID in skill.ParentSkills) {
+                       b &= level_satisfied(skillID, skill.ParentSkills[skillID]);
+                     }
+                     return p | b;
+                   }, false)
+      if (!changeable) {
+        break;
+      }
+    } else {
+      if (Job.SkillGroups[g].length > 1) { // only one allowed in group
+        changeable = false;
+        break;
+      }
+    }
+  }
+
+  if (changeable && setFree) {
+    Job.Free = false;
+  }
+
+  return changeable;
 }

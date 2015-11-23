@@ -13,7 +13,11 @@ block custom_script
       Levels: levels,
       SP: sp_ratios,
       TSP: [0,0,0],
-      Names: line.map(function(l) { return l.JobName })
+      Names: line.map(function(l) { return l.JobName }),
+      ApplyType: 0,
+      Free: true,
+      BaseSkills: {},
+      SkillGroups: {}
     });
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
@@ -22,17 +26,30 @@ block custom_script
 
 block content
   div.container
+    div.row#changables
+      div.col-md-3.div
+        div.form-inline: div.form-group
+          select.form-control#level
+          button.level-btn.btn.btn-sm.btn-default(type='reset') Reset
+      div.col-md-6
+      div.col-md-3
+        div.btn-group.pull-left
+          button#free.btn.btn-sm.btn-primary(type='button') Free
+          button#strict.btn.btn-sm.btn-default(type='button') Strict
+        div.btn-group.pull-right
+          button#pve.btn.btn-sm.btn-primary(type='button') PvE
+          button#pvp.btn.btn-sm.btn-default(type='button') PvP
     div.row
       div.col-md-12
-        div.progress.progress-striped
+        div.progress
           span.curr-progress 0 SP
           span.max-progress #{max_sp} SP
           div.progress-bar.progress-bar-info(style={width: '0%'})
           span.rem-progress #{max_sp} SP
     div.row
       each job, index in line
-        div.col-md-4
-          div.panel.panel-default.noselect(data-job=index)
+        div.col-md-4.noselect
+          div.panel.panel-default(data-job=index)
             +panel_header(job, index)
             +panel_body(job)
 

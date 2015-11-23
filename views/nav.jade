@@ -1,7 +1,7 @@
-nav.navbar.navbar-static-top
+nav.navbar.navbar-static-top.navbar-default
   div.container
     div#navbar-main
-      ul.nav.nav-pills
+      ul.nav.navbar-nav
         each job0 in jobs.filter(function(j) { return j.JobNumber == 0 })
           li.dropdown(class={active: job0 == line[0]})
             a(href='javascript:void(0)')= job0.JobName
@@ -11,9 +11,3 @@ nav.navbar.navbar-static-top
                 li.dropdown-header= job1.JobName
                 each job2 in jobs.filter(function(j) { return jobs[j.ParentJob] == job1 })
                   li: a(href='/#{job2.EnglishName}-#{cap}')= job2.JobName
-      div.nav.navbar-right
-        div.form-group.pull-left
-          select.form-control#levels
-        div.btn-group.pull-right
-          button#pve.btn.btn-sm.btn-info(type='button') PvE
-          button#pvp.btn.btn-sm.btn-default(type='button') PvP
