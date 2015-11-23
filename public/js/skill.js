@@ -38,27 +38,67 @@ function skill_adj(e) {
   var panel = dom.closest('.panel');
   var spdom = panel.find('.panel-heading span'); // do something later
   var sp = spdom.text().split('/').map(num);
+  var jobNum = num(panel.data('job'));
 
   // find SP difference
   var diff = 0, end = Math.max(prev, lvl[0]), inc = prev < lvl[0], totalSP = get_total_sp(), maxSP = get_max_sp();
-  for (var i = Math.min(prev, lvl[0]) + 1; i <= end; i++) {
-    var s = skill.Levels[i].SkillPoint;
-    if (inc) {
+  if (inc) {
+    for (var i = prev + 1; i <= lvl[0]; i++) {
+      var s = skill.Levels[i].SkillPoint;
       if (sp[0] + diff + s > sp[1] || totalSP + diff + s > maxSP) {
         lvl[0] = i - 1;
         break;
       }
 
       diff += s;
-    } else {
+    }
+  } else {
+    for (var i = prev; i > lvl[0]; i--) {
+      var s = skill.Levels[i].SkillPoint;
       diff -= s;
+      if (!Job.Free && !can_reduce_skill(skillID, skill, i - 1, jobNum, Job.TSP[jobNum] + diff)) {
+        lvl[0] = i;
+        diff += s;
+        break;
+      }
     }
   }
-
 
   if (prev == lvl[0] && !tech) {
     return; // do nothing
   }
+
+  if (!Job.Free) {
+    if (lvl[0] > prev) { // skill reduction
+      if (!check_skill_reqs(skillID, skill)) {
+        return;
+      }
+
+      if (!check_skill_groups(skillID, skill)) {
+        return;
+      }
+    }
+  }
+
+  // add skillgroup
+  if (skill.SkillGroup) {
+    var g = skill.SkillGroup;
+    if (!Job.SkillGroups[g]) { // nothing exists
+      Job.SkillGroups[g] = new Set();
+    }
+
+    Job.SkillGroups[g][lvl[0] ? 'add' : 'delete'](skillID);
+  }
+
+  if (skill.BaseSkillID) {
+    var b = skill.BaseSkillID;
+    if (! Job.BaseSkills[b]) {
+      Job.BaseSkills[b] = new Set();
+    }
+
+    Job.BaseSkills[b][lvl[0] ? 'add' : 'delete'](skillID);
+  }
+
 
   if (lvl[0] == 0 && lvl[3] > 0) {
     lvl[3] = 0;
@@ -73,7 +113,7 @@ function skill_adj(e) {
   sp[0] += diff;
   lvl[2] += diff;
   totalSP += diff;
-  Job.TSP[panel.data('job')] += diff;
+  Job.TSP[jobNum] += diff;
   var percent = (totalSP / maxSP) * 100;
 
   $('.progress-bar').css('width', percent + '%');
@@ -93,4 +133,111 @@ function skill_adj(e) {
      .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
   $dpop.update(dom);
+}
+
+
+function level_satisfied(skillID, level) {
+  var lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
+  return lvl[0] >= level;
+}
+
+function check_skill_reqs(skillID, skill) {
+  // check if sp total is satisfied
+  if (skill.NeedSP) {
+    for (var i = 0; i < 3; i++) {
+      if (Job.TSP[i] < skill.NeedSP[i]) {
+        return false;
+      }
+    }
+  }
+
+  // make sure parent skill is fine
+  if (skill.ParentSkills) { // doesn't matter for ults
+    var bypass = false;
+    if (skill.SkillGroup == 1) {
+      var group = Job.SkillGroups[1];
+      if (group && !group.has(skillID) && group.size) {
+        bypass = true;
+      }
+    }
+
+    if (!bypass) {
+      for (var $skillID in skill.ParentSkills) {
+        if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
+          return false;
+        }
+      }
+    }
+  }
+
+  var base = Job.BaseSkills[skill.BaseSkillID];
+  if (base && !base.has(skillID) && base.size) {
+    return false;
+  }
+
+  return true;
+}
+
+// check skill group
+function check_skill_groups(skillID, skill) {
+  var g = skill.SkillGroup;
+  if (g) {
+    var group = Job.SkillGroups[g];
+    if (g == 1 && group && group.size) {
+      return Array.from(Job.SkillGroups[1]).reduce(function(p, skillID) {
+               if (p) { // short circuit
+                 return p;
+               }
+
+               var skill = db.Skills[skillID];
+               var b = true;
+               for (var $skillID in skill.ParentSkills) {
+                 b &= level_satisfied($skillID, skill.ParentSkills[$skillID]);
+               }
+               return p | b;
+             }, false);
+      return true; // hasn't been set yet
+    } else if (group && group.size) {
+      return group.has(skillID);
+    }
+  }
+
+  return true;
+}
+
+function can_reduce_skill(skillID, skill, newLevel, jobNum, newJobSP) {
+  for (var $skillID in db.Skills) {
+    if ($skillID == skillID) {
+      continue;
+    }
+
+    var $skill = db.Skills[$skillID];
+    var lvl = $('div[data-skill=' + $skillID +']').data('lvl').split(',').map(num);
+
+    // will this create an SP violation to any other skill?
+    if ($skill.NeedSP) {
+      if (lvl[0] && newJobSP < $skill.NeedSP[jobNum]) {
+        return false;
+      }
+    }
+
+    if (skill.SkillGroup == 1 && $skill.SkillGroup == 1 && lvl[0] > 0) {
+      var group = Job.SkillGroups[1];
+      for (var $$skillID in $skill.ParentSkills) {
+        if (!level_satisfied($$skillID, $skill.ParentSkills[$$skillID])) {
+          return false;
+        }
+      }
+    } else {
+      // is this skill a parent of any other valid skill?
+      if ($skill.ParentSkills && $skill.ParentSkills[skillID]) {
+        if (lvl[0] && newLevel < $skill.ParentSkills[skillID]) {
+          console.log('nope cant do it guy');
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
 }

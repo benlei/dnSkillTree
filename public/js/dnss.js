@@ -127,10 +127,6 @@ function reverse(rev, handler) {
 }
 
 
-function level_satisfied(skillID, level) {
-  var lvl = $('div[data-skill=' + skillID + ']').data('lvl').split(',').map(num);
-  return lvl[0] >= level;
-}
 
 function strict_checker(setFree) {
   var changeable = true;
@@ -141,56 +137,17 @@ function strict_checker(setFree) {
 
     // make sure needsp is fine
     if (lvl[0] > 0) {
-      if (skill.NeedSP) {
-        for (var i = 0; i < 3; i++) {
-          if (Job.TSP[i] < skill.NeedSP[i]) {
-            changeable = false;
-            return;
-          }
-        }
+      if (!check_skill_reqs(skillID, skill)) {
+        changeable = false;
+        return;
       }
 
-      // make sure parent skill is fine
-      if (skill.ParentSkills && skill.SkillGroup != 1) { // doesn't matter for ults
-        for (var $skillID in skill.ParentSkills) {
-          if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
-            changeable = false;
-            return;
-          }
-        }
+      if (!check_skill_groups(skillID, skill)) {
+        changeable = false;
+        return;
       }
     }
   });
-
-  // BaseSkillID check
-  for (var skillID in Job.BaseSkills) {
-    if (Job.BaseSkills[skillID].length > 1) {
-      changeable = false;
-      break;
-    }
-  }
-
-  // check skill group
-  for (var g in Job.SkillGroups) {
-    if (g == 1) {
-      changeable = Job.SkillGroups[1].reduce(function(p, c) {
-                     var skill = db.Skills[c];
-                     var b = true;
-                     for (var skillID in skill.ParentSkills) {
-                       b &= level_satisfied(skillID, skill.ParentSkills[skillID]);
-                     }
-                     return p | b;
-                   }, false)
-      if (!changeable) {
-        break;
-      }
-    } else {
-      if (Job.SkillGroups[g].length > 1) { // only one allowed in group
-        changeable = false;
-        break;
-      }
-    }
-  }
 
   if (changeable && setFree) {
     Job.Free = false;
