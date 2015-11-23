@@ -219,7 +219,7 @@ var $dpop = {
     }
   },
   update: function(dom) {
-    if ($dpop.persist) {
+    if ($dpop.persist && $dpop.persist.data('skill') != dom.data('skill')) {
       $dpop.persist.data('desc', 'hover').popover('hide');
       $dpop.persist = null;
     }
