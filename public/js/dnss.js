@@ -33,10 +33,9 @@ function dnss(urls) {
     dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[1]].join('/'));
 
     dom.on('mousedown', skill_adj);
-
-    // disable right click; maybe disable whole panel body?
-    dom.on('contextmenu', prevent_default);
   });
+
+  $('.panel-body').on('contextmenu', prevent_default);
 
   // level selection
   var ldom = $('#level');
