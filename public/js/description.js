@@ -18,8 +18,8 @@ function update_description(dom) {
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
-  d.find('.dlvl span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
-  d.find('.dlimit span:last').text(lvl[1]);
+  d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
+  d.find('.dlimit').find('span:last').text(lvl[1]);
   if (lvl[2]) {
     d.find('.dtsp').show().find('span:last').text(lvl[2]);
   } else {
@@ -28,8 +28,9 @@ function update_description(dom) {
 
   // non-level related fields - with conditions
   if (skill.NeedWeaponType) {
-    d.find('.dweaps span:last').text(
-      skill.NeedWeaponType.map($d.weapon).join(', '));
+    d.find('.dweaps')
+     .find('span:last')
+     .text(skill.NeedWeaponType.map($d.weapon).join(', '));
   } else {
     d.find('.dweaps').remove();
   }
@@ -44,7 +45,7 @@ function update_description(dom) {
     break;
     case 3: skillType = 'Passive Enhanced'; break;
   }
-  d.find('.dtype span:last').text(skillType);
+  d.find('.dtype').find('span:last').text(skillType);
 
 
   var ele = 'None';
@@ -54,7 +55,7 @@ function update_description(dom) {
     case 2: ele = 'Light'; break;
     case 3: ele = 'Dark'; break;
   }
-  d.find('.dele span:last').text(ele);
+  d.find('.dele').find('span:last').text(ele);
 
 
   // level related fields
@@ -129,9 +130,10 @@ function update_description(dom) {
   // apply type specific
   var decreaseSP = currApply ? currApply.DecreaseSP : nextApply.DecreaseSP;
   if (decreaseSP) {
-    d.find('.dmp span:last')
-     .show().
-      text(decreaseSP);
+    d.find('.dmp')
+     .find('span:last')
+     .show()
+     .text(decreaseSP);
   } else {
     d.find('.dmp').hide();
   }

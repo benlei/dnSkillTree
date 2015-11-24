@@ -9,14 +9,14 @@ function dnss(urls) {
     db = data;
 
     // have it stay a little
-    $('.skill[data-skill]').each(function() {
+    __('.skill[data-skill]').each(function() {
       var dom = $(this);
       dom.data('desc', 'hover'); // initialize desc
       init_description(dom);
     });
   });
 
-  $('.skill[data-skill]').each(function() {
+  __('.skill[data-skill]').each(function() {
     var dom = $(this);
     var skillID = dom.data('skill');
     var lvl = dom.data('lvl').split(',').map(num);
@@ -38,18 +38,17 @@ function dnss(urls) {
   $('.panel-body').on('contextmenu', prevent_default);
 
   // level selection
-  var ldom = $('#level');
   for (var level = Job.Levels.length; level > 0; level--) {
-    ldom.append(tag('option', null, 'Lv. ' + level).val(level));
+    $('#level').append(tag('option', null, 'Lv. ' + level).val(level));
   }
-  ldom.val(Job.MaxLevel);
+  $('#level').val(Job.MaxLevel);
 
   // the apply type
-  $('#pvp').click(reverse('#pve', function() { Job.ApplyType = 1 }));
-  $('#pve').click(reverse('#pvp', function() { Job.ApplyType = 0 }));
+  $('#pvp').click(reverse('#pve', function() { return Job.ApplyType = 1, !0 }));
+  $('#pve').click(reverse('#pvp', function() { return Job.ApplyType = 0, !1 }));
 
   // the strictness
-  $('#free').click(reverse('#strict', function() { Job.Free = true }));
+  $('#free').click(reverse('#strict', function() { return Job.Free = true }));
   $('#strict').click(reverse('#free', strict_switch));
 
   $('#s').val('').on('input', function() {
@@ -61,7 +60,7 @@ function dnss(urls) {
       return;
     }
 
-    $('div[data-skill]').each(function() {
+    __('div[data-skill]').each(function() {
       var dom = $(this);
       if (str.length > 2) {
         update_description(dom)
@@ -81,7 +80,7 @@ function dnss(urls) {
   });
 
   $('#level-btn').mousedown(function() {
-    $('div[data-skill]').each(function() {
+    __('div[data-skill]').each(function() {
       var dom = $(this);
       var skillID = num(dom.data('skill'));
       var lvl = Job.Cache[skillID];
@@ -106,27 +105,26 @@ function dnss(urls) {
 
     // update panels
     $('.panel').each(function() {
-      var spdom = $(this).find('.panel-heading span');
+      var spdom = $(this).find('.panel-heading').find('span');
       var sp = spdom.text().split('/');
       spdom.text([0,sp[1]].join('/'));
     });
 
     // update progress bar related stuff
-    $('.progress-bar').css('width', '0%');
-    $('.curr-progress').text('0 SP');
-    $('.rem-progress').text(get_max_sp() + ' SP');
+    $('#progress-bar').css('width', '0%');
+    $('#curr-progress').text('0 SP');
+    $('#rem-progress').text(get_max_sp() + ' SP');
 
     // other caches to reset
     Job.TSP = [0,0,0];
     Job.SkillGroups = {};
     Job.BaseSkills = {};
-
   });
 }
 
 function set_opacity(dom, o) {
   if (o < 0 || o > 1) {
-    return;
+    return -1;
   }
 
   dom.css("opacity", o);
@@ -172,7 +170,7 @@ function reverse(rev, handler) {
 
 function strict_checker(setFree) {
   var changeable = true;
-  $('div[data-skill]').each(function() {
+  __('div[data-skill]').each(function() {
     var skillID = num($(this).data('skill'));
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
@@ -203,4 +201,5 @@ function strict_switch() {
     alert('Cannot set to strict because some skill requirements have not been fulfilled.');
     return false;
   }
+  return true;
 }

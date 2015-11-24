@@ -156,19 +156,18 @@
     color: #000;
 }
 
-.curr-progress {
+#curr-progress {
     position: absolute;
     left: 25px;
 }
 
-.max-progress {
+#max-progress {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-
-.rem-progress {
+#rem-progress {
     position: absolute;
     right: 25px;
 }

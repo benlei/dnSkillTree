@@ -23,7 +23,7 @@ block custom_script
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
   script(type='text/javascript', src=fn.url.js('description'))
-  script(type='text/javascript') var db;var Job=!{job};dnss(!{urls});
+  script(type='text/javascript') var db,Job=!{job},_={};function __(n){return _[n]=_[n]||$(n),_[n]};dnss(!{urls});
 
 block content
   div.container
@@ -43,10 +43,10 @@ block content
     div.row
       div.col-md-12
         div.progress
-          span.curr-progress 0 SP
-          span.max-progress #{max_sp} SP
+          span#curr-progress 0 SP
+          span#max-progress #{max_sp} SP
           div.progress-bar.progress-bar-info(style={width: '0%'})
-          span.rem-progress #{max_sp} SP
+          span#rem-progress #{max_sp} SP
     div.row
       each job, index in line
         div.col-md-4.noselect

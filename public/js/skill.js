@@ -36,7 +36,7 @@ function skill_adj(e) {
   }
 
   var panel = dom.closest('.panel');
-  var spdom = panel.find('.panel-heading span'); // do something later
+  var spdom = panel.find('.panel-heading').find('span'); // do something later
   var sp = spdom.text().split('/').map(num);
   var jobNum = num(panel.data('job'));
 
@@ -116,9 +116,9 @@ function skill_adj(e) {
   Job.TSP[jobNum] += diff;
   var percent = (totalSP / maxSP) * 100;
 
-  $('.progress-bar').css('width', percent + '%');
-  $('.curr-progress').text(totalSP + ' SP');
-  $('.rem-progress').text((maxSP - totalSP) + ' SP');
+  $('#progress-bar').css('width', percent + '%');
+  $('#curr-progress').text(totalSP + ' SP');
+  $('#rem-progress').text((maxSP - totalSP) + ' SP');
 
   // icon update
   var bdr = dom.find('.skill-bdr');
