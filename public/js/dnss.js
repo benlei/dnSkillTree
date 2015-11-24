@@ -30,7 +30,7 @@ function dnss(urls) {
     dom.find('.skill-bdr')
        .css('background', "url('" + urls.border + "') 100px 0")
        .addClass(lvl[0] > 0 ? null : 'gray');
-    dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[1]].join('/'));
+    dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[4]].join('/'));
 
     dom.on('mousedown', skill_adj);
   });
@@ -68,59 +68,102 @@ function dnss(urls) {
 
         // check title
         var text = opts.title.text();
-        if (set_opacity(dom, re.test(text)  ? 1 : .33) == 1) { // matched
+        if (re.test(text)) {
+          dom.css('opacity', 1);
           return;
         }
 
-        var text = opts.content.clone();
+        text = opts.content.clone();
         text.find('.hidden').remove();
-        set_opacity(dom, re.test(text.text()) ? 1 : .33);
+        dom.css('opacity', re.test(text.text()) ? 1 : .33);
       } else {
-        set_opacity(dom, 1);
+        dom.css('opacity', 1);
       }
     });
   });
 
+  var RST = 'Reset', INC = 'Increase';
+  $('#level').change(function() {
+    var val = num($(this).val());
+    $('#level-btn').text(val <= Job.MaxLevel ? RST : INC);
+  });
+
   $('#level-btn').mousedown(function() {
+    var level = num($('#level').val());
     __('div[data-skill]').each(function() {
       var dom = $(this);
       var skillID = num(dom.data('skill'));
+      var skill = db.Skills[skillID];
       var lvl = Job.Cache[skillID];
 
       // update skill lvl
-      lvl[0] = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
-      lvl[2] = 0;
-      lvl[3] = 0;
+      if (level <= Job.MaxLevel) {
+        lvl[0] = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
+        lvl[2] = 0;
+        lvl[3] = 0;
 
-      var image = dom.css('background-image').replace('_b.png', '.png');
-      dom.css('background-image', lvl[0] ? image : image.replace('.png', '_b.png'));
-      dom.find('.skill-bdr')
-         .removeClass('gray')
-         .addClass(lvl[0] ? null : 'gray');
+        var image = dom.css('background-image').replace('_b.png', '.png');
+        dom.css('background-image', lvl[0] ? image : image.replace('.png', '_b.png'));
+        dom.find('.skill-bdr')
+           .removeClass('gray')
+           .addClass(lvl[0] ? null : 'gray');
+      }
+
+      if (level != Job.MaxLevel) {
+        // calculate new max SP
+        var newMax = 0;
+        var absMax = skill.MaxLevel - skill.SPMaxLevel;
+        for (var i = absMax; i > 0; i--) {
+          if (skill.Levels[i].LevelLimit <= level) {
+            newMax = i;
+            break;
+          }
+        }
+
+        lvl[1] = Math.min(newMax, absMax);
+      }
 
       dom.find('.skill-lvl')
-         .removeClass('g b')
-         .text([lvl[0], lvl[1]].join('/'))
+         .removeClass(level <= Job.MaxLevel ? 'g b' : null)
+         .text([lvl[0] + lvl[3], lvl[4]].join('/'))
 
       dom.data('lvl', lvl.join(','));
     });
 
     // update panels
-    $('.panel').each(function() {
+    var max_sp = get_max_sp(level);
+
+    $('.panel').each(function(jobNum) {
       var spdom = $(this).find('.panel-heading').find('span');
-      var sp = spdom.text().split('/');
-      spdom.text([0,sp[1]].join('/'));
+      var sp = spdom.text().split('/').map(num);
+      var sp_ratio = Job.SP[jobNum];
+      sp[1] = num(max_sp * sp_ratio);
+      if (level <= Job.MaxLevel) {
+        sp[0] = 0;
+      }
+
+      spdom.text(sp.join('/'));
     });
 
-    // update progress bar related stuff
-    $('#progress-bar').css('width', '0%');
-    $('#curr-progress').text('0 SP');
-    $('#rem-progress').text(get_max_sp() + ' SP');
-
     // other caches to reset
-    Job.TSP = [0,0,0];
-    Job.SkillGroups = {};
-    Job.BaseSkills = {};
+    $('#max-progress').text(max_sp + ' SP');
+    if (level <= Job.MaxLevel) {
+      $('.progress-bar').css('width', '0%');
+      $('#curr-progress').text('0 SP');
+      $('#rem-progress').text(max_sp + ' SP');
+
+      Job.TSP = [0,0,0];
+      Job.SkillGroups = {};
+      Job.BaseSkills = {};
+    } else {
+      var total_sp = get_total_sp();
+      var percent = (total_sp/max_sp) * 100;
+      $('.progress-bar').css('width', percent + '%');
+      $('#rem-progress').text((max_sp - total_sp) + ' SP');
+    }
+
+    $(this).text(RST);
+    Job.MaxLevel = level;
   });
 }
 
@@ -149,8 +192,8 @@ function get_total_sp() {
   return Job.TSP.reduce(sum);
 }
 
-function get_max_sp() {
-  return Job.Levels.slice(0, Job.MaxLevel).reduce(sum);
+function get_max_sp(level) {
+  return Job.Levels.slice(0, level || Job.MaxLevel).reduce(sum);
 }
 
 function tag(t, cls, text) {

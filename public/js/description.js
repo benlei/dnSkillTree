@@ -19,7 +19,7 @@ function update_description(dom) {
 
   // non-level related fields - no conditions
   d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
-  d.find('.dlimit').find('span:last').text(lvl[1]);
+  d.find('.dlimit').find('span:last').text(lvl[4]);
   if (lvl[2]) {
     d.find('.dtsp').show().removeClass('hidden').find('span:last').text(lvl[2]);
   } else {
@@ -149,7 +149,7 @@ function update_description(dom) {
   var explID = currApply ? currApply.SkillExplanationID : nextApply.SkillExplanationID;
   var explParams = currApply ? currApply.SkillExplanationIDParam : nextApply.SkillExplanationIDParam;
   d.find('.dnowv').html(desc_format(db.Lookup[explID], explParams));
-  if (curr == 0 || curr == lvl[1] + skill.SPMaxLevel) { // level 0/maxed; no next, but show next/now
+  if (curr == 0 || curr == skill.MaxLevel) { // level 0/maxed; no next, but show next/now
     d.find('.dnext').hide().addClass('hidden');
     d.find('.dnextdiv').hide();
   } else {

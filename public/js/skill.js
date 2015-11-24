@@ -10,7 +10,7 @@ function skill_adj(e) {
   var prev = lvl[0];
   if (e.button == 0) { // left click
     if (tech) {
-      if (lvl[3] == 2 || !skill.SPMaxLevel) { // can't tech any higher
+      if (lvl[3] == 2 || skill.SkillGroup == 1) { // can't tech any higher
         return;
       }
 
@@ -20,7 +20,7 @@ function skill_adj(e) {
     }
   } else if (e.button == 2) { // right click
     if (tech) {
-      if (!lvl[3] || !skill.SPMaxLevel) { // can't tech any lower
+      if (!lvl[3] || skill.SkillGroup == 1) { // can't tech any lower
         return;
       }
 
@@ -64,6 +64,15 @@ function skill_adj(e) {
     }
   }
 
+  if (lvl[0] == 0 && lvl[3] > 0) {
+    lvl[3] = 0;
+  }
+
+  if (lvl[0] + lvl[3] > skill.MaxLevel) {
+    lvl[3] = skill.SPMaxLevel;
+  }
+
+
   if (prev == lvl[0] && !tech) {
     return; // do nothing
   }
@@ -99,16 +108,6 @@ function skill_adj(e) {
     Job.BaseSkills[b][lvl[0] ? 'add' : 'delete'](skillID);
   }
 
-
-  if (lvl[0] == 0 && lvl[3] > 0) {
-    lvl[3] = 0;
-  }
-
-  if (lvl[0] + lvl[3] > lvl[1] + skill.SPMaxLevel) {
-    lvl[3] = skill.SPMaxLevel;
-  }
-
-
   // SP adjustment
   sp[0] += diff;
   lvl[2] += diff;
@@ -116,7 +115,7 @@ function skill_adj(e) {
   Job.TSP[jobNum] += diff;
   var percent = (totalSP / maxSP) * 100;
 
-  $('#progress-bar').css('width', percent + '%');
+  $('.progress-bar').css('width', percent + '%');
   $('#curr-progress').text(totalSP + ' SP');
   $('#rem-progress').text((maxSP - totalSP) + ' SP');
 
@@ -129,7 +128,7 @@ function skill_adj(e) {
   dom.data('lvl', lvl.join(','));
   dom.find('.skill-lvl')
      .removeClass('g b')
-     .text([lvl[0] + lvl[3], lvl[1]].join('/'))
+     .text([lvl[0] + lvl[3], lvl[4]].join('/'))
      .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
   Job.Cache[skillID] = lvl;

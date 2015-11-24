@@ -80,7 +80,8 @@ mixin skill(skill, skillID)
           skill.Levels[1].LevelLimit == 1 ? 1 : 0,
           skill.MaxLevel - skill.SPMaxLevel,
           0, // total SP
-          0 // tech
+          0, // tech
+          skill.MaxLevel - skill.SPMaxLevel // actual max
         ].join(',')
       div.skill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
         div.skill-bdr
