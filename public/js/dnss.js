@@ -72,7 +72,9 @@ function dnss(urls) {
           return;
         }
 
-        set_opacity(dom, re.test(opts.content.text()) ? 1 : .33);
+        var text = opts.content.clone();
+        text.find('.hidden').remove();
+        set_opacity(dom, re.test(text.text()) ? 1 : .33);
       } else {
         set_opacity(dom, 1);
       }

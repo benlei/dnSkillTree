@@ -21,9 +21,9 @@ function update_description(dom) {
   d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
   d.find('.dlimit').find('span:last').text(lvl[1]);
   if (lvl[2]) {
-    d.find('.dtsp').show().find('span:last').text(lvl[2]);
+    d.find('.dtsp').show().removeClass('hidden').find('span:last').text(lvl[2]);
   } else {
-    d.find('.dtsp').hide();
+    d.find('.dtsp').hide().addClass('hidden');
   }
 
   // non-level related fields - with conditions
@@ -71,9 +71,8 @@ function update_description(dom) {
 
   // level up req stuff
   if (nextLevel) {
-    d.find('.dreq').show();
+    d.find('.dreq').show().removeClass('hidden');
     d.find('.dreqlvl')
-     .show()
      .find('span:last')
      .removeClass('r')
      .addClass(Job.MaxLevel < nextLevel.LevelLimit ? 'r' : null)
@@ -107,45 +106,42 @@ function update_description(dom) {
 
 
     // stuff that shouldn't show when unnecessary
-    if (nextLevel) {
-      var jobNum = dom.closest('.panel').data('job');
-      var maxSP = get_max_sp();
-      var jobSP = Job.TSP[jobNum];
-      var totalSP = get_total_sp();
+    var jobNum = dom.closest('.panel').data('job');
+    var maxSP = get_max_sp();
+    var jobSP = Job.TSP[jobNum];
+    var totalSP = get_total_sp();
 
-      d.find('.dreqsp')
-       .show()
-       .find('span:last')
-       .text(nextLevel.SkillPoint)
-       .removeClass('r')
-       .addClass((jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
-                  totalSP + nextLevel.SkillPoint > maxSP) ? 'r' : null);
-    } else {
-      d.find('.dreqsp').hide();
-    }
+    d.find('.dreqsp')
+     .find('span:last')
+     .text(nextLevel.SkillPoint)
+     .removeClass('r')
+     .addClass((jobSP + nextLevel.SkillPoint > maxSP*Job.SP[jobNum] ||
+                totalSP + nextLevel.SkillPoint > maxSP) ? 'r' : null);
   } else {
-    d.find('.dreq').hide();
+    d.find('.dreq').hide().addClass('hidden');
   }
 
   // apply type specific
   var decreaseSP = currApply ? currApply.DecreaseSP : nextApply.DecreaseSP;
   if (decreaseSP) {
     d.find('.dmp')
-     .find('span:last')
+     .removeClass('hidden')
      .show()
+     .find('span:last')
      .text(decreaseSP);
   } else {
-    d.find('.dmp').hide();
+    d.find('.dmp').hide().addClass('hidden');
   }
 
   var delayTime = (currApply ? currApply.DelayTime : nextApply.DelayTime) / 1000;
   if (delayTime) {
     d.find('.dcd')
+     .removeClass('hidden')
      .show()
      .find('span:last')
      .text(delayTime + ' sec');
   } else {
-    d.find('.dcd').hide();
+    d.find('.dcd').hide().addClass('hidden');
   }
 
 
@@ -154,11 +150,11 @@ function update_description(dom) {
   var explParams = currApply ? currApply.SkillExplanationIDParam : nextApply.SkillExplanationIDParam;
   d.find('.dnowv').html(desc_format(db.Lookup[explID], explParams));
   if (curr == 0 || curr == lvl[1] + skill.SPMaxLevel) { // level 0/maxed; no next, but show next/now
-    d.find('.dnext').hide();
+    d.find('.dnext').hide().addClass('hidden');
     d.find('.dnextdiv').hide();
   } else {
     d.find('.dnextdiv').show();
-    d.find('.dnext').show();
+    d.find('.dnext').show().removeClass('hidden');
     d.find('.dnextv').html(desc_format(db.Lookup[nextApply.SkillExplanationID],
                                        nextApply.SkillExplanationIDParam));
   }
