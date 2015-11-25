@@ -23,7 +23,7 @@ block custom_script
   script(type='text/javascript', src=fn.url.js('dnss'))
   script(type='text/javascript', src=fn.url.js('skill'))
   script(type='text/javascript', src=fn.url.js('description'))
-  script(type='text/javascript') var db,Job=!{job},_={};function __(n){return _[n]=_[n]||$(n),_[n]};dnss(!{urls});
+  script(type='text/javascript') var db,dskills,Job=!{job};dnss(!{urls});
 
 block content
   div.container
@@ -77,7 +77,7 @@ mixin skill(skill, skillID)
     if skill
       - var sprite = [skill.Sprite, skill.IconCol, skill.IconRow].join(',')
       - var lvl = lvls[skillID]
-      div.skill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl.join(','))
+      div.skill.dskill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl.join(','))
         div.skill-bdr
         div.badge.skill-lvl(class={g: lvl[3] == 1, 'b': lvl[3] == 2})
     else

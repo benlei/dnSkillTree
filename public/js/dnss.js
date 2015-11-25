@@ -1,4 +1,5 @@
-/*global  */
+/* global */
+dskills = $(document.getElementsByClassName('dskill'));
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
@@ -10,14 +11,14 @@ function dnss(urls) {
     db = data;
 
     // have it stay a little
-    __('.skill[data-skill]').each(function() {
+    dskills.each(function() {
       var dom = $(this);
       dom.data('desc', 'hover'); // initialize desc
       init_description(dom);
     });
   });
 
-  __('.skill[data-skill]').each(function() {
+  dskills.each(function() {
     var dom = $(this);
     var skillID = dom.data('skill');
     var lvl = dom.data('lvl').split(',').map(num);
@@ -61,7 +62,7 @@ function dnss(urls) {
       return;
     }
 
-    __('div[data-skill]').each(function() {
+    dskills.each(function() {
       var dom = $(this);
       if (str.length > 2) {
         update_description(dom)
@@ -91,7 +92,7 @@ function dnss(urls) {
 
   $('#level-btn').mousedown(function() {
     var level = num($('#level').val());
-    __('div[data-skill]').each(function() {
+    dskills.each(function() {
       var dom = $(this);
       var skillID = num(dom.data('skill'));
       var skill = db.Skills[skillID];
@@ -224,7 +225,7 @@ function reverse(rev, handler) {
 
 function strict_checker(setFree) {
   var changeable = true;
-  __('div[data-skill]').each(function() {
+  dskills.each(function() {
     var skillID = num($(this).data('skill'));
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];

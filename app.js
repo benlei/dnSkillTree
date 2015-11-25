@@ -97,6 +97,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     lvls[id] = [level, trueMax, tsp, tech, skill.MaxLevel - skill.SPMaxLevel];
 
     if (skill.SkillGroup && level) {
+      if (tech > 0) throw "invalid build path"
+
       if (!skillgroups[skill.SkillGroup]) {
         skillgroups[skill.SkillGroup] = [];
       }
