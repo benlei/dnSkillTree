@@ -100,7 +100,7 @@ function skill_adj(e) {
     if (lvl[0] && group.indexOf(skillID) == -1) {
       group.push(skillID);
     } else if (!lvl[0] && group.indexOf(skillID) != -1) {
-      group = group.filter(function(val) { return val != skillID });
+      Job.SkillGroups[g] = group.filter(function(val) { return val != skillID });
     }
   }
 
@@ -113,7 +113,7 @@ function skill_adj(e) {
     if (lvl[0] && base.indexOf(skillID) == -1) {
       base.push(skillID);
     } else if (!lvl[0] && base.indexOf(skillID) != -1) {
-      base = base.filter(function(val) { return val != skillID });
+      Job.BaseSkills[b] = base.filter(function(val) { return val != skillID });
     }
   }
 
