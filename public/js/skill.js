@@ -14,7 +14,7 @@ function skill_adj(e) {
         return;
       }
 
-      lvl[3] = !lvl[3] ? 1 : Math.min(skill.SPMaxLevel, 2);
+      lvl[3] = !lvl[3] ? 1 : 2;
     } else {
       lvl[0] = Math.min(lvl[1], max ? lvl[1] : lvl[0] + 1);
     }
@@ -69,7 +69,7 @@ function skill_adj(e) {
   }
 
   if (lvl[0] + lvl[3] > skill.MaxLevel) {
-    lvl[3] = skill.SPMaxLevel;
+    return;
   }
 
 
@@ -93,19 +93,28 @@ function skill_adj(e) {
   if (skill.SkillGroup) {
     var g = skill.SkillGroup;
     if (!Job.SkillGroups[g]) { // nothing exists
-      Job.SkillGroups[g] = new Set();
+      Job.SkillGroups[g] = [];
     }
 
-    Job.SkillGroups[g][lvl[0] ? 'add' : 'delete'](skillID);
+    var group = Job.SkillGroups[g];
+    if (lvl[0] && group.indexOf(skillID) == -1) {
+      group.push(skillID);
+    } else if (!lvl[0] && group.indexOf(skillID) != -1) {
+      group = group.filter(function(val) { return val != skillID });
+    }
   }
 
   if (skill.BaseSkillID) {
     var b = skill.BaseSkillID;
     if (! Job.BaseSkills[b]) {
-      Job.BaseSkills[b] = new Set();
+      Job.BaseSkills[b] = [];
     }
-
-    Job.BaseSkills[b][lvl[0] ? 'add' : 'delete'](skillID);
+    var base = Job.BaseSkills[b];
+    if (lvl[0] && base.indexOf(skillID) == -1) {
+      base.push(skillID);
+    } else if (!lvl[0] && base.indexOf(skillID) != -1) {
+      base = base.filter(function(val) { return val != skillID });
+    }
   }
 
   // SP adjustment
@@ -156,7 +165,7 @@ function check_skill_reqs(skillID, skill) {
     var bypass = false;
     if (skill.SkillGroup == 1) {
       var group = Job.SkillGroups[1];
-      if (group && !group.has(skillID) && group.size) {
+      if (group && group.indexOf(skillID) == -1 && group.length) {
         bypass = true;
       }
     }
@@ -171,7 +180,7 @@ function check_skill_reqs(skillID, skill) {
   }
 
   var base = Job.BaseSkills[skill.BaseSkillID];
-  if (base && !base.has(skillID) && base.size) {
+  if (base && base.indexOf(skillID) == -1 && base.length) {
     return false;
   }
 
@@ -183,8 +192,8 @@ function check_skill_groups(skillID, skill) {
   var g = skill.SkillGroup;
   if (g) {
     var group = Job.SkillGroups[g];
-    if (g == 1 && group && group.size) {
-      return Array.from(Job.SkillGroups[1]).reduce(function(p, skillID) {
+    if (g == 1 && group && group.length) {
+      return Job.SkillGroups[1].reduce(function(p, skillID) {
                if (p) { // short circuit
                  return p;
                }
@@ -197,8 +206,8 @@ function check_skill_groups(skillID, skill) {
                return p | b;
              }, false);
       return true; // hasn't been set yet
-    } else if (group && group.size) {
-      return group.has(skillID);
+    } else if (group && group.length) {
+      return group.indexOf(skillID) != -1;
     }
   }
 

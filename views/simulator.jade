@@ -12,12 +12,12 @@ block custom_script
       MaxLevel: cap,
       Levels: levels,
       SP: sp_ratios,
-      TSP: [0,0,0],
-      Names: line.map(function(l) { return l.JobName }),
+      TSP: job_sp,
+      Names: [line[0].JobName, line[1].JobName, line[2].JobName],
       ApplyType: 0,
       Free: true,
-      BaseSkills: {},
-      SkillGroups: {},
+      BaseSkills: baseskills,
+      SkillGroups: skillgroups,
       Cache: {}
     });
   script(type='text/javascript', src=fn.url.js('dnss'))
@@ -44,10 +44,11 @@ block content
     div.row
       div.col-md-12
         div.progress
-          span#curr-progress 0 SP
+          - var sum = job_sp[0] + job_sp[1] + job_sp[2], rem = max_sp - sum, progress = (sum / max_sp) * 100
+          span#curr-progress #{sum} SP
           span#max-progress #{max_sp} SP
-          div.progress-bar.progress-bar-info(style={width: '0%'})
-          span#rem-progress #{max_sp} SP
+          div.progress-bar.progress-bar-info(style={width: progress + '%'})
+          span#rem-progress #{rem} SP
     div.row
       each job, index in line
         div.col-md-4.noselect
@@ -57,10 +58,9 @@ block content
 
 
 mixin panel_header(job, index)
-  - var sp = [0, Math.floor(max_sp * sp_ratios[index])]
   div.panel-heading= job.JobName
     div.jobsprite(style=fn.image.job(job))
-    span.label.pull-right #{sp.join('/')}
+    span.label.pull-right #{job_sp[index]}/#{job_max_sp[index]}
 
 
 mixin panel_body(job)
@@ -76,16 +76,9 @@ mixin skill(skill, skillID)
   td(class='skill-td')
     if skill
       - var sprite = [skill.Sprite, skill.IconCol, skill.IconRow].join(',')
-      -
-        var lvl = [
-          skill.Levels[1].LevelLimit == 1 ? 1 : 0,
-          skill.MaxLevel - skill.SPMaxLevel,
-          0, // total SP
-          0, // tech
-          skill.MaxLevel - skill.SPMaxLevel // actual max
-        ].join(',')
-      div.skill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl)
+      - var lvl = lvls[skillID]
+      div.skill(data-skill=skillID, data-sprite=sprite, data-lvl=lvl.join(','))
         div.skill-bdr
-        div.badge.skill-lvl
+        div.badge.skill-lvl(class={g: lvl[3] == 1, 'b': lvl[3] == 2})
     else
       div.skill

@@ -83,7 +83,7 @@ function dnss(urls) {
     });
   });
 
-  var RST = 'Reset', INC = 'Increase';
+  var RST = 'Reset', INC = 'Raise';
   $('#level').change(function() {
     var val = num($(this).val());
     $('#level-btn').text(val <= Job.MaxLevel ? RST : INC);
@@ -114,9 +114,15 @@ function dnss(urls) {
         // calculate new max SP
         var newMax = 0;
         var absMax = skill.MaxLevel - skill.SPMaxLevel;
-        for (var i = absMax; i > 0; i--) {
+        for (var i = absMax, j = 1; i > 0; i--, j++) {
           if (skill.Levels[i].LevelLimit <= level) {
             newMax = i;
+            break;
+          }
+
+          if (skill.Levels[j].LevelLimit <= level) {
+            newMax = j;
+          } else {
             break;
           }
         }
@@ -158,6 +164,8 @@ function dnss(urls) {
       Job.BaseSkills = {};
     } else {
       var total_sp = get_total_sp();
+      console.log(total_sp);
+      console.log(max_sp);
       var percent = (total_sp/max_sp) * 100;
       $('.progress-bar').css('width', percent + '%');
       $('#rem-progress').text((max_sp - total_sp) + ' SP');
