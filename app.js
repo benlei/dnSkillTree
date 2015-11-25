@@ -36,6 +36,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)', function(req, res) {
 });
 
 /* main simulator page */
+var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+var techChar = "!";
 router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(req, res) {
   req.params.level = parseInt(req.params.level);
   if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
@@ -53,6 +55,3 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     max_sp: db.Levels.slice(0, req.params.level).reduce(function(p,c) { return p+c }, 0)
   })
 })
-
-var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
-var techChar = "!";
