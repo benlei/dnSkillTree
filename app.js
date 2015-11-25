@@ -30,8 +30,14 @@ router.get('/:job([a-z]+)', function(req, res) {
   res.redirect(302, '/' + req.params.job + '-' + db.Levels.length)
 })
 
+var default_build_path = Array(73).join('-');
+router.get('/:job([a-z]+)-:level([0-9]+)', function(req, res) {
+  res.redirect(301, '/' + req.params.job + '-' + req.params.level + '/' + default_build_path);
+});
+
 /* main simulator page */
-router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
+router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(req, res) {
+  req.params.level = parseInt(req.params.level);
   if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
   var job = jobs.filter(function(j) { return j != null && j.JobNumber == 2 && j.EnglishName == req.params.job })[0]
   if (!job) throw "job " + req.params.job + " not found"
@@ -48,5 +54,5 @@ router.get('/:job([a-z]+)-:level([1-9][0-9]*)', function(req, res) {
   })
 })
 
-var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+";
-var techChars = "'\""; // ' = 1 tech, " = 2 tech
+var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+var techChar = "!";
