@@ -1,3 +1,4 @@
+/*global  */
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
@@ -241,9 +242,15 @@ function strict_checker(setFree) {
   return changeable;
 }
 
+var warning = $('#warning').detach();
 function strict_switch() {
   if (!strict_checker(true)) {
-    alert('Cannot set to strict because some skill requirements have not been fulfilled.');
+    warning.empty()
+           .addClass('alert alert-danger')
+           .text('Cannot set to strict because one or more skill requirements have not been fulfilled.')
+           .prepend(tag('a', 'close', '×').attr({"data-dismiss": 'alert', "aria-label": 'close', title: 'close'}));
+
+    $('#warning-wrap').append(warning);
     return false;
   }
   return true;
