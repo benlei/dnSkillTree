@@ -1,5 +1,4 @@
 /* global */
-dskills = $(document.getElementsByClassName('dskill'));
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
