@@ -245,12 +245,13 @@ function strict_checker(setFree) {
 var warning = $('#warning').detach();
 function strict_switch() {
   if (!strict_checker(true)) {
-    warning.empty()
-           .addClass('alert alert-danger')
-           .text('Cannot set to strict because one or more skill requirements have not been fulfilled.')
-           .prepend(tag('a', 'close', '×').attr({"data-dismiss": 'alert', "aria-label": 'close', title: 'close'}));
-
-    $('#warning-wrap').append(warning);
+    if (!$('#warning').length) {
+      warning.clone()
+             .addClass('alert alert-danger')
+             .text('Cannot set to strict mode because one or more skill requirements have not been fulfilled.')
+             .prepend(tag('a', 'close', '×').attr({"data-dismiss": 'alert', "aria-label": 'close', title: 'close'}))
+             .appendTo($('#warning-wrap'));
+    }
     return false;
   }
   return true;
