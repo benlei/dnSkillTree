@@ -26,13 +26,19 @@ block custom_script
 
 block content
   div.container
+    div.modal#modal(tabindex='-1', role='dialog', aria-labeledby='warning', aria-hidden='true')
+      div.modal-dialog: div.modal-content
+        div.modal-header
+          button.close(type='button', data-dismiss='modal')
+            span(aria-hidden='true') &times;
+          h4.modal-title
+        div.modal-body
     div.row#changables
-      div.col-md-2.div
+      div.col-md-3
         div.form-inline: div.form-group
           select.form-control#level
           button#level-btn.btn.btn-sm.btn-default(type='reset') Reset
-      div.col-md-7#warning-wrap
-        div#warning
+      div.col-md-6
       div.col-md-3
         div.btn-group.push-left
           button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free}) Free

@@ -233,7 +233,12 @@ function reverse(rev, handler) {
 }
 
 function strict_checker(setFree) {
+  var modal = $('#modal');
+  var title = modal.find('.modal-title');
+  var body = modal.find('.modal-body');
   var changeable = true;
+  var warnings = [];
+
   dskills.each(function() {
     var skillID = num(this.getAttribute('data-skill'));
     var lvl = Job.Cache[skillID];
@@ -241,12 +246,13 @@ function strict_checker(setFree) {
 
     // make sure needsp is fine
     if (lvl[0] > 0) {
-      if (!check_skill_reqs(skillID, skill)) {
+      if (!check_skill_reqs(skillID, skill, warnings)) {
         changeable = false;
         return;
       }
 
-      if (!check_skill_groups(skillID, skill)) {
+      if (!check_skill_groups(skillID, skill, warnings)) {
+        console.log(skillID + " 2");
         changeable = false;
         return;
       }
@@ -256,21 +262,19 @@ function strict_checker(setFree) {
   if (changeable && setFree) {
     Job.Free = false;
     set_cookie('free', 0);
+  } else {
+    title.text('Skill Tree Violations');
+    body.empty().append(warnings.map(function(v) {
+                          return tag('p', null, v);
+                        }));
   }
 
   return changeable;
 }
 
-var warning = $('#warning').detach();
 function strict_switch() {
   if (!strict_checker(true)) {
-    if (!$('#warning').length) {
-      warning.clone()
-             .addClass('alert alert-danger')
-             .text('Cannot set to strict mode because one or more skill requirements have not been fulfilled.')
-             .prepend(tag('a', 'close', '×').attr({"data-dismiss": 'alert', "aria-label": 'close', title: 'close'}))
-             .appendTo($('#warning-wrap'));
-    }
+    $('#modal').modal('show');
     return false;
   }
   return true;
