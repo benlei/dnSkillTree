@@ -2,7 +2,7 @@
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
-    $(this).css('background-image', "url('" + urls.mainbar + "/jobicon_pvp.png')");
+    this.style.backgroundImage = "url('" + urls.mainbar + "/jobicon_pvp.png')";
   });
 
   // is async, don't care when we get it
@@ -11,28 +11,25 @@ function dnss(urls) {
 
     // have it stay a little
     dskills.each(function() {
-      var dom = $(this);
-      dom.data('desc', 'hover'); // initialize desc
-      init_description(dom);
+      this.setAttribute('data-desc', 'hover');
+      init_description(this);
     });
   });
 
   dskills.each(function() {
     var dom = $(this);
-    var skillID = dom.data('skill');
-    var lvl = dom.data('lvl').split(',').map(num);
+    var skillID = this.getAttribute('data-skill');
+    var lvl = this.getAttribute('data-lvl').split(',').map(num);
     var grayed = lvl[0] == 0 ? '_b' : '';
-    var sprite = dom.data('sprite').split(',');
+    var sprite = this.getAttribute('data-sprite').split(',');
     sprite[1] *= -50;
     sprite[2] *= -50;
     Job.Cache[skillID] = lvl;
 
-    dom.css('background', "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"); // initial setup
-    dom.find('.skill-bdr')
-       .css('background', "url('" + urls.border + "') 100px 0")
-       .addClass(lvl[0] > 0 ? null : 'gray');
-    dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[4]].join('/'));
+    this.style.background = "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
+    this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
 
+    dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[4]].join('/'));
     dom.on('mousedown', skill_adj);
   });
 
@@ -64,21 +61,21 @@ function dnss(urls) {
     dskills.each(function() {
       var dom = $(this);
       if (str.length > 2) {
-        update_description(dom)
+        update_description(this, dom);
         var opts = dom.data('bs.popover').options;
 
         // check title
         var text = opts.title.text();
         if (re.test(text)) {
-          dom.css('opacity', 1);
+          this.style.opacity = 1;
           return;
         }
 
         text = opts.content.clone();
         text.find('.hidden').remove();
-        dom.css('opacity', re.test(text.text()) ? 1 : .33);
+        this.style.opacity = re.test(text.text()) ? 1 : .33;
       } else {
-        dom.css('opacity', 1);
+        this.style.opacity = 1;
       }
     });
   });
@@ -93,7 +90,7 @@ function dnss(urls) {
     var level = num($('#level').val());
     dskills.each(function() {
       var dom = $(this);
-      var skillID = num(dom.data('skill'));
+      var skillID = num(this.getAttribute('data-skill'));
       var skill = db.Skills[skillID];
       var lvl = Job.Cache[skillID];
 
@@ -103,11 +100,11 @@ function dnss(urls) {
         lvl[2] = 0;
         lvl[3] = 0;
 
-        var image = dom.css('background-image').replace('_b.png', '.png');
-        dom.css('background-image', lvl[0] ? image : image.replace('.png', '_b.png'));
+        var image = this.style.backgroundImage.replace('_b.png', '.png');
+        this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
         dom.find('.skill-bdr')
-           .removeClass('gray')
-           .addClass(lvl[0] ? null : 'gray');
+           .removeClass('g')
+           .addClass(lvl[0] ? null : 'g');
       }
 
       if (level != Job.MaxLevel) {
@@ -155,7 +152,7 @@ function dnss(urls) {
     // other caches to reset
     $('#max-progress').text(max_sp + ' SP');
     if (level <= Job.MaxLevel) {
-      $('.progress-bar').css('width', '0%');
+      $('#progress').css('width', '0%');
       $('#curr-progress').text('0 SP');
       $('#rem-progress').text(max_sp + ' SP');
 
@@ -164,10 +161,8 @@ function dnss(urls) {
       Job.BaseSkills = {};
     } else {
       var total_sp = get_total_sp();
-      console.log(total_sp);
-      console.log(max_sp);
       var percent = (total_sp/max_sp) * 100;
-      $('.progress-bar').css('width', percent + '%');
+      $('#progress').css('width', percent + '%');
       $('#rem-progress').text((max_sp - total_sp) + ' SP');
     }
 
@@ -225,7 +220,7 @@ function reverse(rev, handler) {
 function strict_checker(setFree) {
   var changeable = true;
   dskills.each(function() {
-    var skillID = num($(this).data('skill'));
+    var skillID = num(this.getAttribute('data-skill'));
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
 
@@ -263,4 +258,10 @@ function strict_switch() {
     return false;
   }
   return true;
+}
+
+var build_chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_'.split('');
+function history_push() {
+  var build_path = [];
+//  history.pushState(Job, null)
 }

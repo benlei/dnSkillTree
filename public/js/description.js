@@ -1,16 +1,17 @@
-function init_description(dom) {
-  dom.popover({animation: false,
-               html: true,
-               trigger: 'manual',
-               placement: 'auto left',
-               container: $('body')})
-     .on('mouseenter', $dpop.mouseenter)
-     .on('mouseleave', $dpop.mouseleave)
-     .on('mousedown', $dpop.mousedown);
+var $body = $('body');
+function init_description(thiz) {
+  $(thiz).popover({animation: false,
+                   html: true,
+                   trigger: 'manual',
+                   placement: 'auto left',
+                   container: $body})
+         .on('mouseenter', $dpop.mouseenter)
+         .on('mouseleave', $dpop.mouseleave)
+         .on('mousedown', $dpop.mousedown);
 }
 
-function update_description(dom) {
-  var skillID = num(dom.data('skill'));
+function update_description(thiz, dom) {
+  var skillID = num(thiz.getAttribute('data-skill'));
   var lvl = Job.Cache[skillID];
   var skill = db.Skills[skillID];
   var opts = dom.data('bs.popover').options;
@@ -193,7 +194,7 @@ var $dpop = {
   mouseenter: function () {
     var dom = $(this), trigger = dom.data('desc');
     if (trigger == 'hover' && !$dpop.persist) {
-      update_description(dom);
+      update_description(this, dom);
       dom.popover('show');
     }
   },
@@ -216,14 +217,14 @@ var $dpop = {
       }
     }
   },
-  update: function(dom) {
+  update: function(thiz, dom) {
     if ($dpop.persist && $dpop.persist.data('skill') != dom.data('skill')) {
       $dpop.persist.data('desc', 'hover').popover('hide');
       $dpop.persist = null;
     }
 
     dom.popover('hide');
-    update_description(dom);
+    update_description(thiz, dom);
     dom.popover('show');
   }
 };

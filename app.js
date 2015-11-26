@@ -137,7 +137,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     job_sp: job_sp,
     job_max_sp: job_max_sp,
     skillgroups: skillgroups,
-    baseskills: baseskills
+    baseskills: baseskills,
+    tree_pos: 0
   })
 })
 
