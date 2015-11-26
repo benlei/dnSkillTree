@@ -124,7 +124,7 @@ function skill_adj(e) {
   Job.TSP[jobNum] += diff;
   var percent = (totalSP / maxSP) * 100;
 
-  $('#progress-bar').css('width', percent + '%');
+  $('#progress').css('width', percent + '%');
   $('#curr-progress').text(totalSP + ' SP');
   $('#rem-progress').text((maxSP - totalSP) + ' SP');
 
