@@ -90,7 +90,7 @@ function dnss(urls) {
     var level = num($('#level').val());
     dskills.each(function() {
       var dom = $(this);
-      var skillID = num(this.getAttribute('data-skill'));
+      var skillID = this.getAttribute('data-skill');
       var skill = db.Skills[skillID];
       var lvl = Job.Cache[skillID];
 
@@ -150,25 +150,29 @@ function dnss(urls) {
     });
 
     // other caches to reset
-    $('#max-progress').text(max_sp + ' SP');
-    if (level <= Job.MaxLevel) {
-      $('#progress').css('width', '0%');
-      $('#curr-progress').text('0 SP');
-      $('#rem-progress').text(max_sp + ' SP');
 
+    if (level <= Job.MaxLevel) {
       Job.TSP = [0,0,0];
       Job.SkillGroups = {};
       Job.BaseSkills = {};
-    } else {
-      var total_sp = get_total_sp();
-      var percent = (total_sp/max_sp) * 100;
-      $('#progress').css('width', percent + '%');
-      $('#rem-progress').text((max_sp - total_sp) + ' SP');
     }
-
-    $(this).text(RST);
     Job.MaxLevel = level;
+
+    update_progress();
+    $(this).text(RST);
+
+    history_push();
   });
+}
+
+function update_progress() {
+  var total_sp = get_total_sp();
+  var max_sp = get_max_sp();
+  var percent = (total_sp/max_sp) * 100;
+  $('#max-progress').text(max_sp + ' SP');
+  $('#progress').css('width', percent + '%');
+  $('#rem-progress').text((max_sp - total_sp) + ' SP');
+  $('#curr-progress').text(total_sp + ' SP');
 }
 
 function set_opacity(dom, o) {
@@ -206,14 +210,15 @@ function tag(t, cls, text) {
                    .text(text);
 }
 
+var ON = 'btn-primary', OFF = 'btn-default';
 function reverse(rev, handler) {
-  var ON = 'btn-primary', OFF = 'btn-default';
   return function() {
     if (handler() === false) {
       return;
     }
     $(rev).removeClass(ON).addClass(OFF);
     $(this).addClass(ON);
+    history_push();
   };
 }
 
@@ -263,5 +268,76 @@ function strict_switch() {
 var build_chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_'.split('');
 function history_push() {
   var build_path = [];
-//  history.pushState(Job, null)
+  dskills.each(function() {
+    var skillID = this.getAttribute('data-skill');
+    var pos = this.getAttribute('data-sprite').split(',')[3];
+    var lvl = Job.Cache[skillID];
+    var maybeMinus1 = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
+    var b = [];
+    b.push(build_chars[lvl[0] - maybeMinus1]);
+    lvl[3] > 0 && b.push('!');
+    lvl[3] > 1 && b.push('!');
+    build_path[pos] = b;
+  });
+
+  var full_build_path = [];
+  for (var i = 0; i < 72; i++) {
+    if (build_path[i] === undefined) {
+      full_build_path.push('-');
+    } else {
+      full_build_path = full_build_path.concat(build_path[i]);
+    }
+  }
+
+  history.pushState(Job, null, '/' + Job.EnglishName + '-' + Job.MaxLevel + '/' + full_build_path.join(''));
 }
+
+window.addEventListener('popstate', function(e) {
+  Job = e.state || $Job;
+  dskills.each(function() {
+    var dom = $(this);
+    var skillID = this.getAttribute('data-skill');
+    var lvl = Job.Cache[skillID];
+
+    // update indivdual skills
+    var image = this.style.backgroundImage.replace('_b.png', '.png');
+    this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
+    dom.find('.skill-bdr')
+       .removeClass('g')
+       .addClass(lvl[0] ? null : 'g');
+    dom.find('.skill-lvl')
+       .removeClass('g b')
+       .text([lvl[0] + lvl[3], lvl[4]].join('/'))
+       .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
+  });
+
+  var max_sp = get_max_sp();
+
+  // job sp
+  $('.panel').each(function(jobNum) {
+    var spdom = $(this).find('.panel-heading').find('span');
+    var sp = spdom.text().split('/').map(num);
+    var sp_ratio = Job.SP[jobNum];
+    sp[0] = Job.TSP[jobNum];
+    sp[1] = num(max_sp * sp_ratio);
+    spdom.text(sp.join('/'));
+  });
+
+  update_progress();
+
+  $('#level').val(Job.MaxLevel);
+
+  var a = '#pvp', b = '#pve';
+  if (Job.ApplyType) {
+    a = '#pve', b = '#pvp';
+  }
+  $(a).removeClass(ON).addClass(OFF);
+  $(b).addClass(ON);
+
+  a = '#free', b = '#strict';
+  if (Job.Free) {
+    a = '#strict', b = '#free';
+  }
+  $(a).removeClass(ON).addClass(OFF);
+  $(b).addClass(ON);
+});

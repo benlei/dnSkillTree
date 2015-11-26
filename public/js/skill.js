@@ -1,6 +1,6 @@
 function skill_adj(e) {
   var dom = $(this);
-  var skillID = num(this.getAttribute('data-skill'));
+  var skillID = this.getAttribute('data-skill');
   var max = e.shiftKey || e.ctrlKey;
   var lvl = Job.Cache[skillID].slice(0); // clone it
   var image = this.style.backgroundImage.replace('_b.png', '.png');
@@ -122,11 +122,6 @@ function skill_adj(e) {
   lvl[2] += diff;
   totalSP += diff;
   Job.TSP[jobNum] += diff;
-  var percent = (totalSP / maxSP) * 100;
-
-  $('#progress').css('width', percent + '%');
-  $('#curr-progress').text(totalSP + ' SP');
-  $('#rem-progress').text((maxSP - totalSP) + ' SP');
 
   // icon update
   var bdr = dom.find('.skill-bdr');
@@ -140,7 +135,11 @@ function skill_adj(e) {
      .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
   Job.Cache[skillID] = lvl;
+
+  // hooks
+  update_progress();
   $dpop.update(this, dom);
+  history_push();
 }
 
 

@@ -11,7 +11,7 @@ function init_description(thiz) {
 }
 
 function update_description(thiz, dom) {
-  var skillID = num(thiz.getAttribute('data-skill'));
+  var skillID = thiz.getAttribute('data-skill');
   var lvl = Job.Cache[skillID];
   var skill = db.Skills[skillID];
   var opts = dom.data('bs.popover').options;

@@ -61,6 +61,7 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
   var i,j, job_num = 0, job_sp = [0,0,0], baseskills = {}, skillgroups = {};
   for (i = 0, j = 0; i < 72; i++, j++) {
     var c = build[j], id = skilltree[i];
+    if (c === undefined) throw "invalid build path"
     if (id === null) {
       if (c != '-') throw "invalid build path"
       continue;
