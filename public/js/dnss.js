@@ -42,11 +42,20 @@ function dnss(urls) {
   $('#level').val(Job.MaxLevel);
 
   // the apply type
-  $('#pvp').click(reverse('#pve', function() { return Job.ApplyType = 1, !0 }));
-  $('#pve').click(reverse('#pvp', function() { return Job.ApplyType = 0, !1 }));
+  $('#pvp').click(reverse('#pve', function() {
+                    set_cookie("apply_type", 1);
+                    return Job.ApplyType = 1, !0;
+                  }));
+  $('#pve').click(reverse('#pvp', function() {
+                    set_cookie("apply_type", 0);
+                    return Job.ApplyType = 0, !1;
+                  }));
 
   // the strictness
-  $('#free').click(reverse('#strict', function() { return Job.Free = true }));
+  $('#free').click(reverse('#strict', function() {
+                     set_cookie('free', 1);
+                     return Job.Free = true;
+                   }));
   $('#strict').click(reverse('#free', strict_switch));
 
   $('#s').val('').on('input', function() {
@@ -245,6 +254,7 @@ function strict_checker(setFree) {
 
   if (changeable && setFree) {
     Job.Free = false;
+    set_cookie('free', 0);
   }
 
   return changeable;
@@ -328,6 +338,7 @@ window.addEventListener('popstate', function(e) {
   $('#level').val(Job.MaxLevel);
 
   var a = '#pvp', b = '#pve';
+  set_cookie('apply_type', Job.ApplyType);
   if (Job.ApplyType) {
     a = '#pve', b = '#pvp';
   }
@@ -335,9 +346,16 @@ window.addEventListener('popstate', function(e) {
   $(b).addClass(ON);
 
   a = '#free', b = '#strict';
+  set_cookie('free', Job.Free ? 1 : 0);
   if (Job.Free) {
     a = '#strict', b = '#free';
   }
   $(a).removeClass(ON).addClass(OFF);
   $(b).addClass(ON);
 });
+
+function set_cookie(name, value) {
+    var d = new Date();
+    d.setTime(d.getTime() + (356*24*60*60*1000));
+    document.cookie = name + "=" + value + "; path=/; expires=" + d.toUTCString();
+}

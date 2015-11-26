@@ -13,8 +13,8 @@ block custom_script
       SP: sp_ratios,
       TSP: job_sp,
       Names: [line[0].JobName, line[1].JobName, line[2].JobName],
-      ApplyType: 0,
-      Free: true,
+      ApplyType: apply_type,
+      Free: free,
       BaseSkills: baseskills,
       SkillGroups: skillgroups,
       Cache: {}
@@ -35,11 +35,11 @@ block content
         div#warning
       div.col-md-3
         div.btn-group.push-left
-          button#free.btn.btn-sm.btn-primary(type='button') Free
-          button#strict.btn.btn-sm.btn-default(type='button') Strict
+          button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free}) Free
+          button#strict.btn.btn-sm(type='button', class={'btn-primary': !free, 'btn-default': free}) Strict
         div.btn-group.pull-right
-          button#pve.btn.btn-sm.btn-primary(type='button') PvE
-          button#pvp.btn.btn-sm.btn-default(type='button') PvP
+          button#pve.btn.btn-sm(type='button', class={'btn-primary': !apply_type, 'btn-default': !!apply_type}) PvE
+          button#pvp.btn.btn-sm(type='button', class={'btn-primary': !!apply_type, 'btn-default': !apply_type}) PvP
     div.row
       div.col-md-12
         div.progress

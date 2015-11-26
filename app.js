@@ -124,6 +124,16 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
                                 || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw "invalid build path"
 
 
+  var apply_type = 0, free = true;
+  if (req.cookies) {
+    if (req.cookies.apply_type == 1) {
+      apply_type = 1;
+    }
+
+    if (req.cookies.free !== undefined && req.cookies.free == 0) {
+      free = false;
+    }
+  }
 
   res.render('simulator', {
     title: job.JobName + ' | ' + dnss.settings.title,
@@ -139,7 +149,9 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     job_max_sp: job_max_sp,
     skillgroups: skillgroups,
     baseskills: baseskills,
-    tree_pos: 0
+    tree_pos: 0,
+    apply_type: apply_type,
+    free: free
   })
 })
 
