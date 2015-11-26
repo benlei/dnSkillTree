@@ -25,6 +25,7 @@ function dnss(urls) {
     sprite[1] *= -50;
     sprite[2] *= -50;
     Job.Cache[skillID] = lvl;
+    $Job.Cache[skillID] = lvl.slice(); // clone it
 
     this.style.background = "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
     this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
