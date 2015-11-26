@@ -71,6 +71,8 @@ function dnss(urls) {
         return;
       }
 
+      search = 0; // reset it
+
       var re;
       try {
         re = new RegExp(str, 'im');
