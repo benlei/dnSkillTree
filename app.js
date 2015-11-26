@@ -44,6 +44,18 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
   if (!job) throw "job " + req.params.job + " not found"
   if (req.params.build.length > 216) throw "build path too long"
 
+  var apply_type = 0, free = true;
+  if (req.cookies) {
+    if (req.cookies.apply_type == 1) {
+      apply_type = 1;
+    }
+
+    if (req.cookies.free !== undefined && req.cookies.free == 0) {
+      free = false;
+    }
+  }
+
+
   var line = [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job];
   var lvls = {};
   var build = req.params.build.split('');
@@ -97,6 +109,12 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     job_sp[job_num] += tsp;
     lvls[id] = [level, trueMax, tsp, tech, skill.MaxLevel - skill.SPMaxLevel];
 
+    if (maybePlus1 && level > 1) {
+      free = true;
+    } else if (!maybePlus1 && level > 0) {
+      free = true;
+    }
+
     if (skill.SkillGroup && level) {
       if (tech > 0) throw "invalid build path"
 
@@ -122,18 +140,6 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
   if (job_sp[0] > job_max_sp[0] || job_sp[1] > job_max_sp[1]
                                 || job_sp[2] > job_max_sp[2]
                                 || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw "invalid build path"
-
-
-  var apply_type = 0, free = true;
-  if (req.cookies) {
-    if (req.cookies.apply_type == 1) {
-      apply_type = 1;
-    }
-
-    if (req.cookies.free !== undefined && req.cookies.free == 0) {
-      free = false;
-    }
-  }
 
   res.render('simulator', {
     title: job.JobName + ' | ' + dnss.settings.title,
