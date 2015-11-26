@@ -59,35 +59,46 @@ function dnss(urls) {
                    }));
   $('#strict').click(reverse('#free', strict_switch));
 
+  var search = 0;
   $('#s').val('').on('input', function() {
+    ++search;
+    var search_set = search;
+
     var str = $('#s').val();
-    var re;
-    try {
-       re = new RegExp(str, 'im');
-    } catch (x) {
-      return;
-    }
 
-    dskills.each(function() {
-      var dom = $(this);
-      if (str.length > 2) {
-        update_description(this, dom);
-        var opts = dom.data('bs.popover').options;
-
-        // check title
-        var text = opts.title.text();
-        if (re.test(text)) {
-          this.style.opacity = 1;
-          return;
-        }
-
-        text = opts.content.clone();
-        text.find('.hidden').remove();
-        this.style.opacity = re.test(text.text()) ? 1 : .33;
-      } else {
-        this.style.opacity = 1;
+    setTimeout(function() {
+      if (search != search_set) {
+        return;
       }
-    });
+
+      var re;
+      try {
+        re = new RegExp(str, 'im');
+      } catch (x) {
+        return;
+      }
+
+      dskills.each(function() {
+        var dom = $(this);
+        if (str.length > 2) {
+          update_description(this, dom);
+          var opts = dom.data('bs.popover').options;
+
+          // check title
+          var text = opts.title.text();
+          if (re.test(text)) {
+            this.style.opacity = 1;
+            return;
+          }
+
+          text = opts.content.clone();
+          text.find('.hidden').remove();
+          this.style.opacity = re.test(text.text()) ? 1 : .33;
+        } else {
+          this.style.opacity = 1;
+        }
+      });
+    }, 500); // .5s delay
   });
 
   var RST = 'Reset', INC = 'Raise';
