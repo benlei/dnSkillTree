@@ -1,4 +1,5 @@
 var $body = $('body');
+var $lang = lang.description;
 function init_description(thiz) {
   $(thiz).popover({animation: false,
                    html: true,
@@ -15,7 +16,7 @@ function update_description(thiz, dom) {
   var lvl = Job.Cache[skillID];
   var skill = db.Skills[skillID];
   var opts = dom.data('bs.popover').options;
-  opts.title = tag('span', Job.ApplyType ? 's' :null, db.Lookup[skill.NameID] + (Job.ApplyType ? '(PVP)' : ''));
+  opts.title = tag('span', Job.ApplyType ? 's' :null, format($lang.name[Job.ApplyType], db.Lookup[skill.NameID]));
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
@@ -36,25 +37,25 @@ function update_description(thiz, dom) {
     d.find('.dweaps').remove();
   }
 
-  var skillType = 'Passive';
+  var skillType = $lang.type.passive;
   switch(skill.SkillType) {
     case 0: switch(skill.DurationType) {
-      case 0: skillType = 'Instant'; break;
-      case 1: skillType = 'Buff'; break;
-      case 2: skillType = 'Debuff'; break;
+      case 0: skillType = $lang.type.instant; break;
+      case 1: skillType = $lang.type.buff; break;
+      case 2: skillType = $lang.type.debuff; break;
     }
     break;
-    case 3: skillType = 'Passive Enhanced'; break;
+    case 3: skillType = $lang.type.ex; break;
   }
   d.find('.dtype').find('span:last').text(skillType);
 
 
-  var ele = 'None';
+  var ele = $lang.element.none;
   switch(skill.Element) {
-    case 0: ele = 'Fire'; break;
-    case 1: ele = 'Water'; break;
-    case 2: ele = 'Light'; break;
-    case 3: ele = 'Dark'; break;
+    case 0: ele = $lang.element.fire; break;
+    case 1: ele = $lang.element.water; break;
+    case 2: ele = $lang.element.light; break;
+    case 3: ele = $lang.element.dark; break;
   }
   d.find('.dele').find('span:last').text(ele);
 
@@ -96,7 +97,7 @@ function update_description(thiz, dom) {
         var $lvl = Job.Cache[$skillID];
         arr.push(tag('div',
                      $lvl[0] < reqlvl ? 'r' : null,
-                     db.Lookup[db.Skills[$skillID].NameID] + " Lv. " + reqlvl));
+                     format($lang.req.parent, db.Lookup[db.Skills[$skillID].NameID], reqlvl)));
       }
       d.find('.dreqskills')
        .empty()
@@ -140,7 +141,7 @@ function update_description(thiz, dom) {
      .removeClass('hidden')
      .show()
      .find('span:last')
-     .text(delayTime + ' sec');
+     .text(format($lang.cd,  delayTime));
   } else {
     d.find('.dcd').hide().addClass('hidden');
   }
@@ -182,7 +183,7 @@ var $d = {
     if (sp > 0) {
       return tag('span',
                  Job.TSP[i] < sp ? 'r' : null,
-                 Job.Names[i] + " SP Total " + sp + " or above");
+                 format($lang.req.tsp, Job.Names[i], sp));
     } else {
       return null;
     }
@@ -207,7 +208,7 @@ var $dpop = {
   mousedown: function(e) {
     if (e.button == 1) {
       var dom = $(this), trigger = dom.data('desc');
-      $dpop.update(dom);
+      $dpop.update(this, dom);
       if (trigger == 'hover') {
         dom.data('desc', 'mclick');
         $dpop.persist = dom;
@@ -277,33 +278,33 @@ function desc_format(str, params) {
 
 
 var desc_fields = tag('div').append(
-  desc_tag('dlvl', 'Skill Lv.'),
-  desc_tag('dmp', 'Fee MP'),
-  desc_tag('dweaps', 'Required Weapon'),
-  desc_tag('dtype', 'Skill Type'),
-  desc_tag('dele', 'Attribute'),
-  desc_tag('dcd', 'Cooldown'),
-  desc_tag('dlimit', 'Level Limit'),
-  desc_tag('dtsp', 'Total SP'),
+  desc_tag('dlvl', $lang.fields.lvl),
+  desc_tag('dmp', $lang.fields.mp),
+  desc_tag('dweaps', $lang.fields.weap),
+  desc_tag('dtype', $lang.fields.type),
+  desc_tag('dele', $lang.fields.element),
+  desc_tag('dcd', $lang.fields.cd),
+  desc_tag('dlimit', $lang.fields.limit),
+  desc_tag('dtsp', $lang.fields.tsp),
   tag('div', 'divider dreq'),
-  tag('div', 'dreq o', 'Level Up Requirements:'),
+  tag('div', 'dreq o', $lang.req.lvl_up),
   tag('div', 'dreq dreqlvl').append(
-    tag('span', null, 'Character Level '),
+    tag('span', null, $lang.req.char_lvl),
     tag('span')
   ),
   tag('div', 'dreq dreqskills'),
   tag('div', 'dreq dreqtsp'),
   tag('div', 'dreq dreqsp').append(
-    tag('span', null, 'SP '),
+    tag('span', null, $lang.req.sp),
     tag('span')
   ),
   tag('div', 'dnow').append(
-    tag('div', 'dnowf o', 'Skill Descrption'),
+    tag('div', 'dnowf o', $lang.curr),
     tag('div', 'dnowv')
   ),
   tag('div', 'divider dnextdiv'),
   tag('div', 'dnext').append(
-    tag('div', 'dnextf o', 'Next Description'),
+    tag('div', 'dnextf o', $lang.next),
     tag('div', 'dnextv')
   )
 );

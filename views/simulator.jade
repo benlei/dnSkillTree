@@ -37,23 +37,23 @@ block content
       div.col-md-3
         div.form-inline: div.form-group
           select.form-control#level
-          button#level-btn.btn.btn-sm.btn-default(type='reset') Reset
+          button#level-btn.btn.btn-sm.btn-default(type='reset')= lang.level.reset
       div.col-md-6
       div.col-md-3
         div.btn-group.push-left
-          button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free}) Free
-          button#strict.btn.btn-sm(type='button', class={'btn-primary': !free, 'btn-default': free}) Strict
+          button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free})= lang.mode.free
+          button#strict.btn.btn-sm(type='button', class={'btn-primary': !free, 'btn-default': free})= lang.mode.strict
         div.btn-group.pull-right
-          button#pve.btn.btn-sm(type='button', class={'btn-primary': !apply_type, 'btn-default': !!apply_type}) PvE
-          button#pvp.btn.btn-sm(type='button', class={'btn-primary': !!apply_type, 'btn-default': !apply_type}) PvP
+          button#pve.btn.btn-sm(type='button', class={'btn-primary': !apply_type, 'btn-default': !!apply_type})= lang.apply[0]
+          button#pvp.btn.btn-sm(type='button', class={'btn-primary': !!apply_type, 'btn-default': !apply_type})= lang.apply[1]
     div.row
       div.col-md-12
         div.progress
           - var sum = job_sp[0] + job_sp[1] + job_sp[2], rem = max_sp - sum, progress = (sum / max_sp) * 100
-          span#curr-progress #{sum} SP
-          span#max-progress #{max_sp} SP
+          span#rem-progress= format(lang.progress.remaining, rem)
+          span#curr-progress= format(lang.progress.curr, sum)
           div#progress.progress-bar.progress-bar-info(style={width: progress + '%'})
-          span#rem-progress #{rem} SP
+          span#max-progress= format(lang.progress.max, max_sp)
     div.row
       each job, index in line
         div.col-md-4.noselect

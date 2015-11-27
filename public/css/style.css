@@ -158,18 +158,18 @@
 
 #curr-progress {
     position: absolute;
-    left: 25px;
-}
-
-#max-progress {
-    position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-#rem-progress {
+#max-progress {
     position: absolute;
     right: 25px;
+}
+
+#rem-progress {
+    position: absolute;
+    left: 25px;
 }
 
 .progress-bar {

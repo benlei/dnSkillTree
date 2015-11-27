@@ -148,14 +148,11 @@ function level_satisfied(skillID, level) {
   return lvl[0] >= level;
 }
 
-function check_skill_reqs(skillID, skill, warnings) {
+function check_skill_reqs(skillID, skill) {
   // check if sp total is satisfied
   if (skill.NeedSP) {
     for (var i = 0; i < 3; i++) {
       if (Job.TSP[i] < skill.NeedSP[i]) {
-        if (warnings) {
-          warnings.push(db.Lookup[skill.NameID] + ' requires ' + Job.Names[i] + ' SP Total ' + skill.NeedSP[i] + ' or above.');
-        }
         return false;
       }
     }
@@ -174,9 +171,6 @@ function check_skill_reqs(skillID, skill, warnings) {
     if (!bypass) {
       for (var $skillID in skill.ParentSkills) {
         if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
-          if(warnings) {
-            warnings.push(db.Lookup[skill.NameID] + ' requires ' + db.Lookup[db.Skills[$skillID].NameID] + ' Lv. ' + skill.ParentSkills[$skillID]);
-          }
           return false;
         }
       }
@@ -185,9 +179,44 @@ function check_skill_reqs(skillID, skill, warnings) {
 
   var base = Job.BaseSkills[skill.BaseSkillID];
   if (base && base.indexOf(skillID) == -1 && base.length) {
+    return false;
+  }
+
+  return true;
+}
+
+function check_skill_reqs_state(skillID, skill, warnings) {
+  // check if sp total is satisfied
+  if (skill.NeedSP) {
+    for (var i = 0; i < 3; i++) {
+      if (Job.TSP[i] < skill.NeedSP[i]) {
+        if (warnings) {
+          warnings.push(format(lang.warnings.tsp, db.Lookup[skill.NameID], Job.Names[i], skill.NeedSP[i]));
+        }
+        return false;
+      }
+    }
+  }
+
+  // make sure parent skill is fine
+  if (skill.SkillGroup != 1 && skill.ParentSkills) { // doesn't matter for ults
+    for (var $skillID in skill.ParentSkills) {
+      if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
+        if(warnings) {
+          warnings.push(format(lang.warnings.parent, db.Lookup[skill.NameID], db.Lookup[db.Skills[$skillID].NameID], skill.ParentSkills[$skillID]));
+        }
+        return false;
+      }
+    }
+  }
+
+  var base = Job.BaseSkills[skill.BaseSkillID];
+  if (base && base.indexOf(skillID) != -1 && base.length > 1) {
     if (warnings) {
       base.forEach(function($skillID) {
-        warnings.push(db.Lookup[skill.NameID] + ' conflicts with ' + db.Lookup[db.Skills[$skillID].NameID]);
+        if ($skillID != skillID) {
+          warnings.push(format(lang.warnings.base, db.Lookup[skill.NameID], db.Lookup[db.Skills[$skillID].NameID]));
+        }
       });
     }
     return false;
@@ -202,29 +231,30 @@ function check_skill_groups(skillID, skill, warnings) {
   if (g) {
     var group = Job.SkillGroups[g];
     if (g == 1 && group && group.length) { // ultimate
-      return Job.SkillGroups[1].reduce(function(p, skillID) {
-               if (p) { // short circuit
-                 return p;
-               }
+        return Job.SkillGroups[1].reduce(function(p, $skillID) {
+                 if (p) { // short circuit
+                   return p;
+                 }
 
-               var skill = db.Skills[skillID];
-               var b = true;
-               for (var $skillID in skill.ParentSkills) {
-                 b &= level_satisfied($skillID, skill.ParentSkills[$skillID]);
-               }
-               return p | b;
-             }, false);
-      return true; // hasn't been set yet
+                 var $skill = db.Skills[$skillID];
+                 var b = true;
+                 for (var $$skillID in $skill.ParentSkills) {
+                   b &= level_satisfied($$skillID, $skill.ParentSkills[$$skillID]);
+                 }
+
+                 if (skillID != $skillID && !b) {
+                   warnings.push(format(lang.warnings.ult, db.Lookup[skill.NameID], db.Lookup[$skill.NameID]));
+                 }
+                 return p | b;
+               }, false);
     } else if (group && group.length) {
       var found = group.indexOf(skillID) != -1;
-      if (warnings) {
-        if (group.length > 1 && found) {
-          group.forEach(function($skillID) {
-            if ($skillID != skillID) {
-              warnings.push(db.Lookup[skill.NameID] + " cannot be set at same time as " + db.Lookup[db.Skills[$skillID].NameID]);
-            }
-          });
-        }
+      if (warnings && group.length > 1 && found) {
+        group.forEach(function($skillID) {
+          if ($skillID != skillID) {
+            warnings.push(format(lang.warnings.group, db.Lookup[skill.NameID], db.Lookup[db.Skills[$skillID].NameID]));
+          }
+        });
       }
       return group.length == 1 && found;
     }

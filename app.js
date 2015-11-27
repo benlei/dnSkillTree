@@ -20,8 +20,12 @@ app.use('/', router)
 // custom libs
 var dnss = require('./lib/dnss')
 var db = require('./lib/db')(dnss.settings.db)
+var lang = require('./lib/lang')
+var format = require('./lib/format')
+
+lang = lang('na')
 var jobs = []
-for (i in db.Jobs) {
+for (var i in db.Jobs) {
   jobs[i] = db.Jobs[i]
 }
 
@@ -39,10 +43,10 @@ router.get('/:job([a-z]+)-:level([0-9]+)', function(req, res) {
 var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_".split('');
 router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(req, res) {
   req.params.level = parseInt(req.params.level);
-  if (req.params.level < 1 || req.params.level > db.Levels.length) throw "level " + req.params.level + " not found"
+  if (req.params.level < 1 || req.params.level > db.Levels.length) throw format(lang.error.level_not_found, req.params.level)
   var job = jobs.filter(function(j) { return j != null && j.JobNumber == 2 && j.EnglishName == req.params.job })[0]
-  if (!job) throw "job " + req.params.job + " not found"
-  if (req.params.build.length > 216) throw "build path too long"
+  if (!job) throw format(lang.error.job_not_found, req.params.job)
+  if (req.params.build.length > 216) throw lang.error.build_too_long
 
   var apply_type = 0, free = true;
   if (req.cookies) {
@@ -73,9 +77,9 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
   var i,j, job_num = 0, job_sp = [0,0,0], baseskills = {}, skillgroups = {};
   for (i = 0, j = 0; i < 72; i++, j++) {
     var c = build[j], id = skilltree[i];
-    if (c === undefined) throw "invalid build path"
+    if (c === undefined) throw lang.error.build_path
     if (id === null) {
-      if (c != '-') throw "invalid build path"
+      if (c != '-') throw lang.error.build_path
       continue;
     }
 
@@ -102,9 +106,9 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
 
     var maybePlus1 = skill.Levels[1].LevelLimit == 1 ? 1 : 0;
     var level = buildChars.indexOf(c) + maybePlus1;
-    if (level + tech > skill.MaxLevel || (level == 0 && tech > 0)) throw "invalid build path"
+    if (level + tech > skill.MaxLevel || (level == 0 && tech > 0)) throw lang.error.build_path
     var trueMax = get_skill_max(skill, req.params.level);
-    if (level > trueMax) throw "invalid build path"
+    if (level > trueMax) throw lang.error.build_path
     var tsp = get_skill_tsp(skill, level);
     job_sp[job_num] += tsp;
     lvls[id] = [level, trueMax, tsp, tech, skill.MaxLevel - skill.SPMaxLevel];
@@ -116,7 +120,7 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     }
 
     if (skill.SkillGroup && level) {
-      if (tech > 0) throw "invalid build path"
+      if (tech > 0) throw lang.error.build_path
 
       if (!skillgroups[skill.SkillGroup]) {
         skillgroups[skill.SkillGroup] = [];
@@ -134,15 +138,15 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     }
   }
 
-  if (j < build.length) throw "invalid build path"
+  if (j < build.length) throw lang.error.build_path
 
   // sum of sp checks
   if (job_sp[0] > job_max_sp[0] || job_sp[1] > job_max_sp[1]
                                 || job_sp[2] > job_max_sp[2]
-                                || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw "invalid build path"
+                                || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path
 
   res.render('simulator', {
-    title: job.JobName + ' | ' + dnss.settings.title,
+    title: format(lang.title, job.JobName),
     jobs: jobs,
     cap: req.params.level,
     line: line,
@@ -157,7 +161,9 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     baseskills: baseskills,
     tree_pos: 0,
     apply_type: apply_type,
-    free: free
+    free: free,
+    lang: lang['public'],
+    format: format
   })
 })
 

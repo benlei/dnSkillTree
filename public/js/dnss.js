@@ -38,7 +38,7 @@ function dnss(urls) {
 
   // level selection
   for (var level = Job.Levels.length; level > 0; level--) {
-    $('#level').append(tag('option', null, 'Lv. ' + level).val(level));
+    $('#level').append(tag('option', null, format(lang.level.option, level)).val(level));
   }
   $('#level').val(Job.MaxLevel);
 
@@ -49,7 +49,7 @@ function dnss(urls) {
                   }));
   $('#pve').click(reverse('#pvp', function() {
                     set_cookie("apply_type", 0);
-                    return Job.ApplyType = 0, !1;
+                    return Job.ApplyType = 0, !0;
                   }));
 
   // the strictness
@@ -103,10 +103,9 @@ function dnss(urls) {
     }, 500); // .5s delay
   });
 
-  var RST = 'Reset', INC = 'Raise';
   $('#level').change(function() {
     var val = num($(this).val());
-    $('#level-btn').text(val <= Job.MaxLevel ? RST : INC);
+    $('#level-btn').text(val <= Job.MaxLevel ? lang.level.reset : lang.level.raise);
   });
 
   $('#level-btn').mousedown(function() {
@@ -182,7 +181,7 @@ function dnss(urls) {
     Job.MaxLevel = level;
 
     update_progress();
-    $(this).text(RST);
+    $(this).text(lang.level.reset);
 
     history_push();
   });
@@ -192,10 +191,10 @@ function update_progress() {
   var total_sp = get_total_sp();
   var max_sp = get_max_sp();
   var percent = (total_sp/max_sp) * 100;
-  $('#max-progress').text(max_sp + ' SP');
+  $('#max-progress').text(format(lang.progress.max, max_sp));
   $('#progress').css('width', percent + '%');
-  $('#rem-progress').text((max_sp - total_sp) + ' SP');
-  $('#curr-progress').text(total_sp + ' SP');
+  $('#rem-progress').text(format(lang.progress.remaining, max_sp - total_sp));
+  $('#curr-progress').text(format(lang.progress.curr, total_sp));
 }
 
 function set_opacity(dom, o) {
@@ -259,13 +258,12 @@ function strict_checker(setFree) {
 
     // make sure needsp is fine
     if (lvl[0] > 0) {
-      if (!check_skill_reqs(skillID, skill, warnings)) {
+      if (!check_skill_reqs_state(skillID, skill, warnings)) {
         changeable = false;
         return;
       }
 
       if (!check_skill_groups(skillID, skill, warnings)) {
-        console.log(skillID + " 2");
         changeable = false;
         return;
       }
@@ -276,7 +274,7 @@ function strict_checker(setFree) {
     Job.Free = false;
     set_cookie('free', 0);
   } else {
-    title.text('Skill Tree Violations');
+    title.text(lang.strict_title);
     body.empty().append(warnings.map(function(v) {
                           return tag('p', null, v);
                         }));
@@ -376,4 +374,30 @@ function set_cookie(name, value) {
     var d = new Date();
     d.setTime(d.getTime() + (356*24*60*60*1000));
     document.cookie = name + "=" + value + "; path=/; expires=" + d.toUTCString();
+}
+
+function format(str) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  var s = '';
+  var len = str.length;
+  var idx = 0;
+  for (var i = 0; i < len; i++) {
+    var c1 = str[i], c2 = str[i + 1];
+    if (c1 == '?') {
+      if (c2 == '?') {
+        ++i;
+        s += '?';
+      } else {
+        if (args[idx] === undefined) {
+          s += "";
+        } else {
+          s += args[idx];
+        }
+        idx++;
+      }
+    } else {
+      s += c1;
+    }
+  }
+  return s;
 }
