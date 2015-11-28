@@ -22,6 +22,7 @@ var dnss = require('./lib/dnss')
 var db = require('./lib/db')(dnss.settings.db)
 var lang = require('./lib/lang')
 var format = require('./lib/format')
+var version = process.env.npm_package_version.replace(/\./g,'')
 
 lang = lang('na')
 var jobs = []
@@ -163,7 +164,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     apply_type: apply_type,
     free: free,
     lang: lang['public'],
-    format: format
+    format: format,
+    version: version
   })
 })
 

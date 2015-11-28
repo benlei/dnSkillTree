@@ -19,8 +19,8 @@ block custom_script
       SkillGroups: skillgroups,
       Cache: {}
     });
-  script(type='text/javascript') var lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job)
-  script(type='text/javascript', src=fn.url.js('dnss.min'))
+  script(type='text/javascript') var $VERSION='#{version}',lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job)
+  script(type='text/javascript', src=fn.url.js('dnss.min') + '?version=#{version}')
   script(type='text/javascript') var dskills=$('.dskill');dnss(!{urls});
 
 block content
@@ -69,7 +69,7 @@ mixin panel_header(job, index)
 
 mixin panel_body(job)
   div.panel-body
-    table.skill-table(style=fn.image.skilltree(job))
+    table.skill-table(style=fn.image.skilltree(job, version))
       each skillRow in job.SkillTree
         tr.skill-tr
           each skillID in skillRow

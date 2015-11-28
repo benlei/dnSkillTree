@@ -2,11 +2,11 @@
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
-    this.style.backgroundImage = "url('" + urls.mainbar + "/jobicon_pvp.png')";
+    this.style.backgroundImage = "url('" + urls.mainbar + "/jobicon_pvp.png?version=" + $VERSION + "')";
   });
 
   // is async, don't care when we get it
-  $.getJSON(urls.job, function(data) {
+  $.getJSON(urls.job + '?version=' + $VERSION, function(data) {
     db = data;
 
     // have it stay a little
@@ -27,7 +27,7 @@ function dnss(urls) {
     Job.Cache[skillID] = lvl;
     $Job.Cache[skillID] = [].concat(lvl); // clone it
 
-    this.style.background = "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
+    this.style.background = "url('"+ urls.mainbar  +"/skillicon" + sprite[0] + grayed + ".png?version=" + $VERSION + "') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
     this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
 
     dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[4]].join('/'));
