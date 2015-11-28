@@ -9,8 +9,17 @@ var gulp = require('gulp'),
     bump = require('gulp-bump'),
     tag = require('gulp-tag-version');
 
+var proc = require('child_process');
+
+var css_src = './public/scss/*.scss';
+var js_src = [
+  './public/js/dnss.js',
+  './public/js/skill.js',
+  './public/js/description.js'
+];
+
 gulp.task('css', function () {
-  gulp.src('./public/scss/*.scss')
+  gulp.src(css_src)
       .pipe(concat('dnss.scss'))
       .pipe(sass({outputStyle: 'compressed'}))
       .pipe(rename({suffix: '.min'}))
@@ -18,19 +27,17 @@ gulp.task('css', function () {
 });
 
 gulp.task('js', function() {
-  var src = [
-    './public/js/dnss.js',
-    './public/js/skill.js',
-    './public/js/description.js'
-  ];
-
-  return gulp.src(src)
+  return gulp.src(js_src)
     .pipe(concat('dnss.js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./public/js'))
 });
 
+gulp.task('watch', function() {
+  gulp.watch(css_src, ['css']);
+  gulp.watch(js_src, ['js']);
+});
 
 function inc(importance) {
   return function() {

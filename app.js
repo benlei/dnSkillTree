@@ -30,6 +30,19 @@ for (var i in db.Jobs) {
   jobs[i] = db.Jobs[i]
 }
 
+router.get('/', function(req, res) {
+  res.render('home', {
+    title: "MAZE",
+    fn: dnss.fn,
+    lang: lang['public'],
+    home_body: lang.home_body,
+    jobs: jobs,
+    cap: db.SP.length,
+    format: format,
+    version: version
+  })
+})
+
 /* redirect to job with level specified */
 router.get('/:job([a-z]+)', function(req, res) {
   res.redirect(302, '/' + req.params.job + '-' + db.Levels.length)
@@ -147,7 +160,7 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
                                 || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path
 
   res.render('simulator', {
-    title: format(lang.title, job.JobName),
+    title: format(lang.job_title, job.JobName, "MAZE"),
     jobs: jobs,
     cap: req.params.level,
     line: line,
