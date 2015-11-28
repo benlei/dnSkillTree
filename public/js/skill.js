@@ -2,7 +2,7 @@ function skill_adj(e) {
   var dom = $(this);
   var skillID = num(this.getAttribute('data-skill')); // indexOf is strict
   var max = e.shiftKey || e.ctrlKey;
-  var lvl = Job.Cache[skillID].slice(0); // clone it
+  var lvl = [].concat(Job.Cache[skillID]); // clone it
   var image = this.style.backgroundImage.replace('_b.png', '.png');
   var skill = db.Skills[skillID];
   var tech = e.altKey;

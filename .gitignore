@@ -65,3 +65,6 @@ tramp
 Session.vim
 .netrwhist
 *~
+
+dnss.min.js
+dnss.min.css
