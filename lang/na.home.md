@@ -1,4 +1,4 @@
-MAZE is a DragonNest Skill Calculator. Nothing more to be said about it.
+MAZE is a DragonNest Skill Calculator/Simulator. It is the successor of DNSS, which was a derivative of YADNSS.
 
 ### Features
 
