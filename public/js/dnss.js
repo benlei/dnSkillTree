@@ -1,4 +1,4 @@
-/* global */
+/* global 0 */
 function dnss(urls) {
   // initialize all the images
   $('.jobsprite').each(function() {
@@ -45,11 +45,19 @@ function dnss(urls) {
   // the apply type
   $('#pvp').click(reverse('#pve', function() {
                     set_cookie("apply_type", 1);
-                    return Job.ApplyType = 1, !0;
+                    Job.ApplyType = 1;
+                    if ($dpop.persist) {
+                      $dpop.update($dpop.persist[0], $dpop.persist);
+                    }
+                    return !0;
                   }));
   $('#pve').click(reverse('#pvp', function() {
                     set_cookie("apply_type", 0);
-                    return Job.ApplyType = 0, !0;
+                    Job.ApplyType = 0;
+                    if ($dpop.persist) {
+                      $dpop.update($dpop.persist[0], $dpop.persist);
+                    }
+                    return !0;
                   }));
 
   // the strictness
