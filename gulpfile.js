@@ -45,10 +45,12 @@ function inc(importance) {
         .pipe(bump({type: importance}))
         .pipe(gulp.dest('./'))
         .pipe(git.commit('[gulp] bumping package version'))
-        .pipe(tag());
+        .pipe(tag())
+        .on('end', function() {
+      this.pipe(git.push('origin', 'master'))
+      .end();
+    });
 
-    git.push('origin', 'master', '--tags');
-    git.push('origin', 'master');
   };
 }
 
