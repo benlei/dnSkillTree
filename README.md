@@ -24,7 +24,7 @@ Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.0/dnc
     
 5. Compile data from DNT files:
     
-        dn dnt -f -c dnss.js /tmp/dragonnest/resource/ext/*.dnt
+        dn dnt -c dnss.js /tmp/dragonnest/resource/ext/*.dnt
 
 ### Auto Updating
 There is an [updater-na.json](https://raw.githubusercontent.com/ben-lei/dncli/master/updater-na.js) that is written for Java 8+ Nashorn for DN NA. It requires that the `DN_VERSION_PATH` (location of version file) and `DN_OUT_DIR` (location to download patches to) environment variables to be set in order to run:
