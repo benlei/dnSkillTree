@@ -46,11 +46,6 @@ function inc(importance) {
         .pipe(gulp.dest('./'))
         .pipe(git.commit('[gulp] bumping package version'))
         .pipe(tag())
-        .on('end', function() {
-      this.pipe(git.push('origin', 'master'))
-      .end();
-    });
-
   };
 }
 
