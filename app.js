@@ -37,7 +37,7 @@ router.get('/', function(req, res) {
     lang: lang['public'],
     home_body: lang.home_body,
     jobs: jobs,
-    cap: db.SP.length,
+    cap: db.Levels.length,
     format: format,
     version: version
   })
