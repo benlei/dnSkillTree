@@ -15,7 +15,7 @@ Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.0/dnc
     
         dnt dds --png -p -f /tmp/dragonnest/resource/ui/mainbar/*.dds
         dnt dds --png -p -f /tmp/dragonnest/resource/ui/skill/*.dds
-        dnt dds --png -p -f /tmp/dragonnest/resourrce/uitemplatetexture/uit_gesturebutton.dds
+        dnt dds --png -p -f /tmp/dragonnest/resource/uitemplatetexture/uit_gesturebutton.dds
 
 4. Set the following environment variables to the relevant locations:
     - `DN_LEVEL_CAP` - The level cap to use (e.g. 90)
