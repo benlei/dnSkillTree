@@ -22,7 +22,7 @@ var dnss = require('./lib/dnss')
 var db = require('./lib/db')(dnss.settings.db)
 var lang = require('./lib/lang')
 var format = require('./lib/format')
-var version = process.env.npm_package_version.replace(/\./g,'')
+var version = process.env.npm_package_version
 
 lang = lang(process.env.MAZE_REGION ? process.env.MAZE_REGION : 'na')
 var jobs = []
