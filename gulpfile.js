@@ -3,13 +3,9 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    cache = require('gulp-cache'),
-    del = require('del'),
     git = require('gulp-git'),
     bump = require('gulp-bump'),
     tag = require('gulp-tag-version');
-
-var proc = require('child_process');
 
 var css_src = './public/scss/*.scss';
 var js_src = [
