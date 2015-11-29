@@ -24,7 +24,7 @@ var lang = require('./lib/lang')
 var format = require('./lib/format')
 var version = process.env.npm_package_version.replace(/\./g,'')
 
-lang = lang('na')
+lang = lang(process.env.MAZE_REGION ? process.env.MAZE_REGION : 'na')
 var jobs = []
 for (var i in db.Jobs) {
   jobs[i] = db.Jobs[i]
