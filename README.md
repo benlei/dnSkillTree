@@ -9,7 +9,7 @@ Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.0/dnc
 1. Get the [dnss.js](https://raw.githubusercontent.com/ben-lei/dncli/master/dnss.js)
 2. Extract the Paks
 
-        dn pak -x -f -e dnss.js /mnt/dragonnest /tmp/dragonnest
+        dn pak -xfe dnss.js /mnt/dragonnest/* /tmp/dragonnest
 
 3. Convert the DDS files to PNG:
 
