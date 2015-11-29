@@ -27,9 +27,11 @@ There is an [updater-na.json](https://raw.githubusercontent.com/ben-lei/dncli/ma
 When this is done, similar steps as above can be run to more easily update data.
 
 ## Setup
-1. Set environment variable for config file and region:
+1. Setup nginx, Apache, or whatever you prefer on your current server, or another. Technically you can serve static files using NodeJS, but it's better to free up the work to a true webserver.
+2. Put the generated files from the data mining section into the static web directory, **EXCEPT** the db.json. Put the db.json somewhere that can be accessed by the user running the MAZE application.
+3. Set environment variable for config file and region.
     - MAZE_CONFIG - The configuration file that holds information about relevant extracted files at located /maze/
     - MAZE_REGION - the regional language files in the dn-maze/lang directory.
     See example [config.json](https://raw.githubusercontent.com/ben-lei/dn-maze/master/config.json), and NA regional [na.json](https://raw.githubusercontent.com/ben-lei/dn-maze/master/lang/na.json) and [na.home.md](https://raw.githubusercontent.com/ben-lei/dn-maze/master/lang/na.home.md).
-2. Run the app:
+4. Run the app:
     npm start
