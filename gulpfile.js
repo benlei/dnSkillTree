@@ -47,7 +47,7 @@ function inc(importance) {
         .pipe(git.commit('[gulp] bumping package version'))
         .pipe(tag());
     git.push('origin', 'master');
-    git.push('origin', {args: '--tags'});
+    git.push('origin', 'master', {args: '--tags'});
   };
 }
 
