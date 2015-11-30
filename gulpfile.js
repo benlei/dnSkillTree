@@ -7,6 +7,8 @@ var gulp = require('gulp'),
     bump = require('gulp-bump'),
     tag = require('gulp-tag-version');
 
+var fs = require('fs');
+
 var css_src = './public/scss/*.scss';
 var js_src = [
   './public/js/dnss.js',
@@ -30,6 +32,11 @@ gulp.task('js', function() {
     .pipe(gulp.dest('./public/js'))
 });
 
+gulp.task('stamp', function(cb) {
+  // don't care about millisec
+  fs.writeFile('timestamp', parseInt((new Date).getTime() / 1000), cb);
+});
+
 gulp.task('watch', function() {
   gulp.watch(css_src, ['css']);
   gulp.watch(js_src, ['js']);
@@ -48,4 +55,4 @@ function inc(importance) {
 gulp.task('patch', inc('patch'));
 gulp.task('feature', inc('minor'));
 gulp.task('release', inc('major'));
-gulp.task('default', ['css', 'js'], function() {});
+gulp.task('default', ['stamp', 'css', 'js'], function() {});

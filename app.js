@@ -22,7 +22,6 @@ var dnss = require('./lib/dnss')
 var db = require('./lib/db')(dnss.settings.db)
 var lang = require('./lib/lang')
 var format = require('./lib/format')
-var version = process.env.npm_package_version
 
 lang = lang(process.env.MAZE_REGION ? process.env.MAZE_REGION : 'na')
 var jobs = []
@@ -39,7 +38,7 @@ router.get('/', function(req, res) {
     jobs: jobs,
     cap: db.Levels.length,
     format: format,
-    version: version
+    timestamp: dnss.timestamp
   })
 })
 
@@ -178,7 +177,7 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     free: free,
     lang: lang['public'],
     format: format,
-    version: version
+    timestamp: dnss.timestamp
   })
 })
 
