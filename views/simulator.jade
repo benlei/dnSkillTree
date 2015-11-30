@@ -17,7 +17,8 @@ block custom_script
       Free: free,
       BaseSkills: baseskills,
       SkillGroups: skillgroups,
-      Cache: lvls
+      Cache: lvls,
+      Sprites: sprites
     });
   script(type='text/javascript') var $TIMESTAMP='#{timestamp}',lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job)
   script(type='text/javascript', src=fn.url.js('dnss.min'))
@@ -79,9 +80,8 @@ mixin panel_body(job)
 mixin skill(skill, skillID)
   td(class='skill-td')
     if skill
-      - var sprite = [skill.Sprite, skill.IconCol, skill.IconRow, tree_pos].join(',')
       - var lvl = lvls[skillID]
-      div.skill.dskill(data-skill=skillID, data-sprite=sprite)
+      div.skill.dskill(data-skill=skillID)
         div.skill-bdr(class={g: !lvl[0]})
         div.badge.skill-lvl(class={g: lvl[3] == 1, 'b': lvl[3] == 2})
     else

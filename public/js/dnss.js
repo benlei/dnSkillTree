@@ -21,7 +21,7 @@ function dnss(urls) {
     var skillID = this.getAttribute('data-skill');
     var lvl = Job.Cache[skillID];
     var grayed = lvl[0] == 0 ? '_b' : '';
-    var sprite = this.getAttribute('data-sprite').split(',');
+    var sprite = Job.Sprites[skillID];
     sprite[1] *= -50;
     sprite[2] *= -50;
 

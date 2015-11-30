@@ -87,7 +87,7 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
                     parseInt(max_sp * db.SP[1]),
                     parseInt(max_sp * db.SP[2])];
 
-  var i,j, job_num = 0, job_sp = [0,0,0], baseskills = {}, skillgroups = {};
+  var i,j, job_num = 0, job_sp = [0,0,0], baseskills = {}, skillgroups = {}, sprites = {};
   for (i = 0, j = 0; i < 72; i++, j++) {
     var c = build[j], id = skilltree[i];
     if (c === undefined) throw lang.error.build_path
@@ -149,6 +149,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
 
       baseskills[skill.BaseSkillID].push(id);
     }
+
+    sprites[id] = [skill.Sprite, skill.IconCol, skill.IconRow, i];
   }
 
   if (j < build.length) throw lang.error.build_path
@@ -177,7 +179,8 @@ router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(
     free: free,
     lang: lang['public'],
     format: format,
-    timestamp: dnss.timestamp
+    timestamp: dnss.timestamp,
+    sprites: sprites
   })
 })
 
