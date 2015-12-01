@@ -4,12 +4,12 @@ MAZE is personal project of mine to learn more about NodeJS, which turned out to
 The primary goal of MAZE was to make it simple to setup and customize for different regions that host the MMO game named DragonNest.
 
 ## Data Minining
-Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.0/dncli-1.0.jar), or build it from [source](https://github.com/ben-lei/dncli). This example assumes you created an alias `dn` for this Java program, and are using a Linux VM with your Windows DragonNest folder mounted to /mnt/dragonnest.
+Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.1/dncli-1.1.jar), or build it from [source](https://github.com/ben-lei/dncli). This example assumes you created an alias `dn` for this Java program, and are using a Linux VM with your Windows DragonNest folder mounted to /mnt/dragonnest.
 
-1. Get the [dnss.js](https://raw.githubusercontent.com/ben-lei/dncli/master/dnss.js)
+1. Get the [maze.js](https://raw.githubusercontent.com/ben-lei/dncli/master/maze.js)
 2. Extract the Paks
 
-        dn pak -xfe dnss.js /mnt/dragonnest/* /tmp/dragonnest
+        dn pak -xfe maze.js /mnt/dragonnest/* /tmp/dragonnest
 
 3. Convert the DDS files to PNG:
 
@@ -24,7 +24,7 @@ Get the [dncli](https://github.com/ben-lei/dncli/releases/download/dncli-1.0/dnc
 
 5. Compile data from DNT files:
 
-        dn dnt -c dnss.js /tmp/dragonnest/resource/ext/*.dnt
+        dn dnt -c maze.js /tmp/dragonnest/resource/ext/*.dnt
 
 ### Auto Updating
 There is an [updater-na.json](https://raw.githubusercontent.com/ben-lei/dncli/master/updater-na.js) that is written for Java 8+ Nashorn for DN NA. It requires that the `DN_VERSION_PATH` (location of version file) and `DN_OUT_DIR` (location to download patches to) environment variables to be set in order to run:
