@@ -11,9 +11,10 @@ var fs = require('fs');
 
 var css_src = './public/scss/*.scss';
 var js_src = [
-  './public/js/dnss.js',
-  './public/js/skill.js',
-  './public/js/description.js'
+  './public/lib/maze.js',
+  './public/lib/skill.js',
+  './public/lib/description.js',
+  './public/lib/tech.js'
 ];
 
 gulp.task('css', function () {
@@ -26,7 +27,7 @@ gulp.task('css', function () {
 
 gulp.task('js', function() {
   return gulp.src(js_src)
-    .pipe(concat('dnss.js'))
+    .pipe(concat('maze.js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./public/js'))

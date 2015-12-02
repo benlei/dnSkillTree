@@ -21,7 +21,7 @@ block custom_script
       Sprites: sprites
     });
   script(type='text/javascript') var $TIMESTAMP='#{timestamp}',lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job)
-  script(type='text/javascript', src=fn.url.js('dnss.min'))
+  script(type='text/javascript', src=fn.url.js('maze.min'))
   script(type='text/javascript') var dskills=$('.dskill');dnss(!{urls});
 
 block content
@@ -39,7 +39,7 @@ block content
           select.form-control#level
           button#level-btn.btn.btn-sm.btn-default(type='reset')= lang.level.reset
       div.col-xs-7
-        button#techs.btn.btn-sm.btn-primary(type='button') Techniques
+        button#techs.btn.btn-sm.btn-default(type='button') Techniques
       div.col-xs-3
         div.btn-group.push-left
           button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free})= lang.mode.free

@@ -191,6 +191,8 @@ function dnss(urls) {
 
     history_push();
   });
+
+  $('#techs').click(techniques)
 }
 
 function update_progress() {
@@ -252,8 +254,8 @@ function reverse(rev, handler) {
 
 function strict_checker(setFree) {
   var modal = $('#modal');
-  var title = modal.find('.modal-title');
-  var body = modal.find('.modal-body');
+  var title = $('#modal-title');
+  var body = $('#modal-body');
   var changeable = true;
   var warnings = [];
 
@@ -302,7 +304,7 @@ function history_push() {
   var build_path = [];
   dskills.each(function() {
     var skillID = this.getAttribute('data-skill');
-    var pos = this.getAttribute('data-sprite').split(',')[3];
+    var pos = Job.Sprites[skillID][3];
     var lvl = Job.Cache[skillID];
     var maybeMinus1 = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
     var b = [];
