@@ -1,37 +1,24 @@
 function skill_adj(e) {
+  if (e.altKey) {
+    return; // don't do anything
+  }
+
   var dom = $(this);
   var skillID = num(this.getAttribute('data-skill')); // indexOf is strict
   var max = e.shiftKey || e.ctrlKey;
   var lvl = [].concat(Job.Cache[skillID]); // clone it
   var image = this.style.backgroundImage.replace('_b.png', '.png');
   var skill = db.Skills[skillID];
-  var tech = e.altKey;
 
   var prev = lvl[0];
   if (e.button == 0) { // left click
-    if (tech) {
-      if (lvl[3] == 2 || skill.SkillGroup == 1) { // can't tech any higher
-        return;
-      }
-
-      lvl[3] = !lvl[3] ? 1 : 2;
-    } else {
-      lvl[0] = Math.min(lvl[1], max ? lvl[1] : lvl[0] + 1);
-    }
+    lvl[0] = Math.min(lvl[1], max ? lvl[1] : lvl[0] + 1);
   } else if (e.button == 2) { // right click
-    if (tech) {
-      if (!lvl[3] || skill.SkillGroup == 1) { // can't tech any lower
-        return;
-      }
-
-      lvl[3] = lvl[3] == 2 ? 1 : 0;
-    } else {
-      lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
-      if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
-        lvl[0] = 1;
-      } else if (max) {
-        lvl[3] = 0; // reset techs
-      }
+    lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
+    if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
+      lvl[0] = 1;
+    } else if (max) {
+      lvl[3] = 0; // reset techs
     }
   }
 
@@ -73,7 +60,7 @@ function skill_adj(e) {
   }
 
 
-  if (prev == lvl[0] && !tech) {
+  if (prev == lvl[0]) {
     return; // do nothing
   }
 

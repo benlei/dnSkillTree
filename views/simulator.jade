@@ -31,14 +31,15 @@ block content
         div.modal-header
           button.close(type='button', data-dismiss='modal')
             span(aria-hidden='true') &times;
-          h4.modal-title
-        div.modal-body
+          h4.modal-title#modal-title
+        div.modal-body#modal-body
     div.row#changables
-      div.col-xs-3
+      div.col-xs-2
         div.form-inline: div.form-group
           select.form-control#level
           button#level-btn.btn.btn-sm.btn-default(type='reset')= lang.level.reset
-      div.col-xs-6
+      div.col-xs-7
+        button#techs.btn.btn-sm.btn-primary(type='button') Techniques
       div.col-xs-3
         div.btn-group.push-left
           button#free.btn.btn-sm(type='button', class={'btn-primary': free, 'btn-default': !free})= lang.mode.free
