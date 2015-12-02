@@ -20,9 +20,9 @@ block custom_script
       Cache: lvls,
       Sprites: sprites
     });
-  script(type='text/javascript') var $TIMESTAMP='#{timestamp}',lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job)
+  script(type='text/javascript') var $TIMESTAMP='#{timestamp}',lang=!{JSON.stringify(lang)},db,Job=!{job},$Job=jQuery.extend(!0,{},Job),urls=!{urls}
   script(type='text/javascript', src=fn.url.js('maze.min'))
-  script(type='text/javascript') var dskills=$('.dskill');dnss(!{urls});
+  script(type='text/javascript') var dskills=$('.dskill');dnss();
 
 block content
   div.container

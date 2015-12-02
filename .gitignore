@@ -66,6 +66,5 @@ Session.vim
 .netrwhist
 *~
 
-dnss.min.js
-dnss.min.css
+*.min.*
 timestamp

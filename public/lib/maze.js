@@ -1,5 +1,4 @@
-/* global 0 */
-function dnss(urls) {
+function dnss() {
   // initialize all the images
   $('.jobsprite').each(function() {
     this.style.backgroundImage = "url('" + urls.mainbar + "/" + $TIMESTAMP + "-jobicon_pvp.png')";
