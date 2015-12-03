@@ -19,7 +19,7 @@ var js_src = [
 
 gulp.task('css', function () {
   gulp.src(css_src)
-      .pipe(concat('dnss.scss'))
+      .pipe(concat('maze.scss'))
       .pipe(sass({outputStyle: 'compressed'}))
       .pipe(rename({suffix: '.min'}))
       .pipe(gulp.dest('./public/css'));

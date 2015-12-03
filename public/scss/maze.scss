@@ -224,3 +224,19 @@ $std-font-size: 14px;
     margin-top: 6px;
     padding: 5px;
 }
+
+.modal {
+    .row {
+        &:first-of-type {
+            padding-top: 0;
+        }
+
+        padding: 20px 0;
+        border-bottom: 1px solid #464545;
+
+        &:last-of-type {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+}
