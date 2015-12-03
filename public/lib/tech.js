@@ -2,7 +2,7 @@ function techniques() {
   var modal = $('#modal');
   var title = $('#modal-title');
   var body = $('#modal-body');
-
+/*
   title.text("Techniques");
   body.empty();
 
@@ -16,73 +16,88 @@ function techniques() {
 
   // necklace
   select = tag('select', 'form-control').attr('id', 'tech-necklace');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   db.Techs.Necklace.forEach(function(skillID) {
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   });
   necklace.append(tag('div', 'col-xs-10').append(
     tag('div', 'form-inline').append(
       select,
-      tag('button', 'btn btn-primary', 'Tech!')
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
     )
   ));
 
   select = tag('select', 'form-control').attr('id', 'tech-earring');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   db.Techs.Earring.forEach(function(skillID) {
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   });
-  earring.append(tag('div', 'col-xs-10').append(select));
+  earring.append(tag('div', 'col-xs-10').append(
+    tag('div', 'form-inline').append(
+      select,
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
+    )
+  ));
 
   select = tag('select', 'form-control').attr('id', 'tech-ring-1');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   db.Techs.Ring.forEach(function(skillID) {
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   });
-  ring1.append(tag('div', 'col-xs-10').append(select));
+  ring1.append(tag('div', 'col-xs-10').append(
+    tag('div', 'form-inline').append(
+      select,
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
+    )
+  ));
 
   select = tag('select', 'form-control').attr('id', 'tech-ring-2');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   db.Techs.Ring.forEach(function(skillID) {
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   });
-  ring2.append(tag('div', 'col-xs-10').append(select));
+  ring2.append(tag('div', 'col-xs-10').append(
+    tag('div', 'form-inline').append(
+      select,
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
+    )
+  ));
 
   select = tag('select', 'form-control').attr('id', 'tech-weapon');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   db.Techs.Weapon.forEach(function(skillID) {
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   });
-  weapon.append(tag('div', 'col-xs-10').append(select));
+  weapon.append(tag('div', 'col-xs-10').append(
+    tag('div', 'form-inline').append(
+      select,
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
+    )
+  ));
 
   select = tag('select', 'form-control').attr('id', 'tech-crest');
-  select.append(tag('option').text('None'));
+  select.append(tag('option'));
   for (var skillID in db.Skills) {
+    var skill = db.Skills[skillID];
+    if (!skill.SPMaxLevel) {
+      continue;
+    }
     select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
   }
-  crest.append(tag('div', 'col-xs-10').append(select));
-
-  /*
-   *
-   *     tag('div', 'col-xs-2', 'Earring'),
-    tag('div', 'col-xs-2', 'Ring 1'),
-    tag('div', 'col-xs-2', 'Ring 2'),
-    tag('div', 'col-xs-2', 'Weapon'),
-    tag('div', 'col-xs-2', 'Crest')
-   */
+  crest.append(tag('div', 'col-xs-10').append(
+    tag('div', 'form-inline').append(
+      select,
+      tag('button', 'btn btn-primary tech', '+1'),
+      tag('button', 'btn btn-default reset', 'Reset')
+    )
+  ));
 
   body.append(necklace, earring, ring1, ring2, weapon, crest);
   modal.modal('show');
-}
-
-function create_skill_icon(skillID) {
-/*    var lvl = Job.Cache[skillID];
-    var grayed = lvl[0] == 0 ? '_b' : '';
-    var sprite = Job.Sprites[skillID];
-    sprite[1] *= -50;
-    sprite[2] *= -50;
-
-    this.style.background = "url('"+ urls.mainbar  +"/" + $TIMESTAMP + "-skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
-    this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
-*/
+  */
 }
