@@ -146,27 +146,47 @@ module.exports = function(configs) {
                                   || job_sp[2] > job_max_sp[2]
                                   || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path
 
+    var data = {
+      EnglishName: line[2].EnglishName,
+      MaxLevel: req.params.level,
+      Levels: db.Levels,
+      SP: db.SP,
+      TSP: job_sp,
+      Names: [line[0].JobName, line[1].JobName, line[2].JobName],
+      ApplyType: apply_type,
+      Free: free,
+      BaseSkills: baseskills,
+      SkillGroups: skillgroups,
+      Cache: lvls,
+      Sprites: sprites
+    };
+
+    var json_data = JSON.stringify(data);
+
+    var json_urls  = JSON.stringify({
+      mainbar: maze.fn.url.mainbar(),
+      border: maze.fn.url.uitemplatetexture('uit_gesturebutton'),
+      job: maze.fn.url.json(line[2].EnglishName)
+    });
+
+    var json_lang = JSON.stringify(lang['public']);
+
     res.render('simulator', {
       title: format(lang.job_title, job.JobName, "MAZE"),
       jobs: jobs,
-      cap: req.params.level,
       line: line,
+      cap: db.Levels.length,
       fn: maze.fn,
-      sp_ratios: db.SP,
-      levels: db.Levels,
       max_sp: max_sp,
-      lvls: lvls,
-      job_sp: job_sp,
       job_max_sp: job_max_sp,
-      skillgroups: skillgroups,
-      baseskills: baseskills,
       tree_pos: 0,
-      apply_type: apply_type,
-      free: free,
       lang: lang['public'],
       format: format,
       timestamp: maze.timestamp,
-      sprites: sprites
+      data: data,
+      json_data: json_data,
+      json_lang: json_lang,
+      urls: json_urls
     })
   })
 
