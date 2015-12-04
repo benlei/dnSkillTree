@@ -10,36 +10,33 @@ function techniques() {
     body.text('Loading data...');
     body.load('/api/tech/' + Job.EnglishName, function(res) {
       techHTML = res;
-      tech_disable(Job.Techs);
-      attach_tech_events();
+      init_techs();
     });
   } else {
     body.html(techHTML);
-    tech_disable(Job.Techs);
-    attach_tech_events();
+    init_techs();
   }
 
   modal.modal('show');
 }
 
-function attach_tech_events() {
+function init_techs() {
   var ids = ['necklace', 'earring', 'ring-1', 'ring-2', 'weapon', 'crest'];
   var keys = ['Necklace', 'Earring', 'Ring1', 'Ring2', 'Weapon', 'Crest'];
   ids.forEach(function(id, i) {
     var tech = $('#tech-' + id);
     var btn = tech.next();
     var skillID = Job.Techs[keys[i]];
-    if (skillID) { // already has something
-      tech.val(skillID);
+    if (skillID) { // already has something at start
+      tech.val(skillID).prop('disabled', true);
       btn.removeClass('btn-default').addClass('btn-danger').text('-1');
-      tech.prop('disabled', true);
     }
 
     btn.prop('disabled', !tech.val() || !skillID);
     tech.change(function() {
-      btn.removeClass('btn-default btn-primary');
-      btn.addClass(tech.val() ? 'btn-primary' : 'btn-default');
-      btn.prop('disabled', !tech.val());
+      btn.removeClass('btn-default btn-primary')
+         .addClass(tech.val() ? 'btn-primary' : 'btn-default')
+         .prop('disabled', !tech.val());
     });
 
     btn.click(function() {
@@ -47,18 +44,17 @@ function attach_tech_events() {
       btn.removeClass('btn-default btn-primary btn-danger');
       if (skillID) { // remove tech
         delete Job.Techs[keys[i]];
-        btn.text('+1');
-        btn.addClass('btn-primary');
+        btn.text('+1').addClass('btn-primary');
       } else { // add tech
         Job.Techs[keys[i]] = num(tech.val());
-        btn.text('-1');
-        btn.addClass('btn-danger');
+        btn.text('-1').addClass('btn-danger');
       }
       tech.prop('disabled', !skillID);
       tech_disable(Job.Techs);
     });
   });
 
+  tech_disable(Job.Techs);
 }
 
 function get_tech_count(techs, skillID) {
@@ -88,18 +84,14 @@ function tech_disable(techs) {
     var remainder = [].concat(ids);
     remainder.splice(i,1); // take out self
     remainder.forEach(function(id) {
-      $('#tech-' + id).find('option[value=' + skillID + ']').prop('disabled', true);
+      disable_skill_tech($('#tech-' + id), skillID);
     });
-
-    if (!techs.Crest) {
-      continue;
-    }
 
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
-    var counts = get_tech_count(skillID);
-    if (lvl[0] + counts > skill.MaxLevel) {
-      $('#tech-crest').find('option[value=' + skillID + ']').prop('disabled', true);
+    var counts = get_tech_count(techs, skillID);
+    if (lvl[0] + counts >= skill.MaxLevel) {
+      disable_skill_tech($('#tech-crest'), skillID);
     }
   }
 
@@ -108,11 +100,40 @@ function tech_disable(techs) {
   if (skillID) {
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
-    var counts = get_tech_count(skillID);
-    if (lvl[0] + counts > skill.MaxLevel) {
+    var counts = get_tech_count(techs, skillID);
+    if (lvl[0] + counts >= skill.MaxLevel) {
       ids.forEach(function(id) {
-        $('#tech-' + id).find('option[value=' + skillID + ']').prop('disabled', true);
+        disable_skill_tech($('#tech-' + id), skillID);
       });
     }
+  }
+
+  // disable lvl 0 skills
+  ids.push('crest');
+  ids.forEach(function(id) {
+    var tech = $('#tech-' + id);
+    for (var skillID in db.Skills) {
+      var lvl = Job.Cache[skillID];
+      if (!lvl[0]) {
+        disable_skill_tech(tech, skillID);
+      }
+    }
+  });
+}
+
+function disable_skill_tech(tech, skillID) {
+  var btn = tech.next();
+  if (tech.val() == skillID) { // don't keep it selected
+    tech.val('');
+    btn.removeClass('btn-primary btn-danger')
+       .addClass('btn-default')
+       .prop('disabled', true)
+       .text('+1');
+  }
+
+  // disable the option
+  var opt = tech.find('option[value=' + skillID + ']');
+  if (opt.length) {
+    opt.prop('disabled', true);
   }
 }
