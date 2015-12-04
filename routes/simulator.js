@@ -40,12 +40,12 @@ module.exports = function(configs) {
       db = configs.db,
       format = configs.format;
 
-  router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9!]{72,})', function(req, res) {
+  router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9]{72,})', function(req, res) {
     req.params.level = parseInt(req.params.level);
     if (req.params.level < 1 || req.params.level > db.Levels.length) throw format(lang.error.level_not_found, req.params.level)
-    var job = jobs.filter(function(j) { return j != null && j.JobNumber == 2 && j.EnglishName == req.params.job })[0]
+    var job = db.FinalJobs[req.params.job];
     if (!job) throw format(lang.error.job_not_found, req.params.job)
-    if (req.params.build.length > 216) throw lang.error.build_too_long
+    if (req.params.build.length > 78) throw lang.error.build_too_long
 
     var apply_type = 0, free = true;
     if (req.cookies) {
@@ -158,7 +158,8 @@ module.exports = function(configs) {
       BaseSkills: baseskills,
       SkillGroups: skillgroups,
       Cache: lvls,
-      Sprites: sprites
+      Sprites: sprites,
+      Techs: {}
     };
 
     var json_data = JSON.stringify(data);

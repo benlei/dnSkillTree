@@ -210,7 +210,7 @@ $std-font-size: 14px;
     height: 37px;
 }
 
-#level-btn, .tech, .reset {
+#level-btn, .tech {
     margin-left: 5px;
 }
 
@@ -238,5 +238,10 @@ $std-font-size: 14px;
             border-bottom: 0;
             padding-bottom: 0;
         }
+    }
+
+    select {
+        padding-left: 5px !important;
+        width: 225px !important;
     }
 }

@@ -1,103 +1,77 @@
+var techHTML;
 function techniques() {
   var modal = $('#modal');
   var title = $('#modal-title');
   var body = $('#modal-body');
-/*
+
   title.text("Techniques");
   body.empty();
+  if (!techHTML) {
+    body.text('Loading data...');
+    body.load('/api/tech/' + Job.EnglishName, function(res) {
+      techHTML = res;
+      tech_disable(Job.Techs);
+    });
+  } else {
+    body.html(techHTML);
+    tech_disable(Job.Techs);
+  }
 
-  var necklace = tag('div', 'row').append(tag('div', 'col-xs-2', 'Necklace'))
-  var earring = tag('div', 'row').append(tag('div', 'col-xs-2', 'Earring'))
-  var ring1 = tag('div', 'row').append(tag('div', 'col-xs-2', 'Ring 1'))
-  var ring2 = tag('div', 'row').append(tag('div', 'col-xs-2', 'Ring 2'))
-  var weapon = tag('div', 'row').append(tag('div', 'col-xs-2', 'Weapon'))
-  var crest = tag('div', 'row').append(tag('div', 'col-xs-2', 'Crest'))
-  var select;
+  modal.modal('show');
+}
 
-  // necklace
-  select = tag('select', 'form-control').attr('id', 'tech-necklace');
-  select.append(tag('option'));
-  db.Techs.Necklace.forEach(function(skillID) {
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  });
-  necklace.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
+function get_tech_count(techs, skillID) {
+  var c = 0;
+  for (var key in techs) {
+    if (techs[key] == skillID) {
+      c++;
+    }
+  }
 
-  select = tag('select', 'form-control').attr('id', 'tech-earring');
-  select.append(tag('option'));
-  db.Techs.Earring.forEach(function(skillID) {
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  });
-  earring.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
+  return c;
+}
 
-  select = tag('select', 'form-control').attr('id', 'tech-ring-1');
-  select.append(tag('option'));
-  db.Techs.Ring.forEach(function(skillID) {
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  });
-  ring1.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
+function tech_disable(techs) {
+  // general disabling
+  var ids = ['necklace', 'earring', 'ring-1', 'ring-2', 'weapon'];
+  var keys = ['Necklace', 'Earring', 'Ring1', 'Ring2', 'Weapon'];
 
-  select = tag('select', 'form-control').attr('id', 'tech-ring-2');
-  select.append(tag('option'));
-  db.Techs.Ring.forEach(function(skillID) {
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  });
-  ring2.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
+  $('.modal').find('option:disabled').prop('disabled', false); // re-enable for now
 
-  select = tag('select', 'form-control').attr('id', 'tech-weapon');
-  select.append(tag('option'));
-  db.Techs.Weapon.forEach(function(skillID) {
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  });
-  weapon.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
-
-  select = tag('select', 'form-control').attr('id', 'tech-crest');
-  select.append(tag('option'));
-  for (var skillID in db.Skills) {
-    var skill = db.Skills[skillID];
-    if (!skill.SPMaxLevel) {
+  for (var i = 0; i < keys.length; i++) {
+    var skillID = techs[keys[i]];
+    if (!skillID) {
       continue;
     }
-    select.append(tag('option').val(skillID).text(db.Lookup[db.Skills[skillID].NameID]));
-  }
-  crest.append(tag('div', 'col-xs-10').append(
-    tag('div', 'form-inline').append(
-      select,
-      tag('button', 'btn btn-primary tech', '+1'),
-      tag('button', 'btn btn-default reset', 'Reset')
-    )
-  ));
 
-  body.append(necklace, earring, ring1, ring2, weapon, crest);
-  modal.modal('show');
-  */
+    var remainder = [].concat(ids);
+    remainder.splice(i,1); // take out self
+    remainder.forEach(function(id) {
+      $('#tech-' + id).find('option[value=' + skillID + ']').prop('disabled', true);
+    });
+
+    if (!techs.Crest) {
+      continue;
+    }
+
+    var lvl = Job.Cache[skillID];
+    var skill = db.Skills[skillID];
+    var counts = get_tech_count(skillID);
+    if (lvl[0] + counts > skill.MaxLevel) {
+      $('#tech-crest').find('option[value=' + skillID + ']').prop('disabled', true);
+    }
+  }
+
+  // crest disabling
+  var skillID = techs.Crest;
+  if (skillID) {
+    var lvl = Job.Cache[skillID];
+    var skill = db.Skills[skillID];
+    var counts = get_tech_count(skillID);
+    if (lvl[0] + counts > skill.MaxLevel) {
+      ids.forEach(function(id) {
+        $('#tech-' + id).find('option[value=' + skillID + ']').prop('disabled', true);
+      });
+    }
+  }
 }
