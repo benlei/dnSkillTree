@@ -11,13 +11,54 @@ function techniques() {
     body.load('/api/tech/' + Job.EnglishName, function(res) {
       techHTML = res;
       tech_disable(Job.Techs);
+      attach_tech_events();
     });
   } else {
     body.html(techHTML);
     tech_disable(Job.Techs);
+    attach_tech_events();
   }
 
   modal.modal('show');
+}
+
+function attach_tech_events() {
+  var ids = ['necklace', 'earring', 'ring-1', 'ring-2', 'weapon', 'crest'];
+  var keys = ['Necklace', 'Earring', 'Ring1', 'Ring2', 'Weapon', 'Crest'];
+  ids.forEach(function(id, i) {
+    var tech = $('#tech-' + id);
+    var btn = tech.next();
+    var skillID = Job.Techs[keys[i]];
+    if (skillID) { // already has something
+      tech.val(skillID);
+      btn.removeClass('btn-default').addClass('btn-danger').text('-1');
+      tech.prop('disabled', true);
+    }
+
+    btn.prop('disabled', !tech.val() || !skillID);
+    tech.change(function() {
+      btn.removeClass('btn-default btn-primary');
+      btn.addClass(tech.val() ? 'btn-primary' : 'btn-default');
+      btn.prop('disabled', !tech.val());
+    });
+
+    btn.click(function() {
+      var skillID = Job.Techs[keys[i]];
+      btn.removeClass('btn-default btn-primary btn-danger');
+      if (skillID) { // remove tech
+        delete Job.Techs[keys[i]];
+        btn.text('+1');
+        btn.addClass('btn-primary');
+      } else { // add tech
+        Job.Techs[keys[i]] = num(tech.val());
+        btn.text('-1');
+        btn.addClass('btn-danger');
+      }
+      tech.prop('disabled', !skillID);
+      tech_disable(Job.Techs);
+    });
+  });
+
 }
 
 function get_tech_count(techs, skillID) {

@@ -64,7 +64,7 @@ mixin skill(skill, skillID)
       - var lvl = data.Cache[skillID]
       div.skill.dskill(data-skill=skillID)
         div.skill-bdr(class={g: !lvl[0]})
-        div.badge.skill-lvl(class={g: lvl[3] == 1, 'b': lvl[3] == 2})
+        div.badge.skill-lvl
     else
       div.skill
   - tree_pos++;

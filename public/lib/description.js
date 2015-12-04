@@ -20,8 +20,8 @@ function update_description(thiz, dom) {
   var d = opts.content ? opts.content : desc_fields.clone(true);
 
   // non-level related fields - no conditions
-  d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0] + lvl[3]) + (lvl[3] > 0 ? ' (+' + lvl[3] + ')' : ''));
-  d.find('.dlimit').find('span:last').text(lvl[4]);
+  d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0]));
+  d.find('.dlimit').find('span:last').text(lvl[3]);
   if (lvl[2]) {
     d.find('.dtsp').show().removeClass('hidden').find('span:last').text(lvl[2]);
   } else {
@@ -61,7 +61,7 @@ function update_description(thiz, dom) {
 
 
   // level related fields
-  var curr = lvl[0] + lvl[3], currLevel, nextLevel, currApply, nextApply;
+  var curr = lvl[0], currLevel, nextLevel, currApply, nextApply;
   currLevel = skill.Levels[curr];
   currApply = currLevel ? currLevel.ApplyType[Job.ApplyType] : null;
   nextLevel = skill.Levels[curr + 1];

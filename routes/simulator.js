@@ -95,22 +95,14 @@ module.exports = function(configs) {
 
       skill = $job.Skills[id];
 
-      var tech = 0;
-      if (build[j + 1] == '!') { // single tech
-        tech++, j++;
-        if (build[j + 1] == '!') { // double tech
-          tech++, j++;
-        }
-      }
-
       var maybePlus1 = skill.Levels[1].LevelLimit == 1 ? 1 : 0;
       var level = buildChars.indexOf(c) + maybePlus1;
-      if (level + tech > skill.MaxLevel || (level == 0 && tech > 0)) throw lang.error.build_path
+      if (level /*+ tech*/ > skill.MaxLevel /*|| (level == 0 && tech > 0)*/) throw lang.error.build_path
       var trueMax = get_skill_max(skill, req.params.level);
       if (level > trueMax) throw lang.error.build_path
       var tsp = get_skill_tsp(skill, level);
       job_sp[job_num] += tsp;
-      lvls[id] = [level, trueMax, tsp, tech, skill.MaxLevel - skill.SPMaxLevel];
+      lvls[id] = [level, trueMax, tsp, skill.MaxLevel - skill.SPMaxLevel];
 
       if (maybePlus1 && level > 1) {
         free = true;
@@ -119,7 +111,7 @@ module.exports = function(configs) {
       }
 
       if (skill.SkillGroup && level) {
-        if (tech > 0) throw lang.error.build_path
+        /*if (tech > 0) throw lang.error.build_path*/
 
         if (!skillgroups[skill.SkillGroup]) {
           skillgroups[skill.SkillGroup] = [];

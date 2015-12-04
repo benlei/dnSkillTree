@@ -27,7 +27,7 @@ function dnss() {
     this.style.background = "url('"+ urls.mainbar  +"/" + $TIMESTAMP + "-skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
     this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
 
-    dom.find('.skill-lvl').text([lvl[0] + lvl[3], lvl[4]].join('/'));
+    dom.find('.skill-lvl').text([lvl[0], lvl[3]].join('/'));
     dom.on('mousedown', skill_adj);
   });
 
@@ -125,7 +125,6 @@ function dnss() {
       if (level <= Job.MaxLevel) {
         lvl[0] = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
         lvl[2] = 0;
-        lvl[3] = 0;
 
         var image = this.style.backgroundImage.replace('_b.png', '.png');
         this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
@@ -156,9 +155,7 @@ function dnss() {
 
       dom.find('.skill-lvl')
          .removeClass(level <= Job.MaxLevel ? 'g b' : null)
-         .text([lvl[0] + lvl[3], lvl[4]].join('/'))
-
-      dom.data('lvl', lvl.join(','));
+         .text([lvl[0], lvl[3]].join('/'))
     });
 
     // update panels
@@ -308,8 +305,6 @@ function history_push() {
     var maybeMinus1 = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
     var b = [];
     b.push(build_chars[lvl[0] - maybeMinus1]);
-    lvl[3] > 0 && b.push('!');
-    lvl[3] > 1 && b.push('!');
     build_path[pos] = b;
   });
 
@@ -340,8 +335,8 @@ window.addEventListener('popstate', function(e) {
        .addClass(lvl[0] ? null : 'g');
     dom.find('.skill-lvl')
        .removeClass('g b')
-       .text([lvl[0] + lvl[3], lvl[4]].join('/'))
-       .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
+       .text([lvl[0], lvl[3]].join('/'));
+//       .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
   });
 
   var max_sp = get_max_sp();

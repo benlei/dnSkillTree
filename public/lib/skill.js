@@ -17,8 +17,8 @@ function skill_adj(e) {
     lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
     if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
       lvl[0] = 1;
-    } else if (max) {
-      lvl[3] = 0; // reset techs
+//    } else if (max) {
+//      lvl[3] = 0; // reset techs
     }
   }
 
@@ -51,13 +51,14 @@ function skill_adj(e) {
     }
   }
 
-  if (lvl[0] == 0 && lvl[3] > 0) {
+/*  if (lvl[0] == 0 && lvl[3] > 0) {
     lvl[3] = 0;
   }
 
   if (lvl[0] + lvl[3] > skill.MaxLevel) {
     return;
   }
+    */
 
 
   if (prev == lvl[0]) {
@@ -118,8 +119,8 @@ function skill_adj(e) {
 
   dom.find('.skill-lvl')
      .removeClass('g b')
-     .text([lvl[0] + lvl[3], lvl[4]].join('/'))
-     .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
+     .text([lvl[0], lvl[3]].join('/'));
+//     .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
   Job.Cache[skillID] = lvl;
 
