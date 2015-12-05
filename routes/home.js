@@ -3,7 +3,7 @@ var router = express.Router();
 
 var default_build_path = Array(73).join('-');
 module.exports = function(configs) {
-  var maze = configs.maze,
+   var maze = configs.maze,
       lang = configs.lang,
       jobs = configs.jobs,
       db = configs.db,
