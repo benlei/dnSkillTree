@@ -8,6 +8,15 @@
         "build_too_long": "build path too long"
     },
     "public": {
+        "techs": {
+            "disclaimer": "Disclaimer: Weapon Techs are NOT the same as in game. Please ensure the weapon skill you tech also exists in game.",
+            "necklace": "Necklace",
+            "earring": "Earring",
+            "ring1": "Ring 1",
+            "ring2": "Ring 2",
+            "weapon": "Weapon",
+            "crest": "Crest"
+        },
         "warnings": {
             "tsp": "? requires ? SP Total ? or above.",
             "parent": "? requires ? Lv. ?",

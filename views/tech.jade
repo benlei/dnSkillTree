@@ -4,7 +4,7 @@ mixin row_tech(name, attr_id, key)
     div.col-xs-10.form-inline
       +selection(attr_id, key)
       if attr_id === 'weapon'
-        div.disclaimer Disclaimer: Weapon Techs are NOT the same as in game. Please ensure the weapon skill you tech also exists in game.
+        div.disclaimer!= lang.techs.disclaimer
 
 mixin selection(attr_id, key)
   select.form-control.tech-select(id='tech-' + attr_id)
@@ -17,9 +17,9 @@ mixin selection(attr_id, key)
   button.btn.btn-default.tech +1
 
 
-+row_tech('Necklace', 'necklace', 'Necklace')
-+row_tech('Earring', 'earring', 'Earring')
-+row_tech('Ring 1', 'ring-1', 'Ring')
-+row_tech('Ring 2', 'ring-2', 'Ring')
-+row_tech('Weapon', 'weapon', 'Weapon')
-+row_tech('Crest', 'crest', 'Crest')
++row_tech(lang.techs.necklace, 'necklace', 'Necklace')
++row_tech(lang.techs.earring, 'earring', 'Earring')
++row_tech(lang.techs.ring1, 'ring-1', 'Ring')
++row_tech(lang.techs.ring2, 'ring-2', 'Ring')
++row_tech(lang.techs.weapon, 'weapon', 'Weapon')
++row_tech(lang.techs.crest, 'crest', 'Crest')
