@@ -199,7 +199,7 @@ module.exports = function(configs) {
                                   || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path;
 
     // tech validity check
-    if (techs.Ring1 == techs.Ring2) throw lang.error.build_path; // rings can't be same
+    if (techs.Ring1 && techs.Ring1 == techs.Ring2) throw lang.error.build_path; // rings can't be same
     if (techs.Weapon) { // acc and weap are shared
       ['Necklace', 'Earring', 'Ring1', 'Ring2'].forEach(function(acc) {
         if (techs[acc] == techs.Weapon) throw lang.error.build_path;
