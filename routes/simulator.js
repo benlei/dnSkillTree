@@ -32,6 +32,7 @@ function get_skill_tsp(skill, level) {
   return total;
 }
 
+
 var buildChars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_".split('');
 module.exports = function(configs) {
   var maze = configs.maze,
@@ -40,7 +41,7 @@ module.exports = function(configs) {
       db = configs.db,
       format = configs.format;
 
-  router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9]{72,})', function(req, res) {
+  router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9\.!\']{72,})', function(req, res) {
     req.params.level = parseInt(req.params.level);
     if (req.params.level < 1 || req.params.level > db.Levels.length) throw format(lang.error.level_not_found, req.params.level)
     var job = db.FinalJobs[req.params.job];
@@ -73,7 +74,20 @@ module.exports = function(configs) {
                       parseInt(max_sp * db.SP[1]),
                       parseInt(max_sp * db.SP[2])];
 
-    var i,j, job_num = 0, job_sp = [0,0,0], baseskills = {}, skillgroups = {}, sprites = {};
+    var i,j,
+        job_num = 0, job_sp = [0,0,0],
+        baseskills = {},
+        skillgroups = {},
+        sprites = {},
+        techs = {};
+
+    var acc_techs = {
+      'Necklace': 'Necklace',
+      'Earring': 'Earring',
+      'Ring1': 'Ring',
+      'Ring2': 'Ring'
+    };
+
     for (i = 0, j = 0; i < 72; i++, j++) {
       var c = build[j], id = skilltree[i];
       if (c === undefined) throw lang.error.build_path
@@ -97,7 +111,53 @@ module.exports = function(configs) {
 
       var maybePlus1 = skill.Levels[1].LevelLimit == 1 ? 1 : 0;
       var level = buildChars.indexOf(c) + maybePlus1;
-      if (level /*+ tech*/ > skill.MaxLevel /*|| (level == 0 && tech > 0)*/) throw lang.error.build_path
+
+      // tech determination
+      for (var k = 1; k <= 2; k++) {
+        var end_loop = false;
+        switch(build[j + 1]) {
+          case '!': // acc
+          var found = false;
+          for (var acc in acc_techs) {
+            if (!techs[acc] && $job.Techs[acc_techs[acc]].indexOf(id) != -1) { // it's for this acc
+              found = true;
+              techs[acc] = id;
+              break;
+            }
+          }
+
+          if (!found) throw lang.error.build_path;
+          j++;
+          break;
+
+          case "'": // weapon
+          if (techs.Weapon) throw lang.error.build_path;
+          if ($job.Techs.Weapon.indexOf(id) == -1) throw lang.error.build_path;
+          techs.Weapon = id;
+          j++;
+          break;
+
+          case '.': // crest
+          if (techs.Crest) throw lang.error.build_path;
+          if ($job.Techs.Crest.indexOf(id) == -1) throw lang.error.build_path;
+          techs.Crest = id;
+          j++;
+          break;
+
+          default: end_loop = true; break; // not a tech
+        }
+
+        if (end_loop) { // did not find anything
+          break;
+        }
+      }
+
+      // next char is a tech, when it shouldn't be
+      if (['!','.',"'"].indexOf(build[j+1]) != -1) {
+        throw lang.error.build_path;
+      }
+
+      if (level + maze.fn.count_techs(techs, id) > skill.MaxLevel) throw lang.error.build_path
       var trueMax = get_skill_max(skill, req.params.level);
       if (level > trueMax) throw lang.error.build_path
       var tsp = get_skill_tsp(skill, level);
@@ -136,7 +196,15 @@ module.exports = function(configs) {
     // sum of sp checks
     if (job_sp[0] > job_max_sp[0] || job_sp[1] > job_max_sp[1]
                                   || job_sp[2] > job_max_sp[2]
-                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path
+                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path;
+
+    // tech validity check
+    if (techs.Ring1 == techs.Ring2) throw lang.error.build_path; // rings can't be same
+    if (techs.Weapon) { // acc and weap are shared
+      ['Necklace', 'Earring', 'Ring1', 'Ring2'].forEach(function(acc) {
+        if (techs[acc] == techs.Weapon) throw lang.error.build_path;
+      });
+    }
 
     var data = {
       EnglishName: line[2].EnglishName,
@@ -151,7 +219,7 @@ module.exports = function(configs) {
       SkillGroups: skillgroups,
       Cache: lvls,
       Sprites: sprites,
-      Techs: {}
+      Techs: techs
     };
 
     var json_data = JSON.stringify(data);

@@ -34,9 +34,10 @@ function init_techs() {
 
     btn.prop('disabled', !tech.val() || !skillID);
     tech.change(function() {
+      var val = tech.val();
       btn.removeClass('btn-default btn-primary')
-         .addClass(tech.val() ? 'btn-primary' : 'btn-default')
-         .prop('disabled', !tech.val());
+         .addClass(val ? 'btn-primary' : 'btn-default')
+         .prop('disabled', !val);
     });
 
     btn.click(function() {
@@ -46,11 +47,14 @@ function init_techs() {
         delete Job.Techs[keys[i]];
         btn.text('+1').addClass('btn-primary');
       } else { // add tech
-        Job.Techs[keys[i]] = num(tech.val());
+        Job.Techs[keys[i]] = skillID = num(tech.val());
         btn.text('-1').addClass('btn-danger');
       }
+
+      update_skill_icon(skillID, $('.skill').filter('[data-skill=' + skillID + ']'));
       tech.prop('disabled', !skillID);
       tech_disable(Job.Techs);
+      history_push();
     });
   });
 
@@ -58,6 +62,11 @@ function init_techs() {
 }
 
 function get_tech_count(techs, skillID) {
+  if (skillID === undefined) {
+    skillID = techs;
+    techs = Job.Techs;
+  }
+
   var c = 0;
   for (var key in techs) {
     if (techs[key] == skillID) {
@@ -84,26 +93,30 @@ function tech_disable(techs) {
     var remainder = [].concat(ids);
     remainder.splice(i,1); // take out self
     remainder.forEach(function(id) {
-      disable_skill_tech($('#tech-' + id), skillID);
+      if (techs[keys[ids.indexOf(id)]] != skillID) {
+        disable_skill_tech($('#tech-' + id), skillID);
+      }
     });
 
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
     var counts = get_tech_count(techs, skillID);
-    if (lvl[0] + counts >= skill.MaxLevel) {
+    if (lvl[0] + counts >= skill.MaxLevel && techs.Crest != skillID) {
       disable_skill_tech($('#tech-crest'), skillID);
     }
   }
 
-  // crest disabling
+  // disable from crest
   var skillID = techs.Crest;
   if (skillID) {
     var lvl = Job.Cache[skillID];
     var skill = db.Skills[skillID];
     var counts = get_tech_count(techs, skillID);
     if (lvl[0] + counts >= skill.MaxLevel) {
-      ids.forEach(function(id) {
-        disable_skill_tech($('#tech-' + id), skillID);
+      ids.forEach(function(id, idx) {
+        if (techs[keys[idx]] != skillID) {
+          disable_skill_tech($('#tech-' + id), skillID);
+        }
       });
     }
   }

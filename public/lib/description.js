@@ -18,9 +18,13 @@ function update_description(thiz, dom) {
   var opts = dom.data('bs.popover').options;
   opts.title = tag('span', Job.ApplyType ? 's' :null, format($lang.name[Job.ApplyType], db.Lookup[skill.NameID]));
   var d = opts.content ? opts.content : desc_fields.clone(true);
+  var techs = get_tech_count(skillID), tech_append = "";
+  if (techs > 0) {
+    tech_append = " +" + techs;
+  }
 
   // non-level related fields - no conditions
-  d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0]));
+  d.find('.dlvl').find('span:last').text(Math.max(1, lvl[0]) + tech_append);
   d.find('.dlimit').find('span:last').text(lvl[3]);
   if (lvl[2]) {
     d.find('.dtsp').show().removeClass('hidden').find('span:last').text(lvl[2]);
@@ -61,7 +65,7 @@ function update_description(thiz, dom) {
 
 
   // level related fields
-  var curr = lvl[0], currLevel, nextLevel, currApply, nextApply;
+  var curr = lvl[0] + techs, currLevel, nextLevel, currApply, nextApply;
   currLevel = skill.Levels[curr];
   currApply = currLevel ? currLevel.ApplyType[Job.ApplyType] : null;
   nextLevel = skill.Levels[curr + 1];

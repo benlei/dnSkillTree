@@ -21,13 +21,15 @@ function dnss() {
     var lvl = Job.Cache[skillID];
     var grayed = lvl[0] == 0 ? '_b' : '';
     var sprite = Job.Sprites[skillID];
+    var techs = get_tech_count(skillID);
     sprite[1] *= -50;
     sprite[2] *= -50;
 
     this.style.background = "url('"+ urls.mainbar  +"/" + $TIMESTAMP + "-skillicon" + sprite[0] + grayed + ".png') " + sprite[1] + "px " + sprite[2] + "px"; // initial setup
     this.getElementsByClassName('skill-bdr')[0].style.background = "url('" + urls.border + "') 100px 0";
 
-    dom.find('.skill-lvl').text([lvl[0], lvl[3]].join('/'));
+
+    dom.find('.skill-lvl').text([lvl[0] + techs, lvl[3]].join('/'));
     dom.on('mousedown', skill_adj);
   });
 
@@ -123,14 +125,10 @@ function dnss() {
 
       // update skill lvl
       if (level <= Job.MaxLevel) {
+        Job.Techs = {};
         lvl[0] = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
         lvl[2] = 0;
-
-        var image = this.style.backgroundImage.replace('_b.png', '.png');
-        this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
-        dom.find('.skill-bdr')
-           .removeClass('g')
-           .addClass(lvl[0] ? null : 'g');
+        techs = 0;
       }
 
       if (level != Job.MaxLevel) {
@@ -153,28 +151,13 @@ function dnss() {
         lvl[1] = Math.min(newMax, absMax);
       }
 
-      dom.find('.skill-lvl')
-         .removeClass(level <= Job.MaxLevel ? 'g b' : null)
-         .text([lvl[0], lvl[3]].join('/'))
+      update_skill_icon(skillID, dom);
     });
 
     // update panels
-    var max_sp = get_max_sp(level);
-
-    $('.panel').each(function(jobNum) {
-      var spdom = $(this).find('.panel-heading').find('span');
-      var sp = spdom.text().split('/').map(num);
-      var sp_ratio = Job.SP[jobNum];
-      sp[1] = num(max_sp * sp_ratio);
-      if (level <= Job.MaxLevel) {
-        sp[0] = 0;
-      }
-
-      spdom.text(sp.join('/'));
-    });
+    refresh_sp(get_max_sp(level), level <= Job.MaxLevel);
 
     // other caches to reset
-
     if (level <= Job.MaxLevel) {
       Job.TSP = [0,0,0];
       Job.SkillGroups = {};
@@ -303,8 +286,25 @@ function history_push() {
     var pos = Job.Sprites[skillID][3];
     var lvl = Job.Cache[skillID];
     var maybeMinus1 = db.Skills[skillID].Levels[1].LevelLimit == 1 ? 1 : 0;
-    var b = [];
-    b.push(build_chars[lvl[0] - maybeMinus1]);
+    var b = [build_chars[lvl[0] - maybeMinus1]];
+    var techs = get_tech_count(skillID);
+    if (techs > 0) {
+      if (Job.Techs.Crest == skillID) {
+        b.push('.');
+      }
+
+      if (Job.Techs.Weapon == skillID) {
+        b.push("'");
+      }
+
+      ['Necklace', 'Earring', 'Ring1', 'Ring2'].forEach(function(key) {
+        if (Job.Techs[key] == skillID) {
+          b.push('!');
+        }
+      });
+
+    }
+    b.push();
     build_path[pos] = b;
   });
 
@@ -320,38 +320,39 @@ function history_push() {
   history.pushState(Job, null, '/' + Job.EnglishName + '-' + Job.MaxLevel + '/' + full_build_path.join(''));
 }
 
-window.addEventListener('popstate', function(e) {
-  Job = e.state || $Job;
-  dskills.each(function() {
-    var dom = $(this);
-    var skillID = this.getAttribute('data-skill');
-    var lvl = Job.Cache[skillID];
-
-    // update indivdual skills
-    var image = this.style.backgroundImage.replace('_b.png', '.png');
-    this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
-    dom.find('.skill-bdr')
-       .removeClass('g')
-       .addClass(lvl[0] ? null : 'g');
-    dom.find('.skill-lvl')
-       .removeClass('g b')
-       .text([lvl[0], lvl[3]].join('/'));
-//       .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
-  });
-
-  var max_sp = get_max_sp();
-
+function refresh_sp(max_sp, reset) {
   // job sp
   $('.panel').each(function(jobNum) {
     var spdom = $(this).find('.panel-heading').find('span');
     var sp = spdom.text().split('/').map(num);
     var sp_ratio = Job.SP[jobNum];
-    sp[0] = Job.TSP[jobNum];
     sp[1] = num(max_sp * sp_ratio);
+
+    if (reset) {
+      sp[0] = 0;
+    } else {
+      sp[0] = Job.TSP[jobNum];
+    }
+
     spdom.text(sp.join('/'));
   });
 
   update_progress();
+
+  $('#level').val(Job.MaxLevel);
+}
+
+window.addEventListener('popstate', function(e) {
+  Job = e.state || jQuery.extend(!0, {}, $Job);
+  dskills.each(function() {
+    var dom = $(this);
+    var skillID = this.getAttribute('data-skill');
+
+    // update indivdual skills
+    update_skill_icon(skillID, dom);
+  });
+
+  refresh_sp(get_max_sp(), false);
 
   $('#level').val(Job.MaxLevel);
 

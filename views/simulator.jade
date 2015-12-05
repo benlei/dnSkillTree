@@ -62,9 +62,10 @@ mixin skill(skill, skillID)
   td(class='skill-td')
     if skill
       - var lvl = data.Cache[skillID]
+      - var techs = fn.count_techs(data.Techs, skillID)
       div.skill.dskill(data-skill=skillID)
         div.skill-bdr(class={g: !lvl[0]})
-        div.badge.skill-lvl
+        div.badge.skill-lvl(class={g: techs == 1, b: techs == 2})
     else
       div.skill
   - tree_pos++;

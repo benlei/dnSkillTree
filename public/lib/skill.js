@@ -7,8 +7,8 @@ function skill_adj(e) {
   var skillID = num(this.getAttribute('data-skill')); // indexOf is strict
   var max = e.shiftKey || e.ctrlKey;
   var lvl = [].concat(Job.Cache[skillID]); // clone it
-  var image = this.style.backgroundImage.replace('_b.png', '.png');
   var skill = db.Skills[skillID];
+  var techs = get_tech_count(skillID);
 
   var prev = lvl[0];
   if (e.button == 0) { // left click
@@ -17,8 +17,6 @@ function skill_adj(e) {
     lvl[0] = Math.max(0, max ? 0 : lvl[0] - 1);
     if (skill.Levels[1].LevelLimit == 1 && lvl[0] == 0) { // default case
       lvl[0] = 1;
-//    } else if (max) {
-//      lvl[3] = 0; // reset techs
     }
   }
 
@@ -51,17 +49,7 @@ function skill_adj(e) {
     }
   }
 
-/*  if (lvl[0] == 0 && lvl[3] > 0) {
-    lvl[3] = 0;
-  }
-
-  if (lvl[0] + lvl[3] > skill.MaxLevel) {
-    return;
-  }
-    */
-
-
-  if (prev == lvl[0]) {
+  if (prev == lvl[0] || lvl[0] + techs > skill.MaxLevel) {
     return; // do nothing
   }
 
@@ -75,6 +63,15 @@ function skill_adj(e) {
         return;
       }
     }
+  }
+
+  if (lvl[0] == 0 && techs > 0) {
+    for (var tech in Job.Techs) {
+      if (Job.Techs[tech] == skillID) {
+        delete Job.Techs[tech];
+      }
+    }
+    techs = 0;
   }
 
   // add skillgroup
@@ -111,23 +108,40 @@ function skill_adj(e) {
   totalSP += diff;
   Job.TSP[jobNum] += diff;
 
-  // icon update
-  var bdr = dom.find('.skill-bdr');
-  this.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
-  lvl[0] && bdr.removeClass('g') || bdr.addClass('g');
+  // panel update
   spdom.text(sp.join('/'));
 
-  dom.find('.skill-lvl')
-     .removeClass('g b')
-     .text([lvl[0], lvl[3]].join('/'));
-//     .addClass(lvl[3] == 1 ? 'g' : (lvl[3] == 2 ? 'b' : null));
 
+  // icon update
   Job.Cache[skillID] = lvl;
+  update_skill_icon(skillID, dom, techs);
 
   // hooks
   update_progress();
   $dpop.update(this, dom);
   history_push();
+}
+
+function update_skill_icon(skillID, dom, techs) {
+  if (techs === undefined) {
+    techs = get_tech_count(skillID);
+  }
+
+  var lvl = Job.Cache[skillID];
+  var thiz = dom[0];
+  var image = thiz.style.backgroundImage.replace('_b.png', '.png');
+
+  thiz.style.backgroundImage = lvl[0] ? image : image.replace('.png', '_b.png');
+
+  dom.find('.skill-bdr')
+     .removeClass('g')
+     .addClass(lvl[0] ? null : 'g');
+
+  dom.find('.skill-lvl')
+     .removeClass('g b')
+     .text([lvl[0] + techs, lvl[3]].join('/'))
+     .addClass(techs == 1 ? 'g' : (techs == 2 ? 'b' : null));
+
 }
 
 
