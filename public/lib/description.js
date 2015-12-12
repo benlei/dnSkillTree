@@ -236,6 +236,8 @@ var $dpop = {
 
 
 function desc_format(str, params) {
+  if (!str) return str;
+
   params = params.split(',').map($d.params);
 
   for (var i = 0; i < params.length; i++) {
