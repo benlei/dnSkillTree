@@ -211,6 +211,7 @@ var $dpop = {
   },
   mousedown: function(e) {
     if (e.button == 1) {
+      prevent_default(e);
       var dom = $(this), trigger = dom.data('desc');
       $dpop.update(this, dom);
       if (trigger == 'hover') {
