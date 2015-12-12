@@ -1,7 +1,7 @@
 mixin row_tech(name, attr_id, key)
   div.row
-    div.col-xs-2= name
-    div.col-xs-10.form-inline
+    div.col-md-2= name
+    div.col-md-10.form-inline
       +selection(attr_id, key)
       if attr_id === 'weapon'
         div.disclaimer!= lang.techs.disclaimer

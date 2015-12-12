@@ -14,13 +14,13 @@ block content
           h4.modal-title#modal-title
         div.modal-body#modal-body
     div.row#changables
-      div.col-xs-2
+      div.col-md-2
         div.form-inline: div.form-group
           select.form-control#level
           button#level-btn.btn.btn-sm.btn-default(type='reset')= lang.level.reset
-      div.col-xs-7
+      div.col-md-7
         button#techs.btn.btn-sm.btn-default(type='button') Techniques
-      div.col-xs-3
+      div.col-md-3
         div.btn-group.push-left
           button#free.btn.btn-sm(type='button', class={'btn-primary': data.Free, 'btn-default': !data.Free})= lang.mode.free
           button#strict.btn.btn-sm(type='button', class={'btn-primary': !data.Free, 'btn-default': data.Free})= lang.mode.strict
@@ -28,7 +28,7 @@ block content
           button#pve.btn.btn-sm(type='button', class={'btn-primary': !data.ApplyType, 'btn-default': !!data.ApplyType})= lang.apply[0]
           button#pvp.btn.btn-sm(type='button', class={'btn-primary': !!data.ApplyType, 'btn-default': !data.ApplyType})= lang.apply[1]
     div.row
-      div.col-xs-12
+      div.col-md-12
         div.progress
           - var sum = data.TSP[0] + data.TSP[1] + data.TSP[2], rem = max_sp - sum, progress = (sum / max_sp) * 100
           span#rem-progress= format(lang.progress.remaining, rem)
@@ -37,7 +37,7 @@ block content
           span#max-progress= format(lang.progress.max, max_sp)
     div.row
       each job, index in line
-        div.col-xs-4.noselect
+        div.col-md-4.noselect
           div.panel.panel-default(data-job=index)
             +panel_header(job, index)
             +panel_body(job)
