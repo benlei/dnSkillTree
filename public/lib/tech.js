@@ -51,7 +51,9 @@ function init_techs() {
         btn.text('-1').addClass('btn-danger');
       }
 
-      update_skill_icon(skillID, $('.skill').filter('[data-skill=' + skillID + ']'));
+      var dom = $('.skill').filter('[data-skill=' + skillID + ']');
+      update_skill_icon(skillID, dom);
+      $dpop.update(dom[0], dom);
       tech.prop('disabled', !skillID);
       tech_disable(Job.Techs);
       history_push();
