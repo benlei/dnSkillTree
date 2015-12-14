@@ -174,7 +174,7 @@ function desc_tag(cls, field) {
 
 var $d = {
   params: function(p) {
-    if (p.startsWith('{')) {
+    if (p[0] == '{') {
       return db.Lookup[p.substring(1, p.length - 1)];
     } else {
       return p;
