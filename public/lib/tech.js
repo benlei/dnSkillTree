@@ -53,7 +53,9 @@ function init_techs() {
 
       var dom = $('.skill').filter('[data-skill=' + skillID + ']');
       update_skill_icon(skillID, dom);
-      $dpop.update(dom[0], dom);
+      if ($dpop.persist) {
+        $dpop.update(dom[0], dom);
+      }
       tech.prop('disabled', !skillID);
       tech_disable(Job.Techs);
       history_push();
