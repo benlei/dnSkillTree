@@ -53,7 +53,7 @@ function init_techs() {
 
       var dom = $('.skill').filter('[data-skill=' + skillID + ']');
       update_skill_icon(skillID, dom);
-      if ($dpop.persist == dom) {
+      if ($dpop.persist && $dpop.persist.data('skill') == skill) {
         $dpop.update(dom[0], dom);
       }
       tech.prop('disabled', !skillID);
