@@ -161,16 +161,12 @@ function check_skill_reqs(skillID, skill) {
   }
 
   // make sure parent skill is fine
-  if (skill.ParentSkills) { // doesn't matter for ults
-    var bypass = false;
-    if (skill.SkillGroup == 1) {
-      var group = Job.SkillGroups[1];
-      if (group && group.indexOf(skillID) == -1 && group.length) {
-        bypass = true;
+  if (skill.ParentSkills) {
+    if (skill.SkillGroup == 1 && Job.SkillGroups[1] && Job.SkillGroups[1].length) {
+      if (!check_ult_reqs()) {
+        return false;
       }
-    }
-
-    if (!bypass) {
+    } else {
       for (var $skillID in skill.ParentSkills) {
         if (! level_satisfied($skillID, skill.ParentSkills[$skillID])) {
           return false;
@@ -185,6 +181,23 @@ function check_skill_reqs(skillID, skill) {
   }
 
   return true;
+}
+
+function check_ult_reqs() {
+  var atleastone = false;
+  if (Job.SkillGroups[1]) {
+    Job.SkillGroups[1].forEach(function(skillID) {
+      var skill = db.Skills[skillID];
+      var one = true;
+      for (var $skillID in skill.ParentSkills) {
+        one &= level_satisfied($skillID, skill.ParentSkills[$skillID]);
+      }
+
+      atleastone |= one;
+    });
+  }
+
+  return atleastone;
 }
 
 function check_skill_reqs_state(skillID, skill, warnings) {
@@ -207,6 +220,7 @@ function check_skill_reqs_state(skillID, skill, warnings) {
         if(warnings) {
           warnings.push(format(lang.warnings.parent, db.Lookup[skill.NameID], db.Lookup[db.Skills[$skillID].NameID], skill.ParentSkills[$skillID]));
         }
+
         return false;
       }
     }
@@ -221,6 +235,7 @@ function check_skill_reqs_state(skillID, skill, warnings) {
         }
       });
     }
+
     return false;
   }
 
@@ -229,26 +244,27 @@ function check_skill_reqs_state(skillID, skill, warnings) {
 
 // check skill group
 function check_skill_groups(skillID, skill, warnings) {
-  var g = skill.SkillGroup;
-  if (g) {
-    var group = Job.SkillGroups[g];
-    if (g == 1 && group && group.length) { // ultimate
-        return Job.SkillGroups[1].reduce(function(p, $skillID) {
-                 if (p) { // short circuit
-                   return p;
-                 }
+  if (skill.SkillGroup) {
+    var group = Job.SkillGroups[skill.SkillGroup];
+    if (skill.SkillGroup == 1 && group && group.length) { // ultimate
+      if (warnings) { // hate doing this kinda stuff, but :/
+        if (!check_ult_reqs()) {
+          group.forEach(function($skillID) {
+            var $skill = db.Skills[$skillID];
+            for (var $$skillID in $skill.ParentSkills) {
+              if (! level_satisfied($$skillID, $skill.ParentSkills[$$skillID])) {
+                var fmt = format(lang.warnings.parent, db.Lookup[$skill.NameID], db.Lookup[db.Skills[$$skillID].NameID], $skill.ParentSkills[$$skillID]);
+                if (warnings.indexOf(fmt) == -1) {
+                  warnings.push(fmt);
+                }
 
-                 var $skill = db.Skills[$skillID];
-                 var b = true;
-                 for (var $$skillID in $skill.ParentSkills) {
-                   b &= level_satisfied($$skillID, $skill.ParentSkills[$$skillID]);
-                 }
-
-                 if (skillID != $skillID && !b) {
-                   warnings.push(format(lang.warnings.ult, db.Lookup[skill.NameID], db.Lookup[$skill.NameID]));
-                 }
-                 return p | b;
-               }, false);
+                return;
+              }
+            }
+          });
+          return false;
+        }
+      }
     } else if (group && group.length) {
       var found = group.indexOf(skillID) != -1;
       if (warnings && group.length > 1 && found) {
@@ -281,7 +297,7 @@ function can_reduce_skill(skillID, skill, newLevel, jobNum, newJobSP) {
       }
     }
 
-    if (skill.SkillGroup == 1 && $skill.SkillGroup == 1 && lvl[0] > 0) {
+    if (skill.SkillGroup == 1 && $skill.SkillGroup == 1 && lvl[0] > 0 && !newLevel) {
       var group = Job.SkillGroups[1];
       for (var $$skillID in $skill.ParentSkills) {
         if (!level_satisfied($$skillID, $skill.ParentSkills[$$skillID])) {

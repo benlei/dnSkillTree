@@ -21,8 +21,7 @@
             "tsp": "? requires ? SP Total ? or above.",
             "parent": "? requires ? Lv. ?",
             "base": "? conflicts with ?",
-            "group": "? and ? cannot both be Lv. 1 (or higher)",
-            "ult": "? is not satisfied by ?"
+            "group": "? and ? cannot both be Lv. 1 (or higher)"
         },
         "search": "Search",
         "level": {
