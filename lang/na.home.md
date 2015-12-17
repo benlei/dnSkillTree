@@ -43,3 +43,6 @@ Most of the data you see in this simulator is obtained + compiled directly from 
   If you think you have knowledge on how to properly obtain all available skill IDs for weapon techs, please post your findings in https://github.com/ben-lei/dn-maze/issues
 
   Your help is help to everyone who uses MAZE.
+
+
+All images are obtained from and belong to Nexon.
