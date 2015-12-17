@@ -371,6 +371,10 @@ window.addEventListener('popstate', function(e) {
   }
   $(a).removeClass(ON).addClass(OFF);
   $(b).addClass(ON);
+
+  if ($dpop.persist) {
+    $dpop.update($dpop.persist[0], $dpop.persist);
+  }
 });
 
 function set_cookie(name, value) {

@@ -30,7 +30,7 @@
             "raise": "Raise"
         },
         "mode": {
-            "free": "Free",
+            "free": "Relax",
             "strict": "Strict"
         },
         "strict_title": "Skill Tree Violations",
