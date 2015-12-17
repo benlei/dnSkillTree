@@ -1,11 +1,15 @@
 {
     "job_title": "? - ?",
     "error": {
-        "build_path": "invalid build path",
+        "short_build_path": "build path is too short",
         "template": "invalid template",
         "level_not_found": "level ? not found",
         "job_not_found": "job ? not found",
-        "build_too_long": "build path too long"
+        "build_too_long": "build path too long",
+        "skill_not_exist": "level set for non-existant skill",
+        "invalid_tech": "invalid tech detected",
+        "max_level_exceeded": "max level for a skill was exceeded",
+        "total_sp_exceeded": "calculated total sp exceeded"
     },
     "public": {
         "techs": {

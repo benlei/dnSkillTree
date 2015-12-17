@@ -90,9 +90,8 @@ module.exports = function(configs) {
 
     for (i = 0, j = 0; i < 72; i++, j++) {
       var c = build[j], id = skilltree[i];
-      if (c === undefined) throw lang.error.build_path
       if (id === null) {
-        if (c != '-') throw lang.error.build_path
+        if (c != '-') throw lang.error.skill_not_exist;
         continue;
       }
 
@@ -126,20 +125,20 @@ module.exports = function(configs) {
             }
           }
 
-          if (!found) throw lang.error.build_path;
+          if (!found) throw lang.error.invalid_tech;
           j++;
           break;
 
           case "'": // weapon
-          if (techs.Weapon) throw lang.error.build_path;
-          if ($job.Techs.Weapon.indexOf(id) == -1) throw lang.error.build_path;
+          if (techs.Weapon) throw lang.error.invalid_tech;
+          if ($job.Techs.Weapon.indexOf(id) == -1) throw lang.error.invalid_tech;
           techs.Weapon = id;
           j++;
           break;
 
           case '.': // crest
-          if (techs.Crest) throw lang.error.build_path;
-          if ($job.Techs.Crest.indexOf(id) == -1) throw lang.error.build_path;
+          if (techs.Crest) throw lang.error.invalid_tech;
+          if ($job.Techs.Crest.indexOf(id) == -1) throw lang.error.invalid_tech;
           techs.Crest = id;
           j++;
           break;
@@ -154,12 +153,12 @@ module.exports = function(configs) {
 
       // next char is a tech, when it shouldn't be
       if (['!','.',"'"].indexOf(build[j+1]) != -1) {
-        throw lang.error.build_path;
+        throw lang.error.invalid_tech;
       }
 
-      if (level + maze.fn.count_techs(techs, id) > skill.MaxLevel) throw lang.error.build_path
+      if (level + maze.fn.count_techs(techs, id) > skill.MaxLevel) throw lang.error.max_level_exceeded;
       var trueMax = get_skill_max(skill, req.params.level);
-      if (level > trueMax) throw lang.error.build_path
+      if (level > trueMax) throw lang.error.max_level_exceeded;
       var tsp = get_skill_tsp(skill, level);
       job_sp[job_num] += tsp;
       lvls[id] = [level, trueMax, tsp, skill.MaxLevel - skill.SPMaxLevel];
@@ -171,8 +170,6 @@ module.exports = function(configs) {
       }
 
       if (skill.SkillGroup && level) {
-        /*if (tech > 0) throw lang.error.build_path*/
-
         if (!skillgroups[skill.SkillGroup]) {
           skillgroups[skill.SkillGroup] = [];
         }
@@ -191,18 +188,18 @@ module.exports = function(configs) {
       sprites[id] = [skill.Sprite, skill.IconCol, skill.IconRow, i];
     }
 
-    if (j < build.length) throw lang.error.build_path
+    if (j < build.length) throw lang.error.short_build_path
 
     // sum of sp checks
     if (job_sp[0] > job_max_sp[0] || job_sp[1] > job_max_sp[1]
                                   || job_sp[2] > job_max_sp[2]
-                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.build_path;
+                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.toatl_sp_exceeded;
 
     // tech validity check
-    if (techs.Ring1 && techs.Ring1 == techs.Ring2) throw lang.error.build_path; // rings can't be same
+    if (techs.Ring1 && techs.Ring1 == techs.Ring2) throw lang.error.invalid_tech; // rings can't be same
     if (techs.Weapon) { // acc and weap are shared
       ['Necklace', 'Earring', 'Ring1', 'Ring2'].forEach(function(acc) {
-        if (techs[acc] == techs.Weapon) throw lang.error.build_path;
+        if (techs[acc] == techs.Weapon) throw lang.error.invalid_tech;
       });
     }
 
