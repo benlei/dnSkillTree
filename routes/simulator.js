@@ -3,20 +3,20 @@ var router = express.Router();
 
 // two way search
 function get_skill_max(skill, cap) {
-  var max = 1;
-  for (var i = skill.MaxLevel - skill.SPMaxLevel, j = 1; i > 0; i--, j++) {
-    if (skill.Levels[i].LevelLimit <= cap) {
-      return i;
+  var max = 0;
+  for (var i = skill.MaxLevel - skill.SPMaxLevel - 1, j = 0; i > -1; i--, j++) {
+    if (skill.LevelLimit[i] <= cap) {
+      return i + 1;
     }
 
-    if (skill.Levels[j].LevelLimit <= cap) {
+    if (skill.LevelLimit[j] <= cap) {
       max = j;
     } else {
       break;
     }
   }
 
-  return max;
+  return max + 1;
 }
 
 function get_skill_tsp(skill, level) {
@@ -25,8 +25,8 @@ function get_skill_tsp(skill, level) {
   }
 
   var total = 0;
-  for (var i = 1; i <= level; i++) {
-    total += skill.Levels[i].SkillPoint;
+  for (var i = 0; i < level; i++) {
+    total += skill.SkillPoint[i];
   }
 
   return total;
@@ -40,6 +40,9 @@ module.exports = function(configs) {
       jobs = configs.jobs,
       db = configs.db,
       format = configs.format;
+
+  // don't repeatedly do this...
+  var json_lang = JSON.stringify(lang['public']);
 
   router.get('/:job([a-z]+)-:level([0-9]+)/:build([-_a-zA-Z0-9\.!\']{72,})', function(req, res) {
     req.params.level = parseInt(req.params.level);
@@ -63,16 +66,18 @@ module.exports = function(configs) {
     var line = [jobs[jobs[job.ParentJob].ParentJob], jobs[job.ParentJob], job];
     var lvls = {};
     var build = req.params.build.split('');
-    var skilltree = line.reduce(function(p, j) {
-                      return p.concat(j.SkillTree.reduce(function($p, s) {
-                                        return $p.concat(s);
-                                      }, []));
-                    }, []);
+    var skilltree = [];
+    for (var i = 0; i < 3; i++) {
+      var st = line[i].SkillTree;
+      skilltree = skilltree.concat(st[0], st[1], st[2], st[3], st[4], st[5]);
+    }
 
-    var max_sp = db.Levels.slice(0, req.params.level).reduce(function(p,c) { return p+c }, 0)
-    var job_max_sp = [parseInt(max_sp * db.SP[0]),
-                      parseInt(max_sp * db.SP[1]),
-                      parseInt(max_sp * db.SP[2])];
+    var max_sp = 0;
+    for (var i = 0; i < req.params.level; i++) {
+      max_sp += db.Levels[i];
+    }
+
+    var job_max_sp = [parseInt(max_sp * db.SP[0]), parseInt(max_sp * db.SP[1]), parseInt(max_sp * db.SP[2])];
 
     var i,j,
         job_num = 0, job_sp = [0,0,0],
@@ -108,7 +113,7 @@ module.exports = function(configs) {
 
       skill = $job.Skills[id];
 
-      var maybePlus1 = skill.Levels[1].LevelLimit == 1 ? 1 : 0;
+      var maybePlus1 = skill.LevelLimit[0] == 1 ? 1 : 0;
       var level = buildChars.indexOf(c) + maybePlus1;
 
       // tech determination
@@ -193,14 +198,15 @@ module.exports = function(configs) {
     // sum of sp checks
     if (job_sp[0] > job_max_sp[0] || job_sp[1] > job_max_sp[1]
                                   || job_sp[2] > job_max_sp[2]
-                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.toatl_sp_exceeded;
+                                  || job_sp[0] + job_sp[1] + job_sp[2] > max_sp) throw lang.error.total_sp_exceeded;
 
     // tech validity check
     if (techs.Ring1 && techs.Ring1 == techs.Ring2) throw lang.error.invalid_tech; // rings can't be same
     if (techs.Weapon) { // acc and weap are shared
-      ['Necklace', 'Earring', 'Ring1', 'Ring2'].forEach(function(acc) {
-        if (techs[acc] == techs.Weapon) throw lang.error.invalid_tech;
-      });
+      var accs = ['Necklace', 'Earring', 'Ring1', 'Ring2'];
+      for (var i = 0; i < 4; i++) {
+        if (techs[accs[i]] == techs.Weapon) throw lang.error.invalid_tech;
+      }
     }
 
     var data = {
@@ -226,8 +232,6 @@ module.exports = function(configs) {
       border: maze.fn.url.uitemplatetexture('uit_gesturebutton'),
       job: maze.fn.url.json(line[2].EnglishName)
     });
-
-    var json_lang = JSON.stringify(lang['public']);
 
     res.render('simulator', {
       title: format(lang.job_title, job.JobName, "MAZE"),
