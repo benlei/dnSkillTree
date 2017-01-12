@@ -1,5 +1,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var envFile = 'dev.env'
+
+if (process.argv[2]) {
+  envFile = 'dev.' + process.argv[2] + '.env'
+}
 
 module.exports = {
   build: {
@@ -17,7 +22,7 @@ module.exports = {
     productionGzipExtensions: ['js', 'css']
   },
   dev: {
-    env: require('./dev.env'),
+    env: require(envFile),
     port: 3000,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

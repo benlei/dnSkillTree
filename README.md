@@ -9,7 +9,7 @@
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run dev blei
 
 # build for production with minification
 npm run build
