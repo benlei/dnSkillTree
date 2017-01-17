@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="col-md-12 jobs-row" v-for="row in jobPartitions">
+    <div class="col-md-12 jobsRow" v-for="row in jobPartitions">
       <div class="container col-md-3" v-for="group in row">
         <div v-for="job in group">
-          {{ job.name }}
+          <Job :name="job.name" :icon="job.icon" :slug="job.slug" />
         </div>
       </div>
     </div>
@@ -12,6 +12,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import Job from './Job';
 
   export default {
     created() {
@@ -32,7 +33,8 @@
         return rows;
       },
     },
-    methods: {
+    components: {
+      Job,
     },
   };
 </script>
@@ -43,20 +45,11 @@
     padding-bottom: 20px;
   }
 
-  .jobs-row {
-    padding-bottom: 20px;
+  .jobsRow {
+    margin-bottom: 40px;
   }
 
-  .jumbotron p:last-child {
+  .jobsRow:last-of-type {
     margin-bottom: 0;
   }
-
-  .jumbotron-heading {
-    font-weight: 300;
-  }
-
-  .jumbotron .container {
-    max-width: 40rem;
-  }
-
 </style>
