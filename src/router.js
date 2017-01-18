@@ -1,19 +1,18 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomeApp from './components/home/HomeApp';
+import Home from './components/home/Home';
+import Tree from './components/tree/Tree';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    component: HomeApp,
-    // children: [
-    //   {
-    //     path: '',
-    //     component: Hello
-    //   }
-    // ]
+    component: Home,
+  },
+  {
+    path: '/:slug',
+    component: Tree,
   },
 ];
 

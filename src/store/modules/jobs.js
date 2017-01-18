@@ -11,16 +11,16 @@ const getters = {
 
 const actions = {
   loadJobs({ commit }) {
-    const jobUrl = `${process.env.ASSETS_URL}/ext/jobs.json`;
+    const url = `${process.env.ASSETS_URL}/ext/jobs.json`;
 
-    Axios.get(jobUrl)
+    Axios.get(url)
       .then(response => response.data)
       .then(jobs => commit(types.SAVE_JOBS, { jobs }));
   },
 };
 
 const mutations = {
-  [types.SAVE_JOBS](foo, { jobs }) {
+  [types.SAVE_JOBS]($state, { jobs }) {
     state.jobs = state.jobs.slice(state.jobs.length).concat(jobs);
   },
 };

@@ -14,13 +14,14 @@
     props: ['name', 'icon', 'slug'],
     computed: {
       styleObject() {
-        const xPos = (this.icon % 9) * 55;
-        const yPos = Math.floor(this.icon / 9) * 55;
+        const scale = 55;
+        const xPos = (this.icon % 9) * scale;
+        const yPos = Math.floor(this.icon / 9) * scale;
 
         return {
           backgroundImage: `url(${process.env.ASSETS_URL}/images/jobicon_main.png)`,
-          height: '55px',
-          width: '55px',
+          height: `${scale}px`,
+          width: `${scale}px`,
           backgroundPosition: `-${xPos}px -${yPos}px`,
         };
       },
@@ -41,8 +42,9 @@
 
   .jobTitle {
     margin-bottom: 5px;
-    height: 50px;
+    height: 45px;
     color: #373a3c;
+    line-height: 1.3;
   }
 
   .jobCell a {

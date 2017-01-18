@@ -25,9 +25,10 @@
       jobPartitions() {
         const jobs = this.jobs;
         const rows = [];
+        const groupings = 4;
 
-        for (let i = 0; i < jobs.length; i += 4) {
-          rows.push(jobs.slice(i, i + 4));
+        for (let i = 0; i < jobs.length; i += groupings) {
+          rows.push(jobs.slice(i, i + groupings));
         }
 
         return rows;
@@ -46,7 +47,7 @@
   }
 
   .jobsRow {
-    margin-bottom: 40px;
+    margin-bottom: 45px;
   }
 
   .jobsRow:last-of-type {
