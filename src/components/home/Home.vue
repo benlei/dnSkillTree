@@ -1,8 +1,10 @@
 <template>
   <div class="container">
-    <div class="col-md-12 jobsRow" v-for="row in jobPartitions">
-      <div class="container col-md-3" v-for="group in row">
-        <div v-for="job in group">
+    <Navigation />
+
+    <div class="row jobsRow" v-for="row in jobPartitions">
+      <div class="col-md-3" v-for="group in row">
+        <div class="jobGroup" v-for="job in group">
           <Job :name="job.name" :icon="job.icon" :slug="job.slug" />
         </div>
       </div>
@@ -11,24 +13,25 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapState } from 'vuex';
   import Job from './Job';
+  import Navigation from '../Navigation';
 
   export default {
     created() {
       this.$store.dispatch('loadJobs');
     },
     computed: {
-      ...mapGetters({
-        jobs: 'jobList',
+      ...mapState({
+        jobs: 'jobs',
       }),
       jobPartitions() {
-        const jobs = this.jobs;
+        const list = this.jobs.list;
         const rows = [];
         const groupings = 4;
 
-        for (let i = 0; i < jobs.length; i += groupings) {
-          rows.push(jobs.slice(i, i + groupings));
+        for (let i = 0; i < list.length; i += groupings) {
+          rows.push(list.slice(i, i + groupings));
         }
 
         return rows;
@@ -36,18 +39,15 @@
     },
     components: {
       Job,
+      Navigation,
     },
   };
 </script>
 
 <style>
-  body {
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-
   .jobsRow {
-    margin-bottom: 45px;
+    margin-top: 30px;
+    margin-bottom: 40px;
   }
 
   .jobsRow:last-of-type {
