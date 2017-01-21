@@ -16,9 +16,6 @@ export default {
 
     Axios.get(url)
       .then(response => response.data)
-      .then((data) => {
-        commit(types.INIT_JOBS, { data });
-        // commit(types.INIT_JOB, { json });
-      });
+      .then(data => commit(types.INIT_JOB, { ...data }));
   },
 };

@@ -6,7 +6,7 @@ const state = {
 
 const mutations = {
   [types.INIT_JOBS](state, { data }) {
-    state.list = state.list.slice(state.list.length).concat(data);
+    state.list = data;
   },
 };
 

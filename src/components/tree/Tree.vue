@@ -7,7 +7,7 @@
         Hello, {{ $route.params.slug }}! This is for the selector and stuff.
       </div>
       <div class="col-md-4">
-        This is the skill tree?
+        This is the skill tree? {{ testData }}
       </div>
       <div class="col-md-4">
         This is the description.
@@ -17,15 +17,20 @@
 </template>
 
 <script>
-//  import { mapGetters } from 'vuex';
+  import { mapState } from 'vuex';
   import Navigation from '../Navigation';
 
   export default {
     created() {
       this.$store.dispatch('loadJob', this.$route.params.slug);
     },
-//    ...mapGetters({
-//    }),
+    computed: {
+      ...mapState({ job: 'job' }),
+      testData() {
+        console.log(this.job.tree);
+        return this.job.tree.length;
+      },
+    },
     components: {
       Navigation,
     },
