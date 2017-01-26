@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <Navigation/>
+  <div class="container" v-if="job.loaded">
+    <Navigation :name="jobName" />
 
     <div class="row">
       <div class="col-md-4">
@@ -10,7 +10,7 @@
         <table class="tree">
           <tr v-for="row in 6">
             <td v-for="col in 4">
-              <Skill :id="getSkillId(row, col)" />
+              <Skill :id="skillId({ ascendancy, row, col })" />
             </td>
           </tr>
         </table>
@@ -23,20 +23,30 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
   import Navigation from '../Navigation';
   import Skill from './Skill';
 
   export default {
+    data() {
+      return {
+        ascendancy: 0,
+      };
+    },
     created() {
       this.$store.dispatch('loadJob', this.$route.params.slug);
     },
     computed: {
       ...mapState({ job: 'job' }),
-      getSkillId(row, col) {
+      ...mapGetters({
+        jobName: 'jobName',
+      }),
+    },
+    methods: {
+      skillId({ ascendancy, row, col }) {
         row -= 1;
         col -= 1;
-        return this.job.tree[(row * 4) + col];
+        return this.job.tree[ascendancy][(row * 4) + col];
       },
     },
     components: {

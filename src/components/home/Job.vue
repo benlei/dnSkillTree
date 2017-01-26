@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-6 jobCell">
     <router-link :to="'/' + slug">
-      <div class="jobImage" :style="styleObject" />
+      <div class="jobImage" :style="jobImageStyle" />
       <div class="jobTitle">
         {{ name }}
       </div>
@@ -13,7 +13,7 @@
   export default {
     props: ['name', 'icon', 'slug'],
     computed: {
-      styleObject() {
+      jobImageStyle() {
         const scale = 55;
         const xPos = (this.icon % 9) * scale;
         const yPos = Math.floor(this.icon / 9) * scale;
