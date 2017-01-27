@@ -22,7 +22,7 @@
           </ul>
           <div class="card-footer text-muted justify-content-between">
             Total SP
-            <small>149 / 199</small>
+            <small>0 / {{ job.sp }}</small>
           </div>
         </div>
       </div>

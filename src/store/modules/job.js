@@ -7,6 +7,7 @@ const state = {
   crests: {},
   skills: {},
   weapons: {},
+  sp: 0,
   loaded: false,
 };
 
@@ -17,13 +18,14 @@ const getters = {
 };
 
 const mutations = {
-  [types.INIT_JOB](state, { jobs, tree, messages, crests, skills, weapons }) {
-    state.ascendancies = jobs;
+  [types.INIT_JOB](state, { ascendancies, tree, messages, crests, skills, weapons, sp }) {
+    state.ascendancies = ascendancies;
     state.tree = tree;
     state.messages = messages;
     state.crests = crests;
     state.skills = skills;
     state.weapons = weapons;
+    state.sp = sp;
 
     state.loaded = true;
   },
