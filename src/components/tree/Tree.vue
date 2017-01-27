@@ -1,10 +1,32 @@
-<template>
+<template xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div class="container" v-if="job.loaded">
     <Navigation :name="jobName" />
 
     <div class="row">
       <div class="col-md-4">
-        Hello, {{ $route.params.slug }}! This is for the selector and stuff.
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item justify-content-between active" v-on:click="ascendancy = 0">
+              Warrior
+              <small>14 / 120</small>
+            </li>
+            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 1">
+              Swordsman
+              <small>2 / 140</small>
+            </li>
+            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 2">
+              Gladiator
+              <small>1 / 144</small>
+            </li>
+            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 3">
+              Awakened
+            </li>
+          </ul>
+          <div class="card-footer text-muted justify-content-between">
+            Total SP
+            <small>149 / 199</small>
+          </div>
+        </div>
       </div>
       <div class="col-md-4">
         <table class="tree">
@@ -57,19 +79,10 @@
 </script>
 
 <style>
-  /*.skill-table {*/
-    /*margin: 0 auto 15px auto;*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: -5px -7px;*/
-    /*background-size: 317px 510px;*/
-  /*}*/
-
-  /*.skill-table .skill-tr .skill-td {*/
-    /*padding: 0 10px 28px 10px;*/
-  /*}*/
-
-  /*.skill {*/
-    /*height: 50px;*/
-    /*width: 50px;*/
-  /*}*/
+.card-footer {
+  border-top: 0;
+}
+  .card-footer small {
+    float: right;
+  }
 </style>
