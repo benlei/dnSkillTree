@@ -6,19 +6,17 @@
       <div class="col-md-4">
         <div class="card">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item justify-content-between active" v-on:click="ascendancy = 0">
-              Warrior
-              <small>14 / 120</small>
+            <li class="list-group-item justify-content-between"
+                :class="{active: ascendancyIndex == i}"
+                v-for="(ascendancy, i) in job.ascendancies"
+                v-on:click="ascendancyIndex = i">
+              {{ ascendancy.name }}
+              <small>0 / {{ ascendancy.sp }}</small>
             </li>
-            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 1">
-              Swordsman
-              <small>2 / 140</small>
-            </li>
-            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 2">
-              Gladiator
-              <small>1 / 144</small>
-            </li>
-            <li class="list-group-item justify-content-between" v-on:click="ascendancy = 3">
+            <li class="list-group-item justify-content-between"
+                :class="{active: ascendancyIndex == 3}"
+                v-on:click="ascendancyIndex = 3"
+                v-if="job.tree.length == 4">
               Awakened
             </li>
           </ul>
@@ -30,9 +28,9 @@
       </div>
       <div class="col-md-4">
         <table class="tree">
-          <tr v-for="row in 6">
-            <td v-for="col in 4">
-              <Skill :id="skillId({ ascendancy, row, col })" />
+          <tr v-for="(_, row) in 6">
+            <td v-for="(_, col) in 4">
+              <Skill :id="skillId(ascendancyIndex, row, col)" />
             </td>
           </tr>
         </table>
@@ -52,7 +50,7 @@
   export default {
     data() {
       return {
-        ascendancy: 0,
+        ascendancyIndex: 0,
       };
     },
     created() {
@@ -65,9 +63,7 @@
       }),
     },
     methods: {
-      skillId({ ascendancy, row, col }) {
-        row -= 1;
-        col -= 1;
+      skillId(ascendancy, row, col) {
         return this.job.tree[ascendancy][(row * 4) + col];
       },
     },

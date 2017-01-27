@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 
 const state = {
-  ascendancy: [],
+  ascendancies: [],
   tree: [],
   messages: {},
   crests: {},
@@ -12,13 +12,13 @@ const state = {
 
 const getters = {
   jobName(state) {
-    return state.ascendancy[2].name;
+    return state.ascendancies[2].name;
   },
 };
 
 const mutations = {
   [types.INIT_JOB](state, { jobs, tree, messages, crests, skills, weapons }) {
-    state.ascendancy = jobs;
+    state.ascendancies = jobs;
     state.tree = tree;
     state.messages = messages;
     state.crests = crests;
