@@ -24,3 +24,22 @@
     props: ['name'],
   };
 </script>
+
+<style>
+  .breadcrumb {
+    background: #02151D;
+    color: #FFF;
+  }
+
+  .breadcrumb a {
+    color: #FBB200;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: none;
+  }
+
+  .breadcrumb .active {
+    color: #FFF;
+  }
+</style>
