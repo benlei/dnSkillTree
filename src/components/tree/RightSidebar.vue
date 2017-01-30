@@ -18,6 +18,17 @@
         <p class="card-text">Also: Alternative 1, Alternative 2</p>
       </div>
     </div>
+
+    <div class="card">
+      <div class="card-header build">
+        Related Skills
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Skill A</li>
+        <li class="list-group-item">Skill B</li>
+        <li class="list-group-item">Skill C</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -38,7 +49,7 @@
   }
 
   .description .nav-link {
-    color: #FBB200;
+    color: #FFF;
   }
 
   .description .nav-item {
@@ -47,5 +58,9 @@
 
   .description .nav-item a {
     border: 0;
+  }
+
+  .alternative-skills {
+    margin-bottom: 10px;
   }
 </style>

@@ -26,6 +26,11 @@
 </script>
 
 <style>
+  body {
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
   .breadcrumb {
     background: #02151D;
     color: #FFF;

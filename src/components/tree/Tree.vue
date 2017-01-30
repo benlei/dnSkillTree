@@ -2,6 +2,7 @@
   <div class="container" v-if="job.loaded">
     <Navigation :name="jobName"/>
 
+
     <div class="row">
       <LeftSidebar />
 
@@ -17,6 +18,17 @@
 
       <RightSidebar/>
     </div>
+
+    <div class="row clearfix">
+      <div class="col-md-12">
+        <div class="alert alert-warning" role="alert">
+          <strong>Warning!</strong> Better check yourself, you're not looking too good.
+        </div>
+        <div class="alert alert-warning" role="alert">
+          <strong>Warning!</strong> Better check yourself, you're not looking too good.
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,6 +41,7 @@
 
   export default {
     created() {
+      this.$store.dispatch('softReset');
       this.$store.dispatch('loadJob', this.$route.params.slug);
     },
     computed: {
