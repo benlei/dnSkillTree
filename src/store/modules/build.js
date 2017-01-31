@@ -2,9 +2,11 @@ import * as types from '../mutation-types';
 
 const state = {
   ascendancy: 0,
+  levels: {},
 };
 
-const getters = {};
+const getters = {
+};
 
 const actions = {
   softReset({ commit }) {

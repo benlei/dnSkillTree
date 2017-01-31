@@ -24,9 +24,6 @@
         <div class="alert alert-warning" role="alert">
           <strong>Warning!</strong> Better check yourself, you're not looking too good.
         </div>
-        <div class="alert alert-warning" role="alert">
-          <strong>Warning!</strong> Better check yourself, you're not looking too good.
-        </div>
       </div>
     </div>
   </div>
@@ -45,13 +42,13 @@
       this.$store.dispatch('loadJob', this.$route.params.slug);
     },
     computed: {
-      ...mapState({
-        job: 'job',
-        build: 'build',
-      }),
-      ...mapGetters({
-        jobName: 'jobName',
-      }),
+      ...mapState([
+        'job',
+        'build',
+      ]),
+      ...mapGetters([
+        'jobName',
+      ]),
     },
     methods: {
       skillId(ascendancy, row, col) {
@@ -69,8 +66,4 @@
 
 <style>
 
-  .tree {
-    margin-left: auto;
-    margin-right: auto;
-  }
 </style>
