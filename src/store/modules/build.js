@@ -3,6 +3,7 @@ import * as types from '../mutation-types';
 const state = {
   ascendancy: 0,
   levels: {},
+  title: 'MAZE',
 };
 
 const getters = {
@@ -16,6 +17,11 @@ const actions = {
   changeAscendancy({ commit }, ascendancy) {
     commit(types.CHANGE_ASCENDANCY, ascendancy);
   },
+
+  setTitle({ commit }, title) {
+    commit(types.SET_TITLE, title);
+    document.title = title;
+  },
 };
 
 const mutations = {
@@ -25,6 +31,11 @@ const mutations = {
 
   [types.SOFT_RESET](state) {
     state.ascendancy = 0;
+    state.levels = {};
+  },
+
+  [types.SET_TITLE](state, title) {
+    state.title = title;
   },
 };
 

@@ -28,5 +28,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     "no-param-reassign": 0,
     "no-shadow": [2, {"allow": ["state", "getters"]}]
+  },
+  "env": {
+    "browser": true
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 jobCell">
+  <div class="col-lg-6 jobCell">
     <router-link :to="'/' + slug">
       <div class="jobImage" :style="jobImageStyle" />
       <div class="jobTitle">

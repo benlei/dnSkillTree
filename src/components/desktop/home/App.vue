@@ -1,9 +1,7 @@
 <template>
-  <div class="container">
-    <Navigation />
-
+  <div class="home-app container">
     <div class="row jobsRow" v-for="row in jobPartitions">
-      <div class="col-md-3" v-for="group in row">
+      <div class="col-lg-3" v-for="group in row">
         <div class="jobGroup" v-for="job in group">
           <Job :name="job.name" :icon="job.icon" :slug="job.slug" />
         </div>
@@ -15,16 +13,17 @@
 <script>
   import { mapState } from 'vuex';
   import Job from './Job';
-  import Navigation from '../Navigation';
 
   export default {
     created() {
       this.$store.dispatch('loadJobs');
+      this.$store.dispatch('setTitle', 'MAZE');
     },
     computed: {
-      ...mapState({
-        jobs: 'jobs',
-      }),
+      ...mapState([
+        'jobs',
+        'build',
+      ]),
       jobPartitions() {
         const list = this.jobs.list;
         const rows = [];
@@ -39,7 +38,6 @@
     },
     components: {
       Job,
-      Navigation,
     },
   };
 </script>

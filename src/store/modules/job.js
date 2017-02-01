@@ -13,7 +13,7 @@ const state = {
 
 const getters = {
   jobName(state) {
-    return state.ascendancies[2].name;
+    return state.ascendancies.length ? state.ascendancies[2].name : '';
   },
 };
 
