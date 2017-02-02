@@ -1,21 +1,20 @@
 <template>
-  <div class="breadcrumb">
-    <div class="d-flex justify-content-between">
-      <div class="nav-tree">
-        <template v-if="build.title === 'MAZE'">
-          <span class="breadcrumb-item active">MAZE</span>
-        </template>
-        <template v-else>
-          <router-link to="/" class="breadcrumb-item">MAZE</router-link>
-          <span class="breadcrumb-item active">{{ build.title }}</span>
-        </template>
-      </div>
+  <nav class="d-flex justify-content-between">
+    <ol class="breadcrumb nav-tree">
+      <template v-if="build.title === 'MAZE'">
+        <li class="breadcrumb-item">MAZE</li>
+      </template>
+      <template v-else>
+        <li class="breadcrumb-item"><router-link to="/">MAZE</router-link></li>
+        <li class="breadcrumb-item">{{ build.title }}</li>
+      </template>
+    </ol>
 
-      <div class="nav-region">
-        <a class="breadcrumb-item" href="#">Mobile</a>
-      </div>
-    </div>
-  </div>
+    <ol class="breadcrumb info">
+      <li class="breadcrumb-item">v584</li>
+      <li class="breadcrumb-item">Lv. 93</li>
+    </ol>
+  </nav>
 </template>
 
 <script>
@@ -31,9 +30,15 @@
 </script>
 
 <style scoped>
-  .breadcrumb {
+  nav {
     background: #02151D;
     color: #FFF;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+  }
+
+  .breadcrumb {
+    background: transparent;
   }
 
   .breadcrumb a {
@@ -42,5 +47,12 @@
 
   .breadcrumb .active {
     color: #FFF;
+  }
+</style>
+
+<style>
+  .breadcrumb {
+    background: transparent;
+    margin-bottom: 0;
   }
 </style>

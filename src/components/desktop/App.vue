@@ -4,36 +4,21 @@
 
     <router-view></router-view>
 
-    <hr />
-
-    <footer>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active">NA</li>
-        <li class="breadcrumb-item"><a href="#">SEA</a></li>
-      </ol>
-    </footer>
+    <F00ter />
   </div>
 </template>
 
 <script>
   import Navigation from './Navigation';
+  import F00ter from './Footer';
 
   export default {
     components: {
       Navigation,
+      F00ter,
     },
   };
 </script>
-
-<style scoped>
-  .breadcrumb {
-    background: transparent;
-  }
-
-  .breadcrumb-item.active {
-    color: #000;
-  }
-</style>
 
 <style>
   body {
