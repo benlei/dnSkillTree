@@ -13,7 +13,7 @@
       <LeftSidebar />
 
       <div class="col-lg-4">
-        <table class="tree" :style="treeStyle">
+        <table class="tree" :style="build.ascendancy < 3 && treeStyle">
           <tr v-for="(_, row) in 6">
             <td v-for="(_, col) in 4">
               <Skill :id="skillId(build.ascendancy, row, col)"/>
