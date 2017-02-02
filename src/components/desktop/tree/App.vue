@@ -13,7 +13,7 @@
       <LeftSidebar />
 
       <div class="col-lg-4">
-        <table class="tree">
+        <table class="tree" :style="treeStyle">
           <tr v-for="(_, row) in 6">
             <td v-for="(_, col) in 4">
               <Skill :id="skillId(build.ascendancy, row, col)"/>
@@ -49,6 +49,12 @@
       title() {
         this.$store.dispatch('setTitle', this.jobName);
       },
+      treeStyle() {
+        const slug = this.job.ascendancies[this.build.ascendancy].slug;
+        return {
+          background: `url(${process.env.ASSETS_URL}/images/${slug}.png)`,
+        };
+      },
     },
     methods: {
       skillId(ascendancy, row, col) {
@@ -67,5 +73,8 @@
   .tree {
     margin-left: auto;
     margin-right: auto;
+    background-repeat: no-repeat !important;
+    background-position: -4px 7px !important;
+    background-size: 323px 543px !important;
   }
 </style>

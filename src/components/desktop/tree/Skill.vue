@@ -63,6 +63,7 @@
   .skill {
     height: 65px;
     width: 50px;
+    margin: 8.25px 10px;
   }
 
   .skill-icon, .skill-border {
