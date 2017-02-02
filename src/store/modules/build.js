@@ -28,8 +28,8 @@ const actions = {
     commit(types.SOFT_RESET);
   },
 
-  changeAscendancy({ commit }, ascendancy) {
-    commit(types.CHANGE_ASCENDANCY, ascendancy);
+  setAscendancy({ commit }, ascendancy) {
+    commit(types.SET_ASCENDANCY, ascendancy);
   },
 
   setTitle({ commit }, title) {
@@ -51,7 +51,7 @@ const actions = {
 };
 
 const mutations = {
-  [types.CHANGE_ASCENDANCY](state, ascendancy) {
+  [types.SET_ASCENDANCY](state, ascendancy) {
     state.ascendancy = ascendancy;
   },
 

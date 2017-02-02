@@ -1,6 +1,7 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
-    <div class="skill-icon" :style="skillImageStyle" v-on:mouseover="setActive(id)">
+    <div class="skill-icon" :style="skillImageStyle"
+         @mouseover="setActive(id)">
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
     <small class="skill-level text-center">{{ level }}/{{ maxLevel }}</small>

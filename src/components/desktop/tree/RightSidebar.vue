@@ -3,16 +3,7 @@
     <template v-if="active !== -1">
       <Description />
 
-      <div class="card">
-        <div class="card-header active">
-          Related Skills
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Skill A</li>
-          <li class="list-group-item">Skill B</li>
-          <li class="list-group-item">Skill C</li>
-        </ul>
-      </div>
+      <RelatedSkills />
     </template>
   </div>
 </template>
@@ -20,6 +11,7 @@
 <script>
   import { mapState, mapGetters } from 'vuex';
   import Description from './Description';
+  import RelatedSkills from './RelatedSkills';
 
   export default {
     computed: {
@@ -33,6 +25,7 @@
     },
     components: {
       Description,
+      RelatedSkills,
     },
   };
 </script>
