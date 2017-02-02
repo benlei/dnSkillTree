@@ -1,10 +1,11 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
-         @mouseover="setActive(id)">
+         @mouseover="setActive(id)"
+    >
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
-    <small class="skill-level text-center">{{ level }}/{{ maxLevel }}</small>
+    <small class="skill-level text-center">{{ level }}/{{ skill.maxLevel }}</small>
   </div>
   <div class="skill" v-else/>
 </template>
@@ -27,8 +28,12 @@
         'build',
       ]),
 
+      skill() {
+        return this.job.skills[this.id];
+      },
+
       skillImageStyle() {
-        const skill = this.job.skills[this.id];
+        const skill = this.skill;
         const icon = Math.floor(skill.icon / 200) + 1;
         const sprite = icon < 10 ? `0${icon}` : icon;
         const row = Math.floor((skill.icon % 200) / 10);
@@ -52,15 +57,15 @@
 
         return level;
       },
-
-      maxLevel() {
-        return this.job.skills[this.id].maxLevel;
-      },
     },
     methods: {
       ...mapActions([
         'setActive',
+        'setLevel',
       ]),
+//      adjustLevel(adj) {
+//        this.setLevel()
+//      },
     },
   };
 </script>

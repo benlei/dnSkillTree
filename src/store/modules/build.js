@@ -2,7 +2,7 @@ import * as types from '../mutation-types';
 
 const state = {
   ascendancy: 0,
-  levels: {},
+  levels: [],
   title: 'MAZE',
   mode: 0,
   active: -1,
@@ -41,8 +41,11 @@ const actions = {
     commit(types.SET_ACTIVE, skillId);
   },
 
-  setLevel({ commit }, skillId, level) {
-    commit(types.SET_SKILL_LEVEL, skillId, level);
+  setLevel({ commit, rootState }, skillId, level) {
+    const jobIndex = rootState.job.skills[skillId].jobIndex;
+    const slot = rootState.job.skills[skillId].slot;
+    const index = (jobIndex * 24) + slot;
+    commit(types.SET_SKILL_LEVEL, index, level);
   },
 
   setMode({ commit }, mode) {
@@ -70,8 +73,8 @@ const mutations = {
     state.active = skillId;
   },
 
-  [types.SET_SKILL_LEVEL](state, skillId, level) {
-    state.levels[skillId] = level;
+  [types.SET_SKILL_LEVEL](state, index, level) {
+    state.levels[index] = level;
   },
 
   [types.SET_MODE](state, mode) {
