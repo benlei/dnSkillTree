@@ -1,15 +1,15 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
-    <div class="skill-icon" :style="skillImageStyle">
-      <div class="skill-border" :style="border" :class="{grayscale: !level}" />
+    <div class="skill-icon" :style="skillImageStyle" v-on:mouseover="setActive(id)">
+      <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
     <small class="skill-level text-center">{{ level }}/{{ maxLevel }}</small>
   </div>
-  <div class="skill" v-else />
+  <div class="skill" v-else/>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     props: ['id'],
@@ -56,6 +56,11 @@
         return this.job.skills[this.id].maxLevel;
       },
     },
+    methods: {
+      ...mapActions([
+        'setActive',
+      ]),
+    },
   };
 </script>
 
@@ -70,7 +75,6 @@
     height: 50px;
     width: 50px;
   }
-
 
   .skill-level {
     line-height: 1.25;

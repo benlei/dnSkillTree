@@ -1,43 +1,38 @@
 <template>
   <div class="col-lg-4">
-    <div class="card description">
-      <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item text-center">
-            <a class="nav-link" v-on:click="mode = 0" :class="{active: !mode}" href="javascript:void(0)">PvE</a>
-          </li>
-          <li class="nav-item text-center">
-            <a class="nav-link" v-on:click="mode = 1" :class="{active: mode}" href="javascript:void(0)">PvP</a>
-          </li>
+    <template v-if="active !== -1">
+      <Description />
+
+      <div class="card">
+        <div class="card-header active">
+          Related Skills
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Skill A</li>
+          <li class="list-group-item">Skill B</li>
+          <li class="list-group-item">Skill C</li>
         </ul>
       </div>
-      <div class="card-block">
-        <h5>Super Serious Punch</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <p class="card-text">Mode: {{ mode }}</p>
-        <p class="card-text">Also: Alternative 1, Alternative 2</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header active">
-        Related Skills
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Skill A</li>
-        <li class="list-group-item">Skill B</li>
-        <li class="list-group-item">Skill C</li>
-      </ul>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
+  import { mapState, mapGetters } from 'vuex';
+  import Description from './Description';
+
   export default {
-    data() {
-      return {
-        mode: 0,
-      };
+    computed: {
+      ...mapState([
+        'job',
+        'build',
+      ]),
+      ...mapGetters([
+        'active',
+      ]),
+    },
+    components: {
+      Description,
     },
   };
 </script>
