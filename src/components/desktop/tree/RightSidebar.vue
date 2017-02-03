@@ -1,7 +1,7 @@
 <template>
   <div class="col-lg-4">
     <template v-if="active !== -1">
-      <Description />
+      <Information />
 
       <RelatedSkills />
     </template>
@@ -10,7 +10,7 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex';
-  import Description from './Description';
+  import Information from './Information';
   import RelatedSkills from './RelatedSkills';
 
   export default {
@@ -24,7 +24,7 @@
       ]),
     },
     components: {
-      Description,
+      Information,
       RelatedSkills,
     },
   };

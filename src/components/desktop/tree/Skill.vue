@@ -5,7 +5,7 @@
     >
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
-    <small class="skill-level text-center">{{ level }}/{{ skill.maxLevel }}</small>
+    <small class="skill-level text-center">{{ level }}/{{ softMaxLevel }}</small>
   </div>
   <div class="skill" v-else/>
 </template>
@@ -30,6 +30,10 @@
 
       skill() {
         return this.job.skills[this.id];
+      },
+
+      softMaxLevel() {
+        return this.skill.maxLevel - this.skill.spMaxLevel;
       },
 
       skillImageStyle() {

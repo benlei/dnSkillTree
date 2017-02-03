@@ -36,6 +36,7 @@
     </div>
     <div class="card-block">
       <span>Skill Description</span>
+      <div v-html="description"></div>
     </div>
     <div class="card-block">
       <span>Next Description</span>
@@ -65,6 +66,7 @@
         'attribute',
         'cooldown',
         'weapons',
+        'description',
       ]),
     },
     methods: {
@@ -73,9 +75,7 @@
       ]),
     },
     filters: {
-      join(arr, separator) {
-        return arr.join(separator);
-      },
+      join: (arr, separator) => arr.join(separator),
     },
   };
 </script>

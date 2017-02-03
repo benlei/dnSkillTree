@@ -2,12 +2,12 @@
   <div class="tree-app" v-if="job.loaded">
     {{ title }}
 
-    <Alert />
+    <Alert/>
 
     <div class="row">
-      <LeftSidebar />
+      <LeftSidebar/>
 
-      <Tree />
+      <Tree/>
 
       <RightSidebar/>
     </div>
@@ -26,17 +26,21 @@
       this.$store.dispatch('softReset');
       this.$store.dispatch('loadJob', this.$route.params.slug);
     },
+
     computed: {
       ...mapState([
         'job',
       ]),
+
       ...mapGetters([
         'jobName',
       ]),
+
       title() {
         this.$store.dispatch('setTitle', this.jobName);
       },
     },
+
     components: {
       Alert,
       LeftSidebar,
