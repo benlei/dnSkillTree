@@ -49,7 +49,7 @@
 
       level() {
         const skill = this.job.skills[this.id];
-        const level = this.build.levels[this.id] || 0;
+        const level = this.build.levels[skill.slot] || 0;
 
         if (skill.levelReq[0] === 1) {
           return 1 + level;

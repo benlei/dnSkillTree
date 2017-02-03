@@ -15,6 +15,13 @@ const getters = {
   jobName(state) {
     return state.ascendancies.length ? state.ascendancies[2].name : '';
   },
+
+  ascendancies: state => state.ascendancies,
+  tree: state => state.tree,
+  messages: state => state.messages,
+  crests: state => state.crests,
+  skills: state => state.skills,
+  weaponMap: state => state.weapons,
 };
 
 const mutations = {

@@ -9,9 +9,9 @@ const state = {
 };
 
 const getters = {
-  active(state, getters, rootState) {
-    if (state.active === -1 && rootState.job.tree.length) {
-      const tree = rootState.job.tree[0];
+  active(state, getters, State, Getters) {
+    if (state.active === -1 && Getters.tree.length) {
+      const tree = Getters.tree[0];
       for (let i = 0; i < 4; i += 1) {
         if (tree[i] !== null) {
           return tree[i];
@@ -20,6 +20,99 @@ const getters = {
     }
 
     return state.active;
+  },
+
+  skill(state, getters, State, Getters) {
+    return Getters.skills[getters.active];
+  },
+
+  name(state, getters, State, Getters) {
+    return Getters.messages[getters.skill.name];
+  },
+
+  levelIndex(state, getters) {
+    const index = (getters.skill.jobIndex * 24) + getters.skill.slot;
+    return state.levels[index] || 0;
+  },
+
+  level(state, getters) {
+    if (getters.skill.levelReq[0] === 1) {
+      return 1 + getters.levelIndex;
+    }
+
+    return getters.levelIndex;
+  },
+
+  spCost(state, getters) {
+    return getters.skill.sp[getters.levelIndex];
+  },
+
+  spCostTotal(state, getters) {
+    return getters.skill.spTotal[getters.levelIndex];
+  },
+
+  hpCost(state, getters) {
+    return getters.skill.hp[state.mode][getters.levelIndex];
+  },
+
+  mpCost(state, getters) {
+    return getters.skill.mp[state.mode][getters.levelIndex];
+  },
+
+  type(state, getters) {
+    const type = getters.skill.type;
+    const durationType = getters.skill.durationType;
+
+    if (!type) {
+      switch (durationType) {
+        case 0:
+          return 'Instant';
+        case 1:
+          return 'Buff';
+        case 2:
+          return 'Debuff';
+        default:
+          break;
+      }
+    } else if (type === 3) {
+      return 'Passive Enhanced';
+    }
+
+    return 'Passive';
+  },
+
+  attribute(state, getters) {
+    switch (getters.skill.element) {
+      case 0:
+        return 'Fire';
+      case 1:
+        return 'Water';
+      case 2:
+        return 'Light';
+      case 3:
+        return 'Dark';
+      default:
+        break;
+    }
+
+    return 'None';
+  },
+
+  cooldown(state, getters) {
+    if (getters.skill.cdOverride) {
+      return getters.skill.cdOverride[state.mode];
+    }
+
+    return getters.skill.cd[state.mode][getters.levelIndex];
+  },
+
+  weapons(state, getters, State, Getters) {
+    const weapons = getters.skill.weapons;
+    if (weapons) {
+      return weapons.map(n => Getters.messages[Getters.weaponMap[n]]);
+    }
+
+    return null;
   },
 };
 

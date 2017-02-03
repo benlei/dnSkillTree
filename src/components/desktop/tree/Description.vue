@@ -11,11 +11,34 @@
       </ul>
     </div>
     <div class="card-block">
-      <h5>Super Serious Punch</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <p class="card-text">Mode: {{ build.mode }}</p>
-      <p class="card-text">Mode: {{ active }}</p>
-      <p class="card-text">Also: Alternative 1, Alternative 2</p>
+      <h5>{{ name }}</h5>
+      <div class="d-flex justify-content-between">
+        <span>Skill Lv: {{ level }}</span>
+        <span>Max Lv: {{ skill.maxLevel }}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span>Type: {{ type }}</span>
+        <span>Attribute: {{ attribute }}</span>
+      </div>
+      <div class="d-flex justify-content-between" v-if="level">
+        <span>SP: {{ spCost }}</span>
+        <span>Total SP: {{ spCostTotal }}</span>
+      </div>
+      <div class="d-flex justify-content-between" v-if="mpCost || hpCost">
+        <span v-show="mpCost">Fee MP: {{ mpCost }}</span>
+        <span v-show="hpCost">Fee HP: {{ hpCost }}</span>
+      </div>
+      <div v-if="cooldown">Cooldown: {{ cooldown }} sec</div>
+      <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
+    </div>
+    <div class="card-block">
+      <span>Level Up Requirements</span>
+    </div>
+    <div class="card-block">
+      <span>Skill Description</span>
+    </div>
+    <div class="card-block">
+      <span>Next Description</span>
     </div>
   </div>
 </template>
@@ -31,6 +54,17 @@
       ]),
       ...mapGetters([
         'active',
+        'skill',
+        'name',
+        'level',
+        'spCost',
+        'spCostTotal',
+        'hpCost',
+        'mpCost',
+        'type',
+        'attribute',
+        'cooldown',
+        'weapons',
       ]),
     },
     methods: {
@@ -38,5 +72,16 @@
         'setMode',
       ]),
     },
+    filters: {
+      join(arr, separator) {
+        return arr.join(separator);
+      },
+    },
   };
 </script>
+
+<style scoped>
+  .card .card-block + .card-block {
+    padding-top: 0;
+  }
+</style>
