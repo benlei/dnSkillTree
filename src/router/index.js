@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import DesktopApp from './components/desktop/App';
-import HomeApp from './components/desktop/home/App';
-import TreeApp from './components/desktop/tree/App';
-import MobileApp from './components/mobile/App';
-import MobileHomeApp from './components/mobile/home/App';
-import MobileTreeApp from './components/mobile/tree/App';
+import DesktopApp from '../components/desktop/App';
+import HomeApp from '../components/desktop/home/App';
+import TreeApp from '../components/desktop/tree/App';
+import MobileApp from '../components/mobile/App';
+import MobileHomeApp from '../components/mobile/home/App';
+import MobileTreeApp from '../components/mobile/tree/App';
 
 Vue.use(VueRouter);
 

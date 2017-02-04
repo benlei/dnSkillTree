@@ -1,5 +1,5 @@
 <template>
-  <div class="card description">
+  <div class="card information">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item text-center">
@@ -10,19 +10,20 @@
         </li>
       </ul>
     </div>
+
     <div class="card-block">
       <h5>{{ name }}</h5>
       <div class="d-flex justify-content-between">
-        <span>Skill Lv: {{ level }}</span>
-        <span>Max Lv: {{ skill.maxLevel }}</span>
+        <span>Skill Lv: {{ level || 1 }}</span>
+        <span>Max Skill Lv: {{ softMaxLevel }}</span>
       </div>
       <div class="d-flex justify-content-between">
         <span>Type: {{ type }}</span>
         <span>Attribute: {{ attribute }}</span>
       </div>
-      <div class="d-flex justify-content-between" v-if="level">
-        <span>SP: {{ spCost }}</span>
-        <span>Total SP: {{ spCostTotal }}</span>
+      <div class="d-flex justify-content-between" v-if="spTotal && levelIndex">
+        <span>SP: {{ sp }}</span>
+        <span>Total SP: {{ spTotal }}</span>
       </div>
       <div class="d-flex justify-content-between" v-if="mpCost || hpCost">
         <span v-show="mpCost">Fee MP: {{ mpCost }}</span>
@@ -31,15 +32,24 @@
       <div v-if="cooldown">Cooldown: {{ cooldown }} sec</div>
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
     </div>
+
     <div class="card-block">
-      <span>Level Up Requirements</span>
+      <h6>Level Up Requirements</h6>
+      <div v-if="levelUpReq">Character Level {{ levelUpReq }}</div>
+      <div v-if="parentSkills" v-for="parentSkill in parentSkills">
+        {{ messages[job.skills[parentSkill.id].name] }} Lv. {{ parentSkill.level }}
+      </div>
+      <div v-if="spCost">
+        SP {{ spCost }}
+      </div>
+    </div>
+
+    <div class="card-block">
+      <h6>Skill Description</h6>
+      <div class="description" v-html="description"></div>
     </div>
     <div class="card-block">
-      <span>Skill Description</span>
-      <div v-html="description"></div>
-    </div>
-    <div class="card-block">
-      <span>Next Description</span>
+      <h6>Next Description</h6>
     </div>
   </div>
 </template>
@@ -54,12 +64,15 @@
         'build',
       ]),
       ...mapGetters([
+        'messages',
+        'levelIndex',
         'active',
         'skill',
         'name',
         'level',
+        'sp',
+        'spTotal',
         'spCost',
-        'spCostTotal',
         'hpCost',
         'mpCost',
         'type',
@@ -67,6 +80,9 @@
         'cooldown',
         'weapons',
         'description',
+        'softMaxLevel',
+        'levelUpReq',
+        'parentSkills',
       ]),
     },
     methods: {
@@ -83,5 +99,52 @@
 <style scoped>
   .card .card-block + .card-block {
     padding-top: 0;
+  }
+</style>
+
+<style>
+  .information .card-header {
+    background: #02151D;
+    color: #fff;
+  }
+
+  .information .nav-link {
+    color: #FFF;
+  }
+
+  .information .nav-item {
+    width: 50%;
+  }
+
+  .information .nav-item a {
+    border: 0;
+  }
+
+  .card-block {
+    font-size: 80%;
+  }
+
+  span.o {
+    color: #bf8100;
+  }
+
+  span.y {
+    color: #888800;
+  }
+
+  span.p {
+    color: #8a8166;
+  }
+
+  span.r {
+    color: #a82121;
+  }
+
+  span.s {
+    color: #699fb3;
+  }
+
+  span.v {
+    color: #904f90;
   }
 </style>

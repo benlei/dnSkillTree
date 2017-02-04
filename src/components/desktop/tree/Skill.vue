@@ -2,6 +2,8 @@
   <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
          @mouseover="setActive(id)"
+         @click="nextLevel"
+         @contextmenu.prevent="previousLevel"
     >
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
@@ -11,7 +13,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapGetters } from 'vuex';
 
   export default {
     props: ['id'],
@@ -26,6 +28,11 @@
       ...mapState([
         'job',
         'build',
+      ]),
+
+      ...mapGetters([
+        'active',
+        'levelIndex',
       ]),
 
       skill() {
@@ -67,9 +74,21 @@
         'setActive',
         'setLevel',
       ]),
-//      adjustLevel(adj) {
-//        this.setLevel()
-//      },
+
+      nextLevel() {
+        this.setLevel({
+          skillId: this.id,
+          levelIndex: this.level < this.softMaxLevel ?
+            this.levelIndex + 1 : this.levelIndex,
+        });
+      },
+
+      previousLevel() {
+        this.setLevel({
+          skillId: this.id,
+          levelIndex: !this.levelIndex ? 0 : this.levelIndex - 1,
+        });
+      },
     },
   };
 </script>

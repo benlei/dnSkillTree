@@ -1,17 +1,20 @@
+import Vue from 'vue';
 import * as types from '../mutation-types';
 
 function strParameterize(str, params, state, getters, State, Getters) {
-  if (!params) {
+  if (!str) {
     return str;
   }
 
-  params = params.split(',').map((p) => {
-    if (p.startsWith('{')) {
-      return Getters.messages[p.substring(1, p.length - 1)];
-    }
+  if (params) {
+    params = params.split(',').map((p) => {
+      if (p.startsWith('{')) {
+        return Getters.messages[p.substring(1, p.length - 1)];
+      }
 
-    return p;
-  });
+      return p;
+    });
+  }
 
   for (let i = 0; i < params.length; i += 1) {
     str = str.replace(`{${i}}`, params[i]);
@@ -89,23 +92,43 @@ const getters = {
   skill: (state, getters, State, Getters) => Getters.skills[getters.active],
   name: (state, getters, State, Getters) => Getters.messages[getters.skill.name],
 
+  isStarter: (state, getters) => getters.skill.levelReq[0] === 1,
   levelIndex(state, getters) {
     const index = (getters.skill.jobIndex * 24) + getters.skill.slot;
     return state.levels[index] || 0;
   },
 
   level(state, getters) {
-    if (getters.skill.levelReq[0] === 1) {
+    if (getters.isStarter === 1) {
       return 1 + getters.levelIndex;
     }
 
     return getters.levelIndex;
   },
 
-  spCost: (state, getters) => getters.skill.sp[getters.levelIndex],
-  spCostTotal: (state, getters) => getters.skill.spTotal[getters.levelIndex],
+  nextLevelIndex(state, getters) {
+    const nextIndex = getters.levelIndex + 1;
+    if (nextIndex === getters.skill.maxLevel) {
+      return getters.levelIndex;
+    }
+
+    return nextIndex;
+  },
+
+  sp: (state, getters) => getters.skill.sp[getters.levelIndex],
+  spTotal: (state, getters) => getters.skill.spTotal[getters.levelIndex],
+
+  spCost(state, getters) {
+    if (getters.isStarter === 1) {
+      return getters.skill.sp[getters.nextLevelIndex];
+    }
+
+    return getters.skill.sp[getters.levelIndex];
+  },
+
   hpCost: (state, getters) => getters.skill.hp[state.mode][getters.levelIndex],
   mpCost: (state, getters) => getters.skill.mp[state.mode][getters.levelIndex],
+  softMaxLevel: (state, getters) => getters.skill.maxLevel - getters.skill.spMaxLevel,
 
   type(state, getters) {
     const type = getters.skill.type;
@@ -170,6 +193,18 @@ const getters = {
 
     return strParameterize(str, params, state, getters, State, Getters);
   },
+
+  levelUpReq(state, getters) {
+    if (!getters.level) {
+      return getters.skill.levelReq[0];
+    }
+
+    return getters.skill.levelReq[getters.nextLevelIndex];
+  },
+
+  parentSkills(state, getters) {
+    return getters.skill.parents;
+  },
 };
 
 const actions = {
@@ -190,11 +225,12 @@ const actions = {
     commit(types.SET_ACTIVE, skillId);
   },
 
-  setLevel({ commit, rootState }, skillId, level) {
+  setLevel({ commit, rootState }, { skillId, levelIndex }) {
     const jobIndex = rootState.job.skills[skillId].jobIndex;
     const slot = rootState.job.skills[skillId].slot;
     const index = (jobIndex * 24) + slot;
-    commit(types.SET_SKILL_LEVEL, index, level);
+    commit(types.SET_SKILL_LEVEL, { index, levelIndex });
+    commit(types.SET_ACTIVE, skillId);
   },
 
   setMode({ commit }, mode) {
@@ -222,8 +258,8 @@ const mutations = {
     state.active = skillId;
   },
 
-  [types.SET_SKILL_LEVEL](state, index, level) {
-    state.levels[index] = level;
+  [types.SET_SKILL_LEVEL](state, { index, levelIndex }) {
+    Vue.set(state.levels, index, levelIndex);
   },
 
   [types.SET_MODE](state, mode) {
