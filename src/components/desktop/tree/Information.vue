@@ -13,23 +13,22 @@
 
     <div class="card-block">
       <h5>{{ name }}</h5>
-      <div class="d-flex justify-content-between">
-        <span>Skill Lv: {{ level || 1 }}</span>
-        <span>Max Skill Lv: {{ softMaxLevel }}</span>
+      <div>
+        <span>Skill Lv: {{ meta.level }}</span>
+        <span class="float-right">Max Skill Lv: {{ meta.maxLevel }}</span>
       </div>
-      <div class="d-flex justify-content-between">
+      <div>
         <span>Type: {{ type }}</span>
-        <span>Attribute: {{ attribute }}</span>
+        <span class="float-right">Attribute: {{ attribute }}</span>
       </div>
-      <div class="d-flex justify-content-between" v-if="spTotal && levelIndex">
-        <span>SP: {{ sp }}</span>
-        <span>Total SP: {{ spTotal }}</span>
+      <div v-if="meta.cd || meta.spTotal">
+        <span v-if="meta.cd">Cooldown: {{ meta.cd }} sec</span>
+        <span class="float-right" v-if="meta.spTotal">Total SP: {{ meta.spTotal }}</span>
       </div>
-      <div class="d-flex justify-content-between" v-if="mpCost || hpCost">
-        <span v-show="mpCost">Fee MP: {{ mpCost }}</span>
-        <span v-show="hpCost">Fee HP: {{ hpCost }}</span>
+      <div v-if="meta.hp || meta.mp">
+        <span v-if="meta.mp">Fee MP: {{ meta.mp }}</span>
+        <span class="float-right" v-if="meta.hp">Fee HP: {{ meta.hp }}</span>
       </div>
-      <div v-if="cooldown">Cooldown: {{ cooldown }} sec</div>
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
     </div>
 
@@ -65,22 +64,15 @@
       ]),
       ...mapGetters([
         'messages',
-        'levelIndex',
-        'active',
         'skill',
         'name',
-        'level',
-        'sp',
+        'meta',
         'spTotal',
         'spCost',
-        'hpCost',
-        'mpCost',
         'type',
         'attribute',
-        'cooldown',
         'weapons',
         'description',
-        'softMaxLevel',
         'levelUpReq',
         'parentSkills',
       ]),

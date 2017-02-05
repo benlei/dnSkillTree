@@ -1,71 +1,10 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import parameterize from '../../lib/parameterize';
+import Level from '../../lib/level';
 
-function strParameterize(str, params, state, getters, State, Getters) {
-  if (!str) {
-    return str;
-  }
-
-  if (params) {
-    params = params.split(',').map((p) => {
-      if (p.startsWith('{')) {
-        return Getters.messages[p.substring(1, p.length - 1)];
-      }
-
-      return p;
-    });
-  }
-
-  for (let i = 0; i < params.length; i += 1) {
-    str = str.replace(`{${i}}`, params[i]);
-  }
-
-  let c = 0;
-  let w = 0;
-  let newStr = '';
-  let startPos = 0;
-
-  for (let i = 0; i < str.length - 1; i += 1) {
-    switch (str.substr(i, 2)) {
-      case '#y':
-      case '#p':
-      case '#r':
-      case '#s':
-      case '#v':
-        if (c - w === 1) { // needed a closing </span>
-          newStr += `${str.substring(startPos, i)}</span><span class="${str.substr(i + 1, 1)}">`;
-        } else {
-          newStr += `${str.substring(startPos, i)}<span class="${str.substr(i + 1, 1)}">`;
-          c += 1;
-        }
-
-        startPos = i + 2;
-        i += 1;
-        break;
-      case '#w':
-        if (w === c) { // early #w
-          newStr += str.substring(startPos, i);
-        } else {
-          newStr += `${str.substring(startPos, i)}</span>`;
-          w += 1;
-        }
-
-        startPos = i + 2;
-        i += 1;
-        break;
-      default:
-        break;
-    }
-  }
-
-  newStr += str.substr(startPos);
-
-  if (c !== w) {
-    newStr = `${newStr}</span>`;
-  }
-
-  return newStr.replace(/\\n/g, '<br />');
-}
+// const chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_'.split('');
+// const charsT = Object.assign({}, chars);
 
 const state = {
   ascendancy: 0,
@@ -90,20 +29,35 @@ const getters = {
   },
 
   skill: (state, getters, State, Getters) => Getters.skills[getters.active],
+
   name: (state, getters, State, Getters) => Getters.messages[getters.skill.name],
 
+  meta(state, getters) {
+    const skill = getters.skill;
+    const level = Math.max(1, Level.valueOf(state.levels, skill));
+    const displayLevel = Math.max(1, Level.valueOf(state.levels, skill));
+    const index = Level.indexOf(level);
+    const maxLevel = skill.maxLevel - skill.spMaxLevel;
+    const spTotal = level ? skill.spTotal[index] : 0;
+    const hp = skill.hp[state.mode][index];
+    const mp = skill.mp[state.mode][index];
+    const cd = skill.cdOverride ? skill.cdOverride[state.mode] : skill.cd[state.mode][index];
+
+    return {
+      level: displayLevel,
+      maxLevel,
+      spTotal,
+      hp,
+      mp,
+      cd,
+    };
+  },
+
   isStarter: (state, getters) => getters.skill.levelReq[0] === 1,
+
   levelIndex(state, getters) {
     const index = (getters.skill.jobIndex * 24) + getters.skill.slot;
     return state.levels[index] || 0;
-  },
-
-  level(state, getters) {
-    if (getters.isStarter === 1) {
-      return 1 + getters.levelIndex;
-    }
-
-    return getters.levelIndex;
   },
 
   nextLevelIndex(state, getters) {
@@ -115,9 +69,6 @@ const getters = {
     return nextIndex;
   },
 
-  sp: (state, getters) => getters.skill.sp[getters.levelIndex],
-  spTotal: (state, getters) => getters.skill.spTotal[getters.levelIndex],
-
   spCost(state, getters) {
     if (getters.isStarter === 1) {
       return getters.skill.sp[getters.nextLevelIndex];
@@ -125,10 +76,6 @@ const getters = {
 
     return getters.skill.sp[getters.levelIndex];
   },
-
-  hpCost: (state, getters) => getters.skill.hp[state.mode][getters.levelIndex],
-  mpCost: (state, getters) => getters.skill.mp[state.mode][getters.levelIndex],
-  softMaxLevel: (state, getters) => getters.skill.maxLevel - getters.skill.spMaxLevel,
 
   type(state, getters) {
     const type = getters.skill.type;
@@ -169,18 +116,13 @@ const getters = {
     return 'None';
   },
 
-  cooldown(state, getters) {
-    if (getters.skill.cdOverride) {
-      return getters.skill.cdOverride[state.mode];
-    }
-
-    return getters.skill.cd[state.mode][getters.levelIndex];
-  },
-
   weapons(state, getters, State, Getters) {
     const weapons = getters.skill.weapons;
+    const messages = Getters.messages;
+    const weaponMap = Getters.weaponMap;
+
     if (weapons) {
-      return weapons.map(n => Getters.messages[Getters.weaponMap[n]]);
+      return weapons.map(n => messages[weaponMap[n]]);
     }
 
     return null;
@@ -191,7 +133,7 @@ const getters = {
     const str = Getters.messages[descriptionId];
     const params = getters.skill.params[state.mode][getters.levelIndex];
 
-    return strParameterize(str, params, state, getters, State, Getters);
+    return parameterize(str, params, Getters.messages);
   },
 
   levelUpReq(state, getters) {

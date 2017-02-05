@@ -14,6 +14,7 @@
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
+  import Level from '../../../lib/level';
 
   export default {
     props: ['id'],
@@ -49,8 +50,7 @@
         const sprite = icon < 10 ? `0${icon}` : icon;
         const row = Math.floor((skill.icon % 200) / 10);
         const col = skill.icon % 10;
-        const level = this.level;
-        const suffix = level ? '' : '_b';
+        const suffix = this.level ? '' : '_b';
 
         return {
           backgroundImage: `url(${process.env.ASSETS_URL}/images/skillicon${sprite}${suffix}.png)`,
@@ -59,14 +59,9 @@
       },
 
       level() {
+        const levels = this.build.levels;
         const skill = this.job.skills[this.id];
-        const level = this.build.levels[skill.slot] || 0;
-
-        if (skill.levelReq[0] === 1) {
-          return 1 + level;
-        }
-
-        return level;
+        return Level.valueOf(levels, skill);
       },
     },
     methods: {
@@ -75,19 +70,22 @@
         'setLevel',
       ]),
 
-      nextLevel() {
+      setActiveLevel(levelIndex) {
         this.setLevel({
           skillId: this.id,
-          levelIndex: this.level < this.softMaxLevel ?
-            this.levelIndex + 1 : this.levelIndex,
+          levelIndex,
         });
+
+        this.setActive(this.id);
+      },
+
+      nextLevel() {
+        this.setActiveLevel(this.level < this.softMaxLevel ?
+          this.levelIndex + 1 : this.levelIndex);
       },
 
       previousLevel() {
-        this.setLevel({
-          skillId: this.id,
-          levelIndex: !this.levelIndex ? 0 : this.levelIndex - 1,
-        });
+        this.setActiveLevel(this.levelIndex ? this.levelIndex - 1 : 0);
       },
     },
   };
