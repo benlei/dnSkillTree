@@ -43,7 +43,7 @@
     margin-left: auto;
     margin-right: auto;
     background-repeat: no-repeat !important;
-    background-position: -4px 6px !important;
-    background-size: 323px 564px !important;
+    background-position: -4px 5.5px !important;
+    background-size: 323px 563px !important;
   }
 </style>
