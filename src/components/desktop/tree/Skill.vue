@@ -33,7 +33,7 @@
 
       ...mapGetters([
         'active',
-        'levelIndex',
+        'index',
       ]),
 
       skill() {
@@ -70,10 +70,10 @@
         'setLevel',
       ]),
 
-      setActiveLevel(levelIndex) {
+      setActiveLevel(level) {
         this.setLevel({
           skillId: this.id,
-          levelIndex,
+          level,
         });
 
         this.setActive(this.id);
@@ -81,11 +81,11 @@
 
       nextLevel() {
         this.setActiveLevel(this.level < this.softMaxLevel ?
-          this.levelIndex + 1 : this.levelIndex);
+          this.level + 1 : this.level);
       },
 
       previousLevel() {
-        this.setActiveLevel(this.levelIndex ? this.levelIndex - 1 : 0);
+        this.setActiveLevel(this.level ? this.level - 1 : 0);
       },
     },
   };

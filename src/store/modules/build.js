@@ -32,49 +32,29 @@ const getters = {
 
   name: (state, getters, State, Getters) => Getters.messages[getters.skill.name],
 
+  level: (state, getters) => Level.valueOf(state.levels, getters.skill),
+
+  index: (state, getters) => Level.indexOf(getters.level),
+
   meta(state, getters) {
     const skill = getters.skill;
-    const level = Math.max(1, Level.valueOf(state.levels, skill));
-    const displayLevel = Math.max(1, Level.valueOf(state.levels, skill));
+    const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
+
     const maxLevel = skill.maxLevel - skill.spMaxLevel;
-    const spTotal = level ? skill.spTotal[index] : 0;
+    const spTotal = getters.level ? skill.spTotal[index] : 0;
     const hp = skill.hp[state.mode][index];
     const mp = skill.mp[state.mode][index];
     const cd = skill.cdOverride ? skill.cdOverride[state.mode] : skill.cd[state.mode][index];
 
     return {
-      level: displayLevel,
+      level,
       maxLevel,
       spTotal,
       hp,
       mp,
       cd,
     };
-  },
-
-  isStarter: (state, getters) => getters.skill.levelReq[0] === 1,
-
-  levelIndex(state, getters) {
-    const index = (getters.skill.jobIndex * 24) + getters.skill.slot;
-    return state.levels[index] || 0;
-  },
-
-  nextLevelIndex(state, getters) {
-    const nextIndex = getters.levelIndex + 1;
-    if (nextIndex === getters.skill.maxLevel) {
-      return getters.levelIndex;
-    }
-
-    return nextIndex;
-  },
-
-  spCost(state, getters) {
-    if (getters.isStarter === 1) {
-      return getters.skill.sp[getters.nextLevelIndex];
-    }
-
-    return getters.skill.sp[getters.levelIndex];
   },
 
   type(state, getters) {
@@ -128,24 +108,60 @@ const getters = {
     return null;
   },
 
-  description(state, getters, State, Getters) {
-    const descriptionId = getters.skill.description[state.mode][getters.levelIndex];
-    const str = Getters.messages[descriptionId];
-    const params = getters.skill.params[state.mode][getters.levelIndex];
+  next(state, getters) {
+    const level = getters.level;
+    const skill = getters.skill;
+    const parents = skill.parents;
+    let levelReq = 0;
+    let spCost = 0;
 
-    return parameterize(str, params, Getters.messages);
-  },
-
-  levelUpReq(state, getters) {
-    if (!getters.level) {
-      return getters.skill.levelReq[0];
+    if (level >= skill.maxLevel) {
+      const maxLevelIndex = Level.indexOf(skill.maxLevel);
+      levelReq = skill.levelReq[maxLevelIndex];
+      spCost = skill.sp[maxLevelIndex];
+    } else if (!level) {
+      levelReq = skill.levelReq[0];
+      spCost = skill.sp[0];
+    } else {
+      levelReq = skill.levelReq[level];
+      spCost = skill.sp[level];
     }
 
-    return getters.skill.levelReq[getters.nextLevelIndex];
+    return {
+      levelReq,
+      parents,
+      spCost,
+    };
   },
 
-  parentSkills(state, getters) {
-    return getters.skill.parents;
+  description(state, getters, State, Getters) {
+    const skill = getters.skill;
+    const messages = Getters.messages;
+
+    const level = Math.max(1, getters.level);
+    const index = Level.indexOf(level);
+    const descriptionId = skill.description[state.mode][index];
+
+    const str = messages[descriptionId];
+    const params = skill.params[state.mode][index];
+
+    return parameterize(str, params, messages);
+  },
+
+  nextDescription(state, getters, State, Getters) {
+    const skill = getters.skill;
+    const messages = Getters.messages;
+    const level = getters.level;
+
+    if (level > 0 && level < skill.maxLevel) {
+      const descriptionId = skill.description[state.mode][level];
+      const str = messages[descriptionId];
+      const params = skill.params[state.mode][level];
+
+      return parameterize(str, params, messages);
+    }
+
+    return null;
   },
 };
 
@@ -167,11 +183,11 @@ const actions = {
     commit(types.SET_ACTIVE, skillId);
   },
 
-  setLevel({ commit, rootState }, { skillId, levelIndex }) {
-    const jobIndex = rootState.job.skills[skillId].jobIndex;
-    const slot = rootState.job.skills[skillId].slot;
-    const index = (jobIndex * 24) + slot;
-    commit(types.SET_SKILL_LEVEL, { index, levelIndex });
+  setLevel({ commit, rootState }, { skillId, level }) {
+    const skill = rootState.job.skills[skillId];
+    const index = skill.index;
+
+    commit(types.SET_SKILL_LEVEL, { index, level });
     commit(types.SET_ACTIVE, skillId);
   },
 
@@ -200,8 +216,8 @@ const mutations = {
     state.active = skillId;
   },
 
-  [types.SET_SKILL_LEVEL](state, { index, levelIndex }) {
-    Vue.set(state.levels, index, levelIndex);
+  [types.SET_SKILL_LEVEL](state, { index, level }) {
+    Vue.set(state.levels, index, Level.indexOf(level));
   },
 
   [types.SET_MODE](state, mode) {

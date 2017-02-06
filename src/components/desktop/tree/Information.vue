@@ -34,12 +34,12 @@
 
     <div class="card-block">
       <h6>Level Up Requirements</h6>
-      <div v-if="levelUpReq">Character Level {{ levelUpReq }}</div>
-      <div v-if="parentSkills" v-for="parentSkill in parentSkills">
-        {{ messages[job.skills[parentSkill.id].name] }} Lv. {{ parentSkill.level }}
+      <div v-if="next.levelReq">Character Level {{ next.levelReq }}</div>
+      <div v-if="next.parents" v-for="parent in next.parents">
+        {{ messages[job.skills[parent.id].name] }} Lv. {{ parent.level }}
       </div>
-      <div v-if="spCost">
-        SP {{ spCost }}
+      <div v-if="next.spCost">
+        SP {{ next.spCost }}
       </div>
     </div>
 
@@ -47,8 +47,9 @@
       <h6>Skill Description</h6>
       <div class="description" v-html="description"></div>
     </div>
-    <div class="card-block">
+    <div class="card-block" v-if="nextDescription">
       <h6>Next Description</h6>
+      <div class="next-description" v-html="nextDescription"></div>
     </div>
   </div>
 </template>
@@ -67,14 +68,12 @@
         'skill',
         'name',
         'meta',
-        'spTotal',
-        'spCost',
         'type',
         'attribute',
         'weapons',
+        'next',
         'description',
-        'levelUpReq',
-        'parentSkills',
+        'nextDescription',
       ]),
     },
     methods: {
