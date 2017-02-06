@@ -6,13 +6,19 @@ import Level from '../../lib/level';
 // const chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_'.split('');
 // const charsT = Object.assign({}, chars);
 
-const state = {
-  ascendancy: 0,
-  levels: [],
-  title: 'MAZE',
-  mode: 0,
-  active: -1,
-};
+function initialState() {
+  return {
+    ascendancy: 0,
+    levels: [],
+    techs: {},
+    crests: {},
+    title: 'MAZE',
+    mode: 0,
+    active: -1,
+  };
+}
+
+const state = initialState();
 
 const getters = {
   spTotals(state, getters, State, Getters) {
@@ -227,10 +233,8 @@ const mutations = {
   },
 
   [types.SOFT_RESET](state) {
-    state.ascendancy = 0;
-    state.levels = [];
-    state.mode = 0;
-    state.active = -1;
+    const reset = initialState();
+    Object.keys(reset).forEach(key => Vue.set(state, key, reset[key]));
   },
 
   [types.SET_TITLE](state, title) {
