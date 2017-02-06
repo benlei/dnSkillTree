@@ -1,9 +1,9 @@
 <template>
-  <div class="skill d-flex flex-column" v-if="id">
+  <div class="skill d-flex flex-column unselectable" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
          @mouseover="setActive(id)"
-         @click="nextLevel"
-         @contextmenu.prevent="previousLevel"
+         @click.stop.prevent="nextLevel"
+         @contextmenu.stop.prevent="previousLevel"
     >
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
@@ -79,13 +79,23 @@
         this.setActive(this.id);
       },
 
-      nextLevel() {
-        this.setActiveLevel(this.level < this.softMaxLevel ?
-          this.level + 1 : this.level);
+      nextLevel(e) {
+        if (e.shiftKey || e.ctrlKey) {
+          if (this.level < this.softMaxLevel) {
+            this.setActiveLevel(this.softMaxLevel);
+          }
+        } else {
+          this.setActiveLevel(this.level < this.softMaxLevel ?
+            this.level + 1 : this.level);
+        }
       },
 
-      previousLevel() {
-        this.setActiveLevel(this.level ? this.level - 1 : 0);
+      previousLevel(e) {
+        if (e.shiftKey || e.ctrlKey) {
+          this.setActiveLevel(0);
+        } else {
+          this.setActiveLevel(this.level ? this.level - 1 : 0);
+        }
       },
     },
   };

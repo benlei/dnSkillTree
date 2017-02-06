@@ -6,7 +6,7 @@
           @click="setAscendancy(i)"
           v-for="(ascendancy, i) in job.ascendancies">
         {{ ascendancy.name }}
-        <small>0 / {{ ascendancy.sp }}</small>
+        <small>{{ spTotals[i] || 0 }} / {{ ascendancy.sp }}</small>
       </li>
       <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy == 3}"
@@ -17,13 +17,13 @@
     </ul>
     <div class="card-footer d-flex text-muted justify-content-between disabled">
       Total SP
-      <small>0 / {{ job.sp }}</small>
+      <small>{{ spTotal }} / {{ job.sp }}</small>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapGetters } from 'vuex';
 
   export default {
     computed: {
@@ -31,6 +31,21 @@
         'build',
         'job',
       ]),
+
+      ...mapGetters([
+        'spTotals',
+      ]),
+
+      spTotal() {
+        const spTotals = this.spTotals;
+        let spTotal = 0;
+
+        for (let i = 0; i < spTotals.length; i += 1) {
+          spTotal += spTotals[i];
+        }
+
+        return spTotal;
+      },
     },
     methods: {
       ...mapActions([

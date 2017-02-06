@@ -45,11 +45,11 @@
 
     <div class="card-block">
       <h6>Skill Description</h6>
-      <div class="description" v-html="description"></div>
+      <div class="description" v-html="description" />
     </div>
     <div class="card-block" v-if="nextDescription">
       <h6>Next Description</h6>
-      <div class="next-description" v-html="nextDescription"></div>
+      <div class="next-description" v-html="nextDescription" />
     </div>
   </div>
 </template>

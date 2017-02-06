@@ -15,6 +15,31 @@ const state = {
 };
 
 const getters = {
+  spTotals(state, getters, State, Getters) {
+    const levels = state.levels;
+    const skills = Getters.skills;
+    const tree = Getters.tree;
+    const sp = [];
+
+    for (let i = 0; i < levels.length; i += 1) {
+      const level = levels[i];
+      if (i % 24 === 0) {
+        sp.push(0);
+      }
+
+      if (level === 0 || level) {
+        const index = sp.length - 1;
+        const slot = i % 24;
+        const skill = skills[tree[index][slot]];
+        const job = skill.job;
+
+        sp[job] += skill.spTotal[level];
+      }
+    }
+
+    return sp;
+  },
+
   active(state, getters, State, Getters) {
     if (state.active === -1 && Getters.tree.length) {
       const tree = Getters.tree[0];
@@ -203,7 +228,7 @@ const mutations = {
 
   [types.SOFT_RESET](state) {
     state.ascendancy = 0;
-    state.levels = {};
+    state.levels = [];
     state.mode = 0;
     state.active = -1;
   },
