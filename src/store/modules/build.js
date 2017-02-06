@@ -10,7 +10,13 @@ function initialState() {
   return {
     ascendancy: 0,
     levels: [],
-    techs: {},
+    techs: {
+      0: [], // crest
+      1: [], // weapon
+      8: [], // necklace
+      9: [], // earring
+      10: [], // ring
+    },
     crests: {},
     title: 'MAZE',
     mode: 0,

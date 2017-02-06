@@ -105,7 +105,7 @@
   .skill {
     height: 65px;
     width: 50px;
-    margin: 8.25px 10px;
+    margin: 8px 10px 12px 10px;
   }
 
   .skill-icon, .skill-border {
@@ -114,7 +114,7 @@
   }
 
   .skill-level {
-    line-height: 1.25;
+    line-height: 1.5;
   }
 
   .skill-border.grayscale {

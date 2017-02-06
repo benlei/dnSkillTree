@@ -37,3 +37,13 @@
     },
   };
 </script>
+
+<style>
+  .tree {
+    margin-left: auto;
+    margin-right: auto;
+    background-repeat: no-repeat !important;
+    background-position: -4px 6px !important;
+    background-size: 323px 564px !important;
+  }
+</style>

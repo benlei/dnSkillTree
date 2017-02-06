@@ -51,14 +51,6 @@
 </script>
 
 <style>
-  .tree {
-    margin-left: auto;
-    margin-right: auto;
-    background-repeat: no-repeat !important;
-    background-position: -4px 7px !important;
-    background-size: 323px 543px !important;
-  }
-
   .unselectable {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

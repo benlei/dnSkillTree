@@ -32,6 +32,16 @@
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
     </div>
 
+    <div class="card-block" v-if="skill.techs">
+      <h6>Techniques</h6>
+      <div v-for="tech in skill.techs">
+        <i class="fa" :class="{ 'fa-circle-o': !isTeched(tech), 'fa-circle-square-o': isTeched(tech) }"> {{ tech | techName }}</i>
+      </div>
+      <div>
+        <i class="fa fa-square-o" /> Crest
+      </div>
+    </div>
+
     <div class="card-block">
       <h6>Level Up Requirements</h6>
       <div v-if="next.levelReq">Character Level {{ next.levelReq }}</div>
@@ -45,11 +55,11 @@
 
     <div class="card-block">
       <h6>Skill Description</h6>
-      <div class="description" v-html="description" />
+      <div class="description" v-html="description"/>
     </div>
     <div class="card-block" v-if="nextDescription">
       <h6>Next Description</h6>
-      <div class="next-description" v-html="nextDescription" />
+      <div class="next-description" v-html="nextDescription"/>
     </div>
   </div>
 </template>
@@ -80,9 +90,27 @@
       ...mapActions([
         'setMode',
       ]),
+
+      isTeched(tech) {
+        return this.build.techs[tech].indexOf(this.active) !== -1;
+      },
     },
     filters: {
       join: (arr, separator) => arr.join(separator),
+      techName(num) {
+        switch (num) {
+          default:
+            return 'Crest';
+          case 1:
+            return 'Weapon';
+          case 8:
+            return 'Necklace';
+          case 9:
+            return 'Earring';
+          case 10:
+            return 'Ring';
+        }
+      },
     },
   };
 </script>
