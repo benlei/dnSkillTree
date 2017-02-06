@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-4">
+  <div class="col-lg-4 unselectable">
     <table class="tree" :style="build.ascendancy < 3 && treeStyle">
       <tr v-for="(_, row) in 6">
         <td v-for="(_, col) in 4">

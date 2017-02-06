@@ -31,17 +31,6 @@
       </div>
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
     </div>
-
-    <div class="card-block" v-if="skill.techs">
-      <h6>Techniques</h6>
-      <div v-for="tech in skill.techs">
-        <i class="fa" :class="{ 'fa-circle-o': !isTeched(tech), 'fa-circle-square-o': isTeched(tech) }"> {{ tech | techName }}</i>
-      </div>
-      <div>
-        <i class="fa fa-square-o" /> Crest
-      </div>
-    </div>
-
     <div class="card-block">
       <h6>Level Up Requirements</h6>
       <div v-if="next.levelReq">Character Level {{ next.levelReq }}</div>
@@ -57,10 +46,33 @@
       <h6>Skill Description</h6>
       <div class="description" v-html="description"/>
     </div>
+
     <div class="card-block" v-if="nextDescription">
       <h6>Next Description</h6>
       <div class="next-description" v-html="nextDescription"/>
     </div>
+
+    <div class="card-block" v-if="skill.techs">
+      <h6>Techniques</h6>
+      <div class="d-flex justify-content-between">
+        <div class="d-inline unselectable">
+          <span class="tech" v-for="tech in skill.techs">
+            <i class="fa"
+               :class="{ 'fa-circle-o': !isTeched(tech), 'fa-check-circle-o': isTeched(tech) }"
+               @click="gearTech(tech)"
+            /> {{ tech | techName }}
+          </span>
+        </div>
+
+        <div class="crestTech unselectable">
+          <i class="fa"
+             :class="{ 'fa-circle-o': !isTeched(0), 'fa-check-circle-o': isTeched(0) }"
+             @click="crestTech"
+          /> Crest
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -74,6 +86,7 @@
         'build',
       ]),
       ...mapGetters([
+        'active',
         'messages',
         'skill',
         'name',
@@ -86,15 +99,27 @@
         'nextDescription',
       ]),
     },
+
     methods: {
       ...mapActions([
         'setMode',
+        'toggleGearTech',
+        'toggleCrestTech',
       ]),
 
       isTeched(tech) {
-        return this.build.techs[tech].indexOf(this.active) !== -1;
+        return this.build.techs[tech] === this.active;
+      },
+
+      gearTech(tech) {
+        this.toggleGearTech({ skillId: this.active, tech });
+      },
+
+      crestTech() {
+        this.toggleCrestTech(this.active);
       },
     },
+
     filters: {
       join: (arr, separator) => arr.join(separator),
       techName(num) {
@@ -165,5 +190,13 @@
 
   span.v {
     color: #904f90;
+  }
+
+  .tech {
+    margin-right: 1.25rem;
+  }
+
+  .crestTech {
+    margin-top: .25rem;
   }
 </style>

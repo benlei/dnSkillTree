@@ -11,11 +11,11 @@ function initialState() {
     ascendancy: 0,
     levels: [],
     techs: {
-      0: [], // crest
-      1: [], // weapon
-      8: [], // necklace
-      9: [], // earring
-      10: [], // ring
+      0: -1, // crest
+      1: -1, // weapon
+      8: -1, // necklace
+      9: -1, // earring
+      10: -1, // ring
     },
     crests: {},
     title: 'MAZE',
@@ -231,6 +231,35 @@ const actions = {
   setMode({ commit }, mode) {
     commit(types.SET_MODE, mode);
   },
+
+  toggleGearTech({ commit, state, getters }, { skillId, tech }) {
+    const skill = getters.skill;
+    const techs = skill.techs;
+    let removed = false;
+
+    techs.forEach((t) => {
+      if (state.techs[t] !== -1) {
+        if (t === tech) {
+          removed = true;
+        }
+
+        commit(types.REMOVE_TECH, t);
+      }
+    });
+
+    if (!removed) {
+      commit(types.SET_TECH, { skillId, tech });
+    }
+  },
+
+  toggleCrestTech({ commit, state }, skillId) {
+    const tech = state.techs[0];
+    if (tech === skillId) {
+      commit(types.REMOVE_TECH, 0);
+    } else {
+      commit(types.SET_TECH, { skillId, tech: 0 });
+    }
+  },
 };
 
 const mutations = {
@@ -257,6 +286,14 @@ const mutations = {
 
   [types.SET_MODE](state, mode) {
     state.mode = mode;
+  },
+
+  [types.SET_TECH](state, { skillId, tech }) {
+    Vue.set(state.techs, tech, skillId);
+  },
+
+  [types.REMOVE_TECH](state, tech) {
+    Vue.set(state.techs, tech, -1);
   },
 };
 

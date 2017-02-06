@@ -1,5 +1,5 @@
 <template>
-  <div class="skill d-flex flex-column unselectable" v-if="id">
+  <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
          @mouseover="setActive(id)"
          @click.stop.prevent="nextLevel"
