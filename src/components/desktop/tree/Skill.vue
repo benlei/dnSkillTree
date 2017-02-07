@@ -71,6 +71,10 @@
       ]),
 
       setActiveLevel(level) {
+        if (this.skill.levelReq[Level.indexOf(level)] > 93) {
+          return;
+        }
+
         this.setLevel({
           skillId: this.id,
           level,
