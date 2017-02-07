@@ -3,17 +3,21 @@
     <Ascendancies />
 
     <BuildInput />
+
+    <Modifiables />
   </div>
 </template>
 
 <script>
   import Ascendancies from './Ascendancies';
   import BuildInput from './BuildInput';
+  import Modifiables from './Modifiables';
 
   export default {
     components: {
       Ascendancies,
       BuildInput,
+      Modifiables,
     },
   };
 </script>
@@ -27,9 +31,10 @@
 
   .card {
     border-color: #02151D;
+    margin-bottom: 20px;
   }
 
-  .card {
-    margin-bottom: 20px;
+  .card .list-group-item {
+    font-size: 80%;
   }
 </style>

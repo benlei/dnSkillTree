@@ -58,6 +58,7 @@
 <style>
   .ascendancies .card-footer {
     border-top: 0;
+    font-size: 80%;
   }
 
   .ascendancies .card-footer small {

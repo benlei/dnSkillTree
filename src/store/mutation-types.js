@@ -6,8 +6,10 @@ export const SOFT_RESET = 'SOFT_RESET';
 export const SET_SKILL_LEVEL = 'SET_SKILL_LEVEL';
 export const SET_MODE = 'SET_MODE';
 export const SET_ACTIVE = 'SET_ACTIVE';
-export const SET_TECH = 'SET_TECH';
-export const REMOVE_TECH = 'REMOVE_TECH';
+export const SET_GEAR_TECH = 'SET_GEAR_TECH';
+export const REMOVE_GEAR_TECH = 'REMOVE_GEAR_TECH';
+export const SET_CREST_TECH = 'SET_CREST_TECH';
+export const REMOVE_CREST_TECH = 'REMOVE_CREST_TECH';
 
 export default {
   INIT_JOBS,
@@ -18,6 +20,8 @@ export default {
   SET_SKILL_LEVEL,
   SET_MODE,
   SET_ACTIVE,
-  SET_TECH,
-  REMOVE_TECH,
+  SET_GEAR_TECH,
+  REMOVE_GEAR_TECH,
+  SET_CREST_TECH,
+  REMOVE_CREST_TECH,
 };

@@ -60,4 +60,8 @@
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
   }
+
+  .card .list-group .list-group-item:first-child {
+    border-top: 0;
+  }
 </style>

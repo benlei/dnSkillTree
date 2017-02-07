@@ -10,13 +10,8 @@ function initialState() {
   return {
     ascendancy: 0,
     levels: [],
-    techs: {
-      0: -1, // crest
-      1: -1, // weapon
-      8: -1, // necklace
-      9: -1, // earring
-      10: -1, // ring
-    },
+    techs: [-1, -1, -1, -1, -1],
+    crestTech: -1,
     crests: {},
     title: 'MAZE',
     mode: 0,
@@ -233,31 +228,57 @@ const actions = {
   },
 
   toggleGearTech({ commit, state, getters }, { skillId, tech }) {
-    const skill = getters.skill;
-    const techs = skill.techs;
-    let removed = false;
+    const techs = state.techs;
+    const index = techs.indexOf(skillId);
 
-    techs.forEach((t) => {
-      if (state.techs[t] !== -1) {
-        if (t === tech) {
-          removed = true;
+    if (index !== -1) {
+      commit(types.REMOVE_GEAR_TECH, index);
+    }
+
+    switch (tech) {
+      default:
+        throw Error(`Invalid tech option: ${tech}`);
+      case 1:
+        if (index !== 0) {
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 0 });
+        }
+        break;
+      case 8:
+        if (index !== 1) {
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 1 });
+        }
+        break;
+      case 9:
+        if (index !== 2) {
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 2 });
+        }
+        break;
+      case 10:
+        if (index === 3) {
+          commit(types.SET_GEAR_TECH, { skillId: techs[4], techIndex: 3 });
+          commit(types.SET_GEAR_TECH, { skillId: -1, techIndex: 4 });
+          break;
+        } else if (index === 4) {
+          break;
         }
 
-        commit(types.REMOVE_TECH, t);
-      }
-    });
-
-    if (!removed) {
-      commit(types.SET_TECH, { skillId, tech });
+        if (techs[3] === -1) {
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 3 });
+        } else if (techs[4] === -1) {
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 4 });
+        } else { // slide it over
+          commit(types.SET_GEAR_TECH, { skillId: techs[4], techIndex: 3 });
+          commit(types.SET_GEAR_TECH, { skillId, techIndex: 4 });
+        }
+        break;
     }
   },
 
   toggleCrestTech({ commit, state }, skillId) {
-    const tech = state.techs[0];
-    if (tech === skillId) {
-      commit(types.REMOVE_TECH, 0);
+    if (state.crestTech === skillId) {
+      commit(types.REMOVE_CREST_TECH);
     } else {
-      commit(types.SET_TECH, { skillId, tech: 0 });
+      commit(types.SET_CREST_TECH, skillId);
     }
   },
 };
@@ -288,12 +309,20 @@ const mutations = {
     state.mode = mode;
   },
 
-  [types.SET_TECH](state, { skillId, tech }) {
-    Vue.set(state.techs, tech, skillId);
+  [types.SET_GEAR_TECH](state, { skillId, techIndex }) {
+    Vue.set(state.techs, techIndex, skillId);
   },
 
-  [types.REMOVE_TECH](state, tech) {
-    Vue.set(state.techs, tech, -1);
+  [types.REMOVE_GEAR_TECH](state, techIndex) {
+    Vue.set(state.techs, techIndex, -1);
+  },
+
+  [types.SET_CREST_TECH](state, skillId) {
+    state.crestTech = skillId;
+  },
+
+  [types.REMOVE_CREST_TECH](state) {
+    state.crestTech = -1;
   },
 };
 

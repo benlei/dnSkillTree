@@ -108,7 +108,24 @@
       ]),
 
       isTeched(tech) {
-        return this.build.techs[tech] === this.active;
+        const techs = this.build.techs;
+        const skillId = this.active;
+
+        switch (tech) {
+          default:
+            throw new Error(`Unknown tech: ${tech}`);
+          case 0:
+            return this.build.crestTech === skillId;
+          case 1:
+            return techs[0] === skillId;
+          case 8:
+            return techs[1] === skillId;
+          case 9:
+            return techs[2] === skillId;
+          case 10:
+            return techs[3] === skillId || techs[4] === skillId;
+
+        }
       },
 
       gearTech(tech) {
