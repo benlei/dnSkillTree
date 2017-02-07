@@ -14,7 +14,7 @@
     <div class="card-block">
       <h5>{{ name }}</h5>
       <div>
-        <span>Skill Lv: {{ meta.level }}</span>
+        <span>Skill Lv: {{ meta.level }}{{ techCount? ' +' + techCount : null}}</span>
         <span class="float-right">Max Skill Lv: {{ meta.maxLevel }}</span>
       </div>
       <div>
@@ -91,6 +91,7 @@
         'skill',
         'name',
         'meta',
+        'techCount',
         'type',
         'attribute',
         'weapons',

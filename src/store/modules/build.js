@@ -68,16 +68,33 @@ const getters = {
 
   index: (state, getters) => Level.indexOf(getters.level),
 
+  techCount(state, getters) {
+    const skillId = getters.active;
+    let count = 0;
+
+    if (state.crestTech === skillId) {
+      count += 1;
+    }
+
+    if (state.techs.indexOf(skillId) !== -1) {
+      count += 1;
+    }
+
+    return Math.min(getters.skill.spMaxLevel, count);
+  },
+
   meta(state, getters) {
     const skill = getters.skill;
+    const techCount = getters.techCount;
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
+    const techIndex = getters.level && techCount ? index + techCount : index;
 
     const maxLevel = skill.maxLevel - skill.spMaxLevel;
     const spTotal = getters.level ? skill.spTotal[index] : 0;
-    const hp = skill.hp[state.mode][index];
-    const mp = skill.mp[state.mode][index];
-    const cd = skill.cdOverride ? skill.cdOverride[state.mode] : skill.cd[state.mode][index];
+    const hp = skill.hp[state.mode][techIndex];
+    const mp = skill.mp[state.mode][techIndex];
+    const cd = skill.cdOverride ? skill.cdOverride[state.mode] : skill.cd[state.mode][techIndex];
 
     return {
       level,
@@ -172,10 +189,13 @@ const getters = {
 
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
-    const descriptionId = skill.description[state.mode][index];
+    const techCount = getters.techCount;
+    const techIndex = getters.level && techCount ? index + techCount : index;
+
+    const descriptionId = skill.description[state.mode][techIndex];
 
     const str = messages[descriptionId];
-    const params = skill.params[state.mode][index];
+    const params = skill.params[state.mode][techIndex];
 
     return parameterize(str, params, messages);
   },
@@ -184,11 +204,12 @@ const getters = {
     const skill = getters.skill;
     const messages = Getters.messages;
     const level = getters.level;
+    const techCount = getters.techCount;
 
     if (level > 0 && level < skill.maxLevel) {
-      const descriptionId = skill.description[state.mode][level];
+      const descriptionId = skill.description[state.mode][level + techCount];
       const str = messages[descriptionId];
-      const params = skill.params[state.mode][level];
+      const params = skill.params[state.mode][level + techCount];
 
       return parameterize(str, params, messages);
     }
@@ -218,6 +239,10 @@ const actions = {
   setLevel({ commit, rootState }, { skillId, level }) {
     const skill = rootState.job.skills[skillId];
     const index = skill.index;
+
+    if (level > skill.maxLevel) {
+      return;
+    }
 
     commit(types.SET_SKILL_LEVEL, { index, level });
     commit(types.SET_ACTIVE, skillId);

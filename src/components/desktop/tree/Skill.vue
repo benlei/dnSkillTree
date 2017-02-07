@@ -7,7 +7,9 @@
     >
       <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
     </div>
-    <small class="skill-level text-center">{{ level }}/{{ softMaxLevel }}</small>
+    <small class="skill-level text-center"
+           :class="{green: techCount === 1, blue: techCount === 2}"
+    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}</small>
   </div>
   <div class="skill" v-else/>
 </template>
@@ -62,6 +64,20 @@
         const levels = this.build.levels;
         const skill = this.job.skills[this.id];
         return Level.valueOf(levels, skill);
+      },
+
+      techCount() {
+        let count = 0;
+
+        if (this.build.crestTech === this.id) {
+          count += 1;
+        }
+
+        if (this.build.techs.indexOf(this.id) !== -1) {
+          count += 1;
+        }
+
+        return Math.min(this.skill.spMaxLevel, count);
       },
     },
     methods: {
@@ -124,5 +140,13 @@
   .skill-border.grayscale {
     -webkit-filter: grayscale(1);
     filter: grayscale(1);
+  }
+
+  .skill-level.green {
+    color: #4ea722;
+  }
+
+  .skill-level.blue {
+    color: #3195bd;
   }
 </style>
