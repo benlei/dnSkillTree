@@ -216,6 +216,41 @@ const getters = {
 
     return null;
   },
+
+  crest(state, getters) {
+    const crest = state.crests[getters.active];
+    if (crest === 0 || crest) {
+      return crest;
+    }
+
+    return -1;
+  },
+
+  crestDescription(state, getters, State, Getters) {
+    const messages = Getters.messages;
+    const crests = Getters.crests;
+    const index = getters.crest;
+    const crestCount = getters.crestCount;
+
+    if (index === -1) {
+      return crestCount === 7 ? 'Skill Crest Limit Reached' : 'None';
+    }
+
+    const crest = crests[getters.active][index];
+    return parameterize(messages[crest.description], crest.params, messages);
+  },
+
+  crestCount(state) {
+    const crests = state.crests;
+
+    return Object.keys(crests)
+      .reduce((a, key) => {
+        if (crests[key] === -1) {
+          return a;
+        }
+        return a + 1;
+      }, 0);
+  },
 };
 
 const actions = {
@@ -265,35 +300,35 @@ const actions = {
         throw Error(`Invalid tech option: ${tech}`);
       case 1:
         if (index !== 0) {
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 0 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 0 });
         }
         break;
       case 8:
         if (index !== 1) {
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 1 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 1 });
         }
         break;
       case 9:
         if (index !== 2) {
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 2 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 2 });
         }
         break;
       case 10:
         if (index === 3) {
-          commit(types.SET_GEAR_TECH, { skillId: techs[4], techIndex: 3 });
-          commit(types.SET_GEAR_TECH, { skillId: -1, techIndex: 4 });
+          commit(types.SET_GEAR_TECH, { skillId: techs[4], tech: 3 });
+          commit(types.SET_GEAR_TECH, { skillId: -1, tech: 4 });
           break;
         } else if (index === 4) {
           break;
         }
 
         if (techs[3] === -1) {
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 3 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 3 });
         } else if (techs[4] === -1) {
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 4 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 4 });
         } else { // slide it over
-          commit(types.SET_GEAR_TECH, { skillId: techs[4], techIndex: 3 });
-          commit(types.SET_GEAR_TECH, { skillId, techIndex: 4 });
+          commit(types.SET_GEAR_TECH, { skillId: techs[4], tech: 3 });
+          commit(types.SET_GEAR_TECH, { skillId, tech: 4 });
         }
         break;
     }
@@ -305,6 +340,16 @@ const actions = {
     } else {
       commit(types.SET_CREST_TECH, skillId);
     }
+  },
+
+  setSkillCrest({ commit, getters }, { skillId, index }) {
+    if (getters.crestCount < 7) {
+      commit(types.SET_SKILL_CREST, { skillId, index });
+    }
+  },
+
+  removeSkillCrest({ commit }, skillId) {
+    commit(types.REMOVE_SKILL_CREST, skillId);
   },
 };
 
@@ -334,12 +379,12 @@ const mutations = {
     state.mode = mode;
   },
 
-  [types.SET_GEAR_TECH](state, { skillId, techIndex }) {
-    Vue.set(state.techs, techIndex, skillId);
+  [types.SET_GEAR_TECH](state, { skillId, tech }) {
+    Vue.set(state.techs, tech, skillId);
   },
 
-  [types.REMOVE_GEAR_TECH](state, techIndex) {
-    Vue.set(state.techs, techIndex, -1);
+  [types.REMOVE_GEAR_TECH](state, tech) {
+    Vue.set(state.techs, tech, -1);
   },
 
   [types.SET_CREST_TECH](state, skillId) {
@@ -348,6 +393,14 @@ const mutations = {
 
   [types.REMOVE_CREST_TECH](state) {
     state.crestTech = -1;
+  },
+
+  [types.SET_SKILL_CREST](state, { skillId, index }) {
+    Vue.set(state.crests, skillId, index);
+  },
+
+  [types.REMOVE_SKILL_CREST](state, skillId) {
+    Vue.set(state.crests, skillId, -1);
   },
 };
 

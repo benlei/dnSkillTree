@@ -2,22 +2,22 @@
   <div class="col-lg-4">
     <Ascendancies />
 
-    <BuildInput />
+    <Techniques />
 
-    <Modifiables />
+    <Crests />
   </div>
 </template>
 
 <script>
   import Ascendancies from './Ascendancies';
-  import BuildInput from './BuildInput';
-  import Modifiables from './Modifiables';
+  import Crests from './Crests';
+  import Techniques from './Techniques';
 
   export default {
     components: {
       Ascendancies,
-      BuildInput,
-      Modifiables,
+      Crests,
+      Techniques,
     },
   };
 </script>

@@ -3,10 +3,10 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item text-center">
-          <a class="nav-link" @click="setMode(0)" :class="{active: !build.mode}" href="javascript:void(0)">PvE</a>
+          <a class="nav-link" @click="setMode(0)" :class="{active: !build.mode}" href="javascript:;">PvE</a>
         </li>
         <li class="nav-item text-center">
-          <a class="nav-link" @click="setMode(1)" :class="{active: build.mode}" href="javascript:void(0)">PvP</a>
+          <a class="nav-link" @click="setMode(1)" :class="{active: build.mode}" href="javascript:;">PvP</a>
         </li>
       </ul>
     </div>
@@ -52,27 +52,6 @@
       <div class="next-description" v-html="nextDescription"/>
     </div>
 
-    <div class="card-block" v-if="skill.techs">
-      <h6>Techniques</h6>
-      <div class="d-flex justify-content-between">
-        <div class="d-inline unselectable">
-          <span class="tech" v-for="tech in skill.techs">
-            <i class="fa"
-               :class="{ 'fa-circle-o': !isTeched(tech), 'fa-check-circle-o': isTeched(tech) }"
-               @click="gearTech(tech)"
-            /> {{ tech | techName }}
-          </span>
-        </div>
-
-        <div class="crestTech unselectable">
-          <i class="fa"
-             :class="{ 'fa-circle-o': !isTeched(0), 'fa-check-circle-o': isTeched(0) }"
-             @click="crestTech"
-          /> Crest
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -104,56 +83,11 @@
     methods: {
       ...mapActions([
         'setMode',
-        'toggleGearTech',
-        'toggleCrestTech',
       ]),
-
-      isTeched(tech) {
-        const techs = this.build.techs;
-        const skillId = this.active;
-
-        switch (tech) {
-          default:
-            throw new Error(`Unknown tech: ${tech}`);
-          case 0:
-            return this.build.crestTech === skillId;
-          case 1:
-            return techs[0] === skillId;
-          case 8:
-            return techs[1] === skillId;
-          case 9:
-            return techs[2] === skillId;
-          case 10:
-            return techs[3] === skillId || techs[4] === skillId;
-
-        }
-      },
-
-      gearTech(tech) {
-        this.toggleGearTech({ skillId: this.active, tech });
-      },
-
-      crestTech() {
-        this.toggleCrestTech(this.active);
-      },
     },
 
     filters: {
       join: (arr, separator) => arr.join(separator),
-      techName(num) {
-        switch (num) {
-          default:
-            return 'Crest';
-          case 1:
-            return 'Weapon';
-          case 8:
-            return 'Necklace';
-          case 9:
-            return 'Earring';
-          case 10:
-            return 'Ring';
-        }
-      },
     },
   };
 </script>
@@ -208,13 +142,5 @@
 
   span.v {
     color: #904f90;
-  }
-
-  .tech {
-    margin-right: 1.25rem;
-  }
-
-  .crestTech {
-    margin-top: .25rem;
   }
 </style>

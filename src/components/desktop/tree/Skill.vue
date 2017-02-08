@@ -1,12 +1,13 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
-         @mouseover="mouseover(id)"
-         @mouseleave="mouseleave"
+         @mouseover="setActive(id)"
          @click.stop.prevent="nextLevel"
          @contextmenu.stop.prevent="previousLevel"
     >
-      <div class="skill-border" :style="border" :class="{grayscale: !level}"/>
+      <div class="skill-border"
+           :style="border"
+           :class="{grayscale: !level, crested }"/>
     </div>
     <small class="skill-level text-center"
            :class="{green: techCount === 1, blue: techCount === 2}"
@@ -26,7 +27,7 @@
         border: {
           background: `url('${process.env.ASSETS_URL}/images/uit_gesturebutton.png') 100px 0px`,
         },
-        intervalId: null,
+//        intervalId: null,
       };
     },
     computed: {
@@ -81,6 +82,11 @@
 
         return Math.min(this.skill.spMaxLevel, count);
       },
+
+      crested() {
+        const crest = this.build.crests[this.id];
+        return crest === 0 || crest;
+      },
     },
     methods: {
       ...mapActions([
@@ -88,16 +94,16 @@
         'setLevel',
       ]),
 
-      mouseover(id) {
-        if (id !== this.active) {
-          const thiz = this;
-          this.intervalId = setTimeout(() => thiz.setActive(id), 150);
-        }
-      },
-
-      mouseleave() {
-        clearInterval(this.intervalId);
-      },
+//      mouseover(id) {
+//        if (id !== this.active) {
+//          const thiz = this;
+//          this.intervalId = setTimeout(() => thiz.setActive(id), 150);
+//        }
+//      },
+//
+//      mouseleave() {
+//        clearInterval(this.intervalId);
+//      },
 
       setActiveLevel(level) {
         if (this.skill.levelReq[Level.indexOf(level)] > 93) {
@@ -153,6 +159,11 @@
   .skill-border.grayscale {
     -webkit-filter: grayscale(1);
     filter: grayscale(1);
+  }
+
+  .skill-border.crested {
+    -webkit-filter: saturate(7) !important;
+    filter: saturate(7) !important;
   }
 
   .skill-level.green {

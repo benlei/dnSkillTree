@@ -1,6 +1,6 @@
 <template>
   <div class="col-lg-4 unselectable">
-    <table class="tree" :style="build.ascendancy < 3 && treeStyle">
+    <table class="tree mx-auto" :style="build.ascendancy < 3 && treeStyle">
       <tr v-for="(_, row) in 6">
         <td v-for="(_, col) in 4">
           <Skill :id="skillId(build.ascendancy, row, col)"/>
@@ -40,8 +40,6 @@
 
 <style>
   .tree {
-    margin-left: auto;
-    margin-right: auto;
     background-repeat: no-repeat !important;
     background-position: -4px 5.5px !important;
     background-size: 323px 563px !important;

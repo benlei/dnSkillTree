@@ -4,10 +4,10 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item text-center">
-            <a class="nav-link" v-on:click="mode = 0" :class="{active: !mode}" href="javascript:void(0)">PvE</a>
+            <a class="nav-link" v-on:click="mode = 0" :class="{active: !mode}" href="javascript:;">PvE</a>
           </li>
           <li class="nav-item text-center">
-            <a class="nav-link" v-on:click="mode = 1" :class="{active: mode}" href="javascript:void(0)">PvP</a>
+            <a class="nav-link" v-on:click="mode = 1" :class="{active: mode}" href="javascript:;">PvP</a>
           </li>
         </ul>
       </div>

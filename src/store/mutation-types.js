@@ -10,6 +10,8 @@ export const SET_GEAR_TECH = 'SET_GEAR_TECH';
 export const REMOVE_GEAR_TECH = 'REMOVE_GEAR_TECH';
 export const SET_CREST_TECH = 'SET_CREST_TECH';
 export const REMOVE_CREST_TECH = 'REMOVE_CREST_TECH';
+export const SET_SKILL_CREST = 'SET_SKILL_CREST';
+export const REMOVE_SKILL_CREST = 'REMOVE_SKILL_CREST';
 
 export default {
   INIT_JOBS,
@@ -24,4 +26,6 @@ export default {
   REMOVE_GEAR_TECH,
   SET_CREST_TECH,
   REMOVE_CREST_TECH,
+  SET_SKILL_CREST,
+  REMOVE_SKILL_CREST,
 };
