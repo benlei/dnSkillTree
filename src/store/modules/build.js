@@ -88,7 +88,7 @@ const getters = {
     const techCount = getters.techCount;
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
-    const techIndex = getters.level && techCount ? index + techCount : index;
+    const techIndex = index + techCount;
 
     const maxLevel = skill.maxLevel - skill.spMaxLevel;
     const spTotal = getters.level ? skill.spTotal[index] : 0;
@@ -190,7 +190,7 @@ const getters = {
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
     const techCount = getters.techCount;
-    const techIndex = getters.level && techCount ? index + techCount : index;
+    const techIndex = index + techCount;
 
     const descriptionId = skill.description[state.mode][techIndex];
 

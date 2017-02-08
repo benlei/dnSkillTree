@@ -1,7 +1,8 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
-         @mouseover="setActive(id)"
+         @mouseover="mouseover(id)"
+         @mouseleave="mouseleave"
          @click.stop.prevent="nextLevel"
          @contextmenu.stop.prevent="previousLevel"
     >
@@ -25,6 +26,7 @@
         border: {
           background: `url('${process.env.ASSETS_URL}/images/uit_gesturebutton.png') 100px 0px`,
         },
+        intervalId: null,
       };
     },
     computed: {
@@ -85,6 +87,17 @@
         'setActive',
         'setLevel',
       ]),
+
+      mouseover(id) {
+        if (id !== this.active) {
+          const thiz = this;
+          this.intervalId = setTimeout(() => thiz.setActive(id), 150);
+        }
+      },
+
+      mouseleave() {
+        clearInterval(this.intervalId);
+      },
 
       setActiveLevel(level) {
         if (this.skill.levelReq[Level.indexOf(level)] > 93) {
