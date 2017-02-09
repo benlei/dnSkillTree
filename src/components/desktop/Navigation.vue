@@ -41,10 +41,6 @@
     background: transparent;
   }
 
-  .breadcrumb a {
-    color: #FBB200;
-  }
-
   .breadcrumb .active {
     color: #FFF;
   }

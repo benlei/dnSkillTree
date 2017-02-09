@@ -1,27 +1,7 @@
-import Vue from 'vue';
-import * as types from '../mutation-types';
-import parameterize from '../../lib/parameterize';
-import Level from '../../lib/level';
+import parameterize from '../../../lib/parameterize';
+import Level from '../../../lib/level';
 
-// const chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_'.split('');
-// const charsT = Object.assign({}, chars);
-
-function initialState() {
-  return {
-    ascendancy: 0,
-    levels: [],
-    techs: [-1, -1, -1, -1, -1],
-    crestTech: -1,
-    crests: {},
-    title: 'MAZE',
-    mode: 0,
-    active: -1,
-  };
-}
-
-const state = initialState();
-
-const getters = {
+export default {
   spTotals(state, getters, State, Getters) {
     const levels = state.levels;
     const skills = Getters.skills;
@@ -60,9 +40,14 @@ const getters = {
     return state.active;
   },
 
-  skill: (state, getters, State, Getters) => Getters.skills[getters.active],
+  activeAlt(state, getters) {
+    return state.activeAlt === -1 ? getters.active : state.activeAlt;
+  },
 
-  name: (state, getters, State, Getters) => Getters.messages[getters.skill.name],
+  skill: (state, getters, State, Getters) => Getters.skills[getters.active],
+  skillAlt: (state, getters, State, Getters) => Getters.skills[getters.activeAlt],
+
+  name: (state, getters, State, Getters) => Getters.messages[getters.skillAlt.name],
 
   level: (state, getters) => Level.valueOf(state.levels, getters.skill),
 
@@ -85,6 +70,7 @@ const getters = {
 
   meta(state, getters) {
     const skill = getters.skill;
+    const skillAlt = getters.skillAlt;
     const techCount = getters.techCount;
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
@@ -92,9 +78,10 @@ const getters = {
 
     const maxLevel = skill.maxLevel - skill.spMaxLevel;
     const spTotal = getters.level ? skill.spTotal[index] : 0;
-    const hp = skill.hp[state.mode][techIndex];
-    const mp = skill.mp[state.mode][techIndex];
-    const cd = skill.cdOverride ? skill.cdOverride[state.mode] : skill.cd[state.mode][techIndex];
+    const hp = skillAlt.hp[state.mode][techIndex];
+    const mp = skillAlt.mp[state.mode][techIndex];
+    const cd = skillAlt.cdOverride ?
+      skillAlt.cdOverride[state.mode] : skillAlt.cd[state.mode][techIndex];
 
     return {
       level,
@@ -107,8 +94,8 @@ const getters = {
   },
 
   type(state, getters) {
-    const type = getters.skill.type;
-    const durationType = getters.skill.durationType;
+    const type = getters.skillAlt.type;
+    const durationType = getters.skillAlt.durationType;
 
     if (!type) {
       switch (durationType) {
@@ -129,7 +116,7 @@ const getters = {
   },
 
   attribute(state, getters) {
-    switch (getters.skill.element) {
+    switch (getters.skillAlt.element) {
       case 0:
         return 'Fire';
       case 1:
@@ -184,7 +171,7 @@ const getters = {
   },
 
   description(state, getters, State, Getters) {
-    const skill = getters.skill;
+    const skill = getters.skillAlt;
     const messages = Getters.messages;
 
     const level = Math.max(1, getters.level);
@@ -201,7 +188,7 @@ const getters = {
   },
 
   nextDescription(state, getters, State, Getters) {
-    const skill = getters.skill;
+    const skill = getters.skillAlt;
     const messages = Getters.messages;
     const level = getters.level;
     const techCount = getters.techCount;
@@ -251,162 +238,14 @@ const getters = {
         return a + 1;
       }, 0);
   },
-};
 
-const actions = {
-  softReset({ commit }) {
-    commit(types.SOFT_RESET);
-  },
-
-  setAscendancy({ commit }, ascendancy) {
-    commit(types.SET_ASCENDANCY, ascendancy);
-  },
-
-  setTitle({ commit }, title) {
-    commit(types.SET_TITLE, title);
-    document.title = title;
-  },
-
-  setActive({ commit }, skillId) {
-    commit(types.SET_ACTIVE, skillId);
-  },
-
-  setLevel({ commit, rootState }, { skillId, level }) {
-    const skill = rootState.job.skills[skillId];
-    const index = skill.index;
-
-    if (level > skill.maxLevel) {
-      return;
+  altSkills(state, getters, State, Getters) {
+    const skill = getters.skill;
+    const skills = Getters.skills;
+    if (!skill.alts) {
+      return null;
     }
 
-    commit(types.SET_SKILL_LEVEL, { index, level });
-    commit(types.SET_ACTIVE, skillId);
+    return [skill].concat(skill.alts.map(id => skills[id]));
   },
-
-  setMode({ commit }, mode) {
-    commit(types.SET_MODE, mode);
-  },
-
-  toggleGearTech({ commit, state, getters }, { skillId, tech }) {
-    const techs = state.techs;
-    const index = techs.indexOf(skillId);
-
-    if (index !== -1) {
-      commit(types.REMOVE_GEAR_TECH, index);
-    }
-
-    switch (tech) {
-      default:
-        throw Error(`Invalid tech option: ${tech}`);
-      case 1:
-        if (index !== 0) {
-          commit(types.SET_GEAR_TECH, { skillId, tech: 0 });
-        }
-        break;
-      case 8:
-        if (index !== 1) {
-          commit(types.SET_GEAR_TECH, { skillId, tech: 1 });
-        }
-        break;
-      case 9:
-        if (index !== 2) {
-          commit(types.SET_GEAR_TECH, { skillId, tech: 2 });
-        }
-        break;
-      case 10:
-        if (index === 3) {
-          commit(types.SET_GEAR_TECH, { skillId: techs[4], tech: 3 });
-          commit(types.SET_GEAR_TECH, { skillId: -1, tech: 4 });
-          break;
-        } else if (index === 4) {
-          break;
-        }
-
-        if (techs[3] === -1) {
-          commit(types.SET_GEAR_TECH, { skillId, tech: 3 });
-        } else if (techs[4] === -1) {
-          commit(types.SET_GEAR_TECH, { skillId, tech: 4 });
-        } else { // slide it over
-          commit(types.SET_GEAR_TECH, { skillId: techs[4], tech: 3 });
-          commit(types.SET_GEAR_TECH, { skillId, tech: 4 });
-        }
-        break;
-    }
-  },
-
-  toggleCrestTech({ commit, state }, skillId) {
-    if (state.crestTech === skillId) {
-      commit(types.REMOVE_CREST_TECH);
-    } else {
-      commit(types.SET_CREST_TECH, skillId);
-    }
-  },
-
-  setSkillCrest({ commit, getters }, { skillId, index }) {
-    if (getters.crestCount < 7) {
-      commit(types.SET_SKILL_CREST, { skillId, index });
-    }
-  },
-
-  removeSkillCrest({ commit }, skillId) {
-    commit(types.REMOVE_SKILL_CREST, skillId);
-  },
-};
-
-const mutations = {
-  [types.SET_ASCENDANCY](state, ascendancy) {
-    state.ascendancy = ascendancy;
-  },
-
-  [types.SOFT_RESET](state) {
-    const reset = initialState();
-    Object.keys(reset).forEach(key => Vue.set(state, key, reset[key]));
-  },
-
-  [types.SET_TITLE](state, title) {
-    state.title = title;
-  },
-
-  [types.SET_ACTIVE](state, skillId) {
-    state.active = skillId;
-  },
-
-  [types.SET_SKILL_LEVEL](state, { index, level }) {
-    Vue.set(state.levels, index, Level.indexOf(level));
-  },
-
-  [types.SET_MODE](state, mode) {
-    state.mode = mode;
-  },
-
-  [types.SET_GEAR_TECH](state, { skillId, tech }) {
-    Vue.set(state.techs, tech, skillId);
-  },
-
-  [types.REMOVE_GEAR_TECH](state, tech) {
-    Vue.set(state.techs, tech, -1);
-  },
-
-  [types.SET_CREST_TECH](state, skillId) {
-    state.crestTech = skillId;
-  },
-
-  [types.REMOVE_CREST_TECH](state) {
-    state.crestTech = -1;
-  },
-
-  [types.SET_SKILL_CREST](state, { skillId, index }) {
-    Vue.set(state.crests, skillId, index);
-  },
-
-  [types.REMOVE_SKILL_CREST](state, skillId) {
-    Vue.set(state.crests, skillId, -1);
-  },
-};
-
-export default {
-  state,
-  getters,
-  actions,
-  mutations,
 };

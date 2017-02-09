@@ -26,7 +26,13 @@
     padding-bottom: 20px;
   }
 
-  a:hover, a:link, a:visited {
+  a, a:link, a:visited {
+    color: #FBB200;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #cb9000;
     text-decoration: none;
   }
 </style>

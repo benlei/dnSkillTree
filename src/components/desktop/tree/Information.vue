@@ -21,16 +21,28 @@
         <span>Type: {{ type }}</span>
         <span class="float-right">Attribute: {{ attribute }}</span>
       </div>
-      <div v-if="meta.cd || meta.spTotal">
-        <span v-if="meta.cd">Cooldown: {{ meta.cd }} sec</span>
-        <span class="float-right" v-if="meta.spTotal">Total SP: {{ meta.spTotal }}</span>
-      </div>
       <div v-if="meta.hp || meta.mp">
         <span v-if="meta.mp">Fee MP: {{ meta.mp }}</span>
         <span class="float-right" v-if="meta.hp">Fee HP: {{ meta.hp }}</span>
       </div>
+      <div v-if="meta.cd || meta.spTotal">
+        <span v-if="meta.cd">Cooldown: {{ meta.cd }} sec</span>
+        <span class="float-right" v-if="meta.spTotal">Total SP: {{ meta.spTotal }}</span>
+      </div>
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
+      <div v-if="altSkills">
+        Alternatives:
+        <span v-for="altSkill in altSkills" class="alt-skill">
+          <template v-if="altSkill.id === activeAlt">
+            <span>{{ messages[altSkill.name] }}</span>
+          </template>
+          <template v-else>
+            <a href="javascript:;" @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
+          </template>
+        </span>
+      </div>
     </div>
+
     <div class="card-block">
       <h6>Level Up Requirements</h6>
       <div v-if="next.levelReq">Character Level {{ next.levelReq }}</div>
@@ -66,6 +78,7 @@
       ]),
       ...mapGetters([
         'active',
+        'activeAlt',
         'messages',
         'skill',
         'name',
@@ -77,12 +90,14 @@
         'next',
         'description',
         'nextDescription',
+        'altSkills',
       ]),
     },
 
     methods: {
       ...mapActions([
         'setMode',
+        'setActiveAlt',
       ]),
     },
 
@@ -142,5 +157,9 @@
 
   span.v {
     color: #904f90;
+  }
+
+  .alt-skill + .alt-skill:before {
+    content: ", ";
   }
 </style>
