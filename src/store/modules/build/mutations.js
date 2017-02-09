@@ -57,4 +57,12 @@ export default {
   [types.REMOVE_SKILL_CREST](state, skillId) {
     Vue.set(state.crests, skillId, -1);
   },
+
+  [types.ACTIVATE_RELATED_SKILL](state, skillId) {
+    Vue.set(state.related, skillId, 1);
+  },
+
+  [types.DEACTIVATE_RELATED_SKILL](state, skillId) {
+    Vue.set(state.related, skillId, 0);
+  },
 };

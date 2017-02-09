@@ -104,4 +104,14 @@ export default {
   removeSkillCrest({ commit }, skillId) {
     commit(types.REMOVE_SKILL_CREST, skillId);
   },
+
+  activateRelated({ commit, state }, skillId) {
+    if (!state.related[skillId]) {
+      commit(types.ACTIVATE_RELATED_SKILL, skillId);
+    }
+  },
+
+  deactivateRelated({ commit }, skillId) {
+    commit(types.DEACTIVATE_RELATED_SKILL, skillId);
+  },
 };

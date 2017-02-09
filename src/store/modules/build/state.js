@@ -9,6 +9,7 @@ export function initialState() {
     mode: 0,
     active: -1,
     activeAlt: -1,
+    related: {},
   };
 }
 

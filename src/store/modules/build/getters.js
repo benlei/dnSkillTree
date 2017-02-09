@@ -248,4 +248,14 @@ export default {
 
     return [skill].concat(skill.alts.map(id => skills[id]));
   },
+
+  relatedSkills(state, getters, State, Getters) {
+    const skill = getters.skill;
+    const skills = Getters.skills;
+    if (!skill.related) {
+      return null;
+    }
+
+    return skill.related.map(id => skills[id]);
+  },
 };

@@ -1,16 +1,17 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle"
+         :class="{ blink: relatedRecently }"
          @mouseover="setActive(id)"
          @click.stop.prevent="nextLevel"
          @contextmenu.stop.prevent="previousLevel"
     >
       <div class="skill-border"
            :style="border"
-           :class="{grayscale: !level, crested }"/>
+           :class="{ grayscale: !level, crested }"/>
     </div>
     <small class="skill-level text-center"
-           :class="{green: techCount === 1, blue: techCount === 2}"
+           :class="{ green: techCount === 1, blue: techCount === 2 }"
     >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}</small>
   </div>
   <div class="skill" v-else/>
@@ -19,13 +20,14 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
   import Level from '../../../lib/level';
+  import { SKILL_BORDER } from '../../../consts';
 
   export default {
     props: ['id'],
     data() {
       return {
         border: {
-          background: `url('${process.env.ASSETS_URL}/images/uit_gesturebutton.png') 100px 0px`,
+          background: SKILL_BORDER,
         },
 //        intervalId: null,
       };
@@ -86,6 +88,10 @@
       crested() {
         const crest = this.build.crests[this.id];
         return crest === 0 || crest;
+      },
+
+      relatedRecently() {
+        return this.build.related[this.id] === 1;
       },
     },
     methods: {
@@ -172,5 +178,21 @@
 
   .skill-level.blue {
     color: #3195bd;
+  }
+
+  .blink {
+    animation: blink-animation .5s steps(2, start) infinite;
+    -webkit-animation: blink-animation .5s steps(2, start) infinite;
+  }
+
+  @keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
   }
 </style>
