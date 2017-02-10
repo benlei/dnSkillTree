@@ -45,7 +45,9 @@
 
     <div class="card-block">
       <h6>Level Up Requirements</h6>
-      <div v-if="next.levelReq">Character Level {{ next.levelReq }}</div>
+      <div v-if="next.levelReq">
+        Character Level {{ next.levelReq }}
+      </div>
       <div v-if="next.parents" v-for="parent in next.parents">
         {{ messages[job.skills[parent.id].name] }} Lv. {{ parent.level }}
       </div>
@@ -54,7 +56,7 @@
       </div>
     </div>
 
-    <div class="card-block">
+    <div class="card-block" v-if="description">
       <h6>Skill Description</h6>
       <div class="description" v-html="description"/>
     </div>

@@ -5,14 +5,16 @@
         <li class="breadcrumb-item">MAZE</li>
       </template>
       <template v-else>
-        <li class="breadcrumb-item"><router-link to="/">MAZE</router-link></li>
+        <li class="breadcrumb-item">
+          <router-link to="/">MAZE</router-link>
+        </li>
         <li class="breadcrumb-item">{{ build.title }}</li>
       </template>
     </ol>
 
     <ol class="breadcrumb info">
-      <li class="breadcrumb-item">v584</li>
-      <li class="breadcrumb-item">Lv. 93</li>
+      <li class="breadcrumb-item">v{{ buildVersion }}</li>
+      <li class="breadcrumb-item">Lv. {{ levelCap }}</li>
     </ol>
   </nav>
 </template>
@@ -21,6 +23,13 @@
   import { mapState } from 'vuex';
 
   export default {
+    data() {
+      return {
+        levelCap: process.env.LEVEL_CAP,
+        buildVersion: process.env.BUILD_VERSION,
+      };
+    },
+
     computed: {
       ...mapState([
         'build',

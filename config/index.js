@@ -1,5 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var stringifyEnv = require('./stringifyEnv');
 var envFile = 'dev.env'
 
 if (process.argv[2]) {
@@ -8,11 +9,11 @@ if (process.argv[2]) {
 
 module.exports = {
   build: {
-    env: require('./prod.env'),
+    env: stringifyEnv(require('./prod.env')),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -22,7 +23,7 @@ module.exports = {
     productionGzipExtensions: ['js', 'css']
   },
   dev: {
-    env: require('./' + envFile),
+    env: stringifyEnv(require('./' + envFile)),
     port: 3000,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

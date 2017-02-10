@@ -21,6 +21,7 @@
   import { mapState, mapActions, mapGetters } from 'vuex';
   import Level from '../../../lib/level';
   import { SKILL_BORDER } from '../../../consts';
+  import skillIconStyle from '../../../lib/skillIconStyle';
 
   export default {
     props: ['id'],
@@ -53,16 +54,7 @@
 
       skillImageStyle() {
         const skill = this.skill;
-        const icon = Math.floor(skill.icon / 200) + 1;
-        const sprite = icon < 10 ? `0${icon}` : icon;
-        const row = Math.floor((skill.icon % 200) / 10);
-        const col = skill.icon % 10;
-        const suffix = this.level ? '' : '_b';
-
-        return {
-          backgroundImage: `url(${process.env.ASSETS_URL}/images/skillicon${sprite}${suffix}.png)`,
-          backgroundPosition: `-${col * 50}px -${row * 50}px`,
-        };
+        return skillIconStyle(skill, this.level);
       },
 
       level() {
@@ -112,7 +104,7 @@
 //      },
 
       setActiveLevel(level) {
-        if (this.skill.levelReq[Level.indexOf(level)] > 93) {
+        if (this.skill.levelReq[Level.indexOf(level)] > process.env.LEVEL_CAP) {
           return;
         }
 
