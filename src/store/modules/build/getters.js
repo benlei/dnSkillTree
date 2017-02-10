@@ -53,6 +53,30 @@ export default {
 
   index: (state, getters) => Level.indexOf(getters.level),
 
+  ascendancyTechs(state, getters, State, Getters) {
+    const ascendancies = [];
+    const techs = state.techs;
+    const skills = Getters.skills;
+
+    if (state.crestTech !== -1) {
+      ascendancies[skills[state.crestTech].job] = 1;
+    }
+
+    techs.forEach((tech) => {
+      if (tech !== -1) {
+        const skill = skills[tech];
+
+        if (!ascendancies[skill.job]) {
+          ascendancies[skill.job] = 0;
+        }
+
+        ascendancies[skill.job] += 1;
+      }
+    });
+
+    return ascendancies;
+  },
+
   techCount(state, getters) {
     const skillId = getters.active;
     let count = 0;
