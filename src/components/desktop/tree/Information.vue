@@ -56,7 +56,7 @@
           {{ job.ascendancies[req.ascendancy].name }} SP Total {{ req.sp }} or above
         </span>
       </div>
-      <div v-if="next.spCost">
+      <div :class="{ red: lackSp }" v-if="next.spCost">
         SP {{ next.spCost }}
       </div>
     </div>
@@ -100,6 +100,7 @@
         'nextDescription',
         'altSkills',
         'spTotals',
+        'spTotal',
       ]),
 
       ascendancyReqs() {
@@ -108,13 +109,24 @@
         const reqs = [];
 
         skill.ascendancies.forEach((sp, ascendancy) => {
-          const spTotal = spTotals[ascendancy] || 0;
-          if (spTotal < sp) {
+          if (spTotals[ascendancy] < sp) {
             reqs.push({ ascendancy, sp });
           }
         });
 
         return reqs;
+      },
+
+      lackSp() {
+        const spTotals = this.spTotals;
+        const spTotal = this.spTotal;
+        const job = this.skill.job;
+        const next = this.next;
+        const ascendancies = this.job.ascendancies;
+        const maxSp = this.job.sp;
+
+        return spTotals[job] + next.spCost > ascendancies[job].sp
+          || spTotal + next.spCost > maxSp;
       },
     },
 

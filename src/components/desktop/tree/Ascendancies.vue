@@ -6,7 +6,7 @@
           @click="setAscendancy(i)"
           v-for="(ascendancy, i) in job.ascendancies">
         {{ ascendancy.name }}
-        <small>{{ spTotals[i] || 0 }}{{ ascendancyTechs[i] ? ' +' + ascendancyTechs[i] : ''}} / {{ ascendancy.sp }}</small>
+        <small>{{ spTotals[i] }}{{ ascendancyTechs[i] ? ' +' + ascendancyTechs[i] : ''}} / {{ ascendancy.sp }}</small>
       </li>
       <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy == 3}"
@@ -34,19 +34,9 @@
 
       ...mapGetters([
         'spTotals',
+        'spTotal',
         'ascendancyTechs',
       ]),
-
-      spTotal() {
-        const spTotals = this.spTotals;
-        let spTotal = 0;
-
-        for (let i = 0; i < spTotals.length; i += 1) {
-          spTotal += spTotals[i];
-        }
-
-        return spTotal;
-      },
     },
     methods: {
       ...mapActions([

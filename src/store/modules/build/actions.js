@@ -1,4 +1,5 @@
 import * as types from '../../mutation-types';
+import Level from '../../../lib/level';
 
 export default {
   softReset({ commit }) {
@@ -25,15 +26,50 @@ export default {
     commit(types.SET_ACTIVE_ALT, skillId);
   },
 
-  setLevel({ commit, rootState }, { skillId, level }) {
-    const skill = rootState.job.skills[skillId];
+  setLevel({ commit, state, getters, rootState }, { skillId, level }) {
+    const job = rootState.job;
+    const skill = job.skills[skillId];
+    const ascendancies = job.ascendancies;
     const index = skill.index;
 
     if (level > skill.maxLevel) {
       return;
     }
 
-    commit(types.SET_SKILL_LEVEL, { index, level });
+    const currentLevel = Level.valueOf(state.levels, skill);
+    const spTotals = getters.spTotals;
+    const spTotal = getters.spTotal;
+    const maxSp = job.sp;
+    const jobIndex = skill.job;
+
+    if (currentLevel > level) {
+      commit(types.SET_SKILL_LEVEL, { index, level });
+    } else {
+      const currIndex = Level.indexOf(currentLevel);
+      const lastIndex = Level.indexOf(level);
+
+      let currSkillSpTotal = 0;
+      let nextIndex = 0;
+      let newLevel = currentLevel;
+
+      if (typeof currIndex === 'number') {
+        currSkillSpTotal = skill.spTotal[currIndex];
+        nextIndex = currIndex + 1;
+      }
+
+      for (; nextIndex <= lastIndex; nextIndex += 1, newLevel += 1) {
+        const diffSp = skill.spTotal[nextIndex] - currSkillSpTotal;
+
+        if (spTotals[jobIndex] + diffSp > ascendancies[jobIndex].sp
+          || spTotal + diffSp > maxSp) {
+          break;
+        }
+      }
+
+      if (newLevel !== currentLevel) {
+        commit(types.SET_SKILL_LEVEL, { index, level: newLevel });
+      }
+    }
   },
 
   setMode({ commit }, mode) {

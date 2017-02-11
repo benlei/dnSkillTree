@@ -6,14 +6,13 @@ export default {
     const levels = state.levels;
     const skills = Getters.skills;
     const tree = Getters.tree;
-    const sp = [];
+    const sp = [0, 0, 0];
     let index = -1;
 
     for (let i = 0, slot = 0; i < levels.length; i += 1, slot = i % 24) {
       const level = levels[i];
 
       if (slot === 0) {
-        sp.push(0);
         index += 1;
       }
 
@@ -26,6 +25,11 @@ export default {
     }
 
     return sp;
+  },
+
+  spTotal(state, getters) {
+    const spTotals = getters.spTotals;
+    return spTotals[0] + spTotals[1] + spTotals[2];
   },
 
   active(state, getters, State, Getters) {
@@ -318,8 +322,7 @@ export default {
         }
 
         skill.ascendancies.forEach((sp, ascendancy) => {
-          const spTotal = spTotals[ascendancy] || 0;
-          if (spTotal < sp) {
+          if (spTotals[ascendancy] < sp) {
             violations.ascendancies.push({ id: skill.id, ascendancy, sp });
           }
         });
