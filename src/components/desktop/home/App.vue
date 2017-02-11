@@ -17,7 +17,7 @@
   export default {
     created() {
       this.$store.dispatch('loadJobs');
-      this.$store.dispatch('setTitle', 'MAZE');
+      this.$store.dispatch('softReset');
     },
     computed: {
       ...mapState([

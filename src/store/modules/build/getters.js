@@ -7,16 +7,17 @@ export default {
     const skills = Getters.skills;
     const tree = Getters.tree;
     const sp = [];
+    let index = -1;
 
-    for (let i = 0; i < levels.length; i += 1) {
+    for (let i = 0, slot = 0; i < levels.length; i += 1, slot = i % 24) {
       const level = levels[i];
-      if (i % 24 === 0) {
+
+      if (slot === 0) {
         sp.push(0);
+        index += 1;
       }
 
-      if (level === 0 || level) {
-        const index = sp.length - 1;
-        const slot = i % 24;
+      if (typeof level === 'number') {
         const skill = skills[tree[index][slot]];
         const job = skill.job;
 
@@ -281,5 +282,53 @@ export default {
     }
 
     return skill.related.map(id => skills[id]);
+  },
+
+  violations(state, getters, State, Getters) {
+    const violations = {
+      parents: [],
+      ascendancies: [],
+      ultimate: null,
+      groups: [],
+      base: [],
+    };
+
+    const levels = state.levels;
+    const tree = getters.tree;
+    const skills = Getters.skills;
+    const spTotals = getters.spTotals;
+
+    let index = -1;
+
+    for (let i = 0, slot = 0; i < levels.length; i += 1, slot = i % 24) {
+      if (slot === 0) {
+        index += 1;
+      }
+
+      const level = levels[i];
+
+      if (typeof level === 'number') {
+        const skill = skills[tree[index][slot]];
+        const job = skill.job;
+
+        if (skill.parents) {
+          skill.parents
+            .filter(parent => Level.valueOf(levels, skills[parent.id]) >= parent.level)
+            .forEach(parent => violations.parents.push({ id: skill.id, ...parent }));
+        }
+
+        skill.ascendancies.forEach((sp, ascendancy) => {
+          const spTotal = spTotals[ascendancy] || 0;
+          if (spTotal < sp) {
+            violations.ascendancies.push({ id: skill.id, ascendancy, sp });
+          }
+        });
+
+
+        console.log(job);
+      }
+    }
+
+    return violations;
   },
 };

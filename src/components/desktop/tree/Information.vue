@@ -48,8 +48,13 @@
       <div v-if="next.levelReq">
         Character Level {{ next.levelReq }}
       </div>
-      <div v-if="next.parents" v-for="parent in next.parents">
+      <div class="red" v-if="next.parents" v-for="parent in next.parents">
         {{ messages[job.skills[parent.id].name] }} Lv. {{ parent.level }}
+      </div>
+      <div class="red" v-if="ascendancyReqs.length">
+        <span v-for="req in ascendancyReqs">
+          {{ job.ascendancies[req.ascendancy].name }} SP Total {{ req.sp }} or above
+        </span>
       </div>
       <div v-if="next.spCost">
         SP {{ next.spCost }}
@@ -78,6 +83,7 @@
         'job',
         'build',
       ]),
+
       ...mapGetters([
         'active',
         'activeAlt',
@@ -93,7 +99,23 @@
         'description',
         'nextDescription',
         'altSkills',
+        'spTotals',
       ]),
+
+      ascendancyReqs() {
+        const spTotals = this.spTotals;
+        const skill = this.skill;
+        const reqs = [];
+
+        skill.ascendancies.forEach((sp, ascendancy) => {
+          const spTotal = spTotals[ascendancy] || 0;
+          if (spTotal < sp) {
+            reqs.push({ ascendancy, sp });
+          }
+        });
+
+        return reqs;
+      },
     },
 
     methods: {
@@ -163,5 +185,9 @@
 
   .alt-skill + .alt-skill:before {
     content: ", ";
+  }
+
+  .red {
+    color: #8b0000;
   }
 </style>

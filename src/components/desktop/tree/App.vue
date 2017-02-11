@@ -24,7 +24,6 @@
   export default {
     created() {
       this.$store.dispatch('loadJob', this.$route.params.slug);
-      this.$store.dispatch('softReset');
     },
 
     computed: {
