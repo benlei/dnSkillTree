@@ -4,12 +4,12 @@
       Related Skills
     </div>
     <div class="card-block">
-      <div class="skill-icon d-inline-block" v-for="skill in relatedSkills"
+      <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"
            :style="skillImageStyle(skill)"
            @click="jumpToSkill(skill)"
       >
         <div class="skill-border" :style="border"/>
-      </div>
+      </a>
     </div>
   </div>
 </template>
@@ -18,6 +18,7 @@
   import { mapGetters, mapActions } from 'vuex';
   import { SKILL_BORDER } from '../../../consts';
   import skillIconStyle from '../../../lib/skillIconStyle';
+  import jumpToSkill from '../../../lib/jumpToSkill';
 
   export default {
     data() {
@@ -47,11 +48,8 @@
       },
 
       jumpToSkill(skill) {
-        const thiz = this;
-        this.setAscendancy(skill.jobIndex);
-        this.activateRelated(skill.id);
         window.scrollTo(0, 0);
-        setTimeout(() => thiz.deactivateRelated(skill.id), 3000);
+        jumpToSkill(this, skill);
       },
     },
   };

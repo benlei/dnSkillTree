@@ -1,6 +1,6 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
-    <div class="skill-icon" :style="skillImageStyle"
+    <a href="javascript:;" class="skill-icon" :style="skillImageStyle"
          :class="{ blink: relatedRecently }"
          @mouseover="setActive(id)"
          @click.stop.prevent="nextLevel"
@@ -9,7 +9,7 @@
       <div class="skill-border"
            :style="border"
            :class="{ grayscale: !level, crested }"/>
-    </div>
+    </a>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"
     >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}</small>
@@ -79,7 +79,7 @@
 
       crested() {
         const crest = this.build.crests[this.id];
-        return crest === 0 || crest;
+        return crest >= 0;
       },
 
       relatedRecently() {
@@ -129,9 +129,9 @@
 
       previousLevel(e) {
         if (e.shiftKey || e.ctrlKey) {
-          this.setActiveLevel(0);
+          this.setActiveLevel(-1);
         } else {
-          this.setActiveLevel(this.level ? this.level - 1 : 0);
+          this.setActiveLevel(this.level - 1);
         }
       },
     },

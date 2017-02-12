@@ -32,7 +32,7 @@
       <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
       <div v-if="altSkills">
         Alternatives:
-        <span v-for="altSkill in altSkills" class="alt-skill">
+        <span v-for="altSkill in altSkills" class="comma-separated">
           <template v-if="altSkill.id === activeAlt">
             <span>{{ messages[altSkill.name] }}</span>
           </template>
@@ -49,7 +49,7 @@
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        {{ messages[job.skills[parent.id].name] }} Lv. {{ parent.level }}
+        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">{{ messages[job.skills[parent.id].name] }}</a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">
@@ -76,6 +76,7 @@
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
+  import jumpToSkill from '../../../lib/jumpToSkill';
 
   export default {
     computed: {
@@ -134,7 +135,14 @@
       ...mapActions([
         'setMode',
         'setActiveAlt',
+        'setAscendancy',
+        'activateRelated',
+        'deactivateRelated',
       ]),
+
+      jumpToSkill(skill) {
+        jumpToSkill(this, skill);
+      },
     },
 
     filters: {
@@ -195,7 +203,7 @@
     color: #904f90;
   }
 
-  .alt-skill + .alt-skill:before {
+  .comma-separated + .comma-separated:before {
     content: ", ";
   }
 

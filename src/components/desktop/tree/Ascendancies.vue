@@ -1,18 +1,22 @@
 <template>
   <div class="card ascendancies">
     <ul class="list-group list-group-flush">
-      <li class="list-group-item justify-content-between ascendancy"
+      <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy == i}"
           @click="setAscendancy(i)"
           v-for="(ascendancy, i) in job.ascendancies">
-        {{ ascendancy.name }}
-        <small>{{ spTotals[i] }}{{ ascendancyTechs[i] ? ' +' + ascendancyTechs[i] : ''}} / {{ ascendancy.sp }}</small>
+        <a href="javascript:;" class="d-flex justify-content-between">
+          {{ ascendancy.name }}
+          <small>{{ spTotals[i] }}{{ ascendancyTechs[i] ? ' +' + ascendancyTechs[i] : ''}} / {{ ascendancy.sp }}</small>
+        </a>
       </li>
       <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy == 3}"
           @click="setAscendancy(3)"
           v-if="job.tree.length == 4">
-        Awakened
+        <a href="javascript:;">
+          Awakened
+        </a>
       </li>
     </ul>
     <div class="card-footer d-flex text-muted justify-content-between disabled">
@@ -58,5 +62,15 @@
 
   .card .ascendancy.active {
     background: #FBB200;
+  }
+
+  .ascendancies li {
+    padding: 0;
+  }
+
+  .ascendancies a {
+    color: inherit;
+    width: 100%;
+    padding: .75rem 1.25rem;
   }
 </style>

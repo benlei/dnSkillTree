@@ -173,10 +173,16 @@ export default {
     return null;
   },
 
-  next(state, getters) {
+  next(state, getters, State, Getters) {
+    const levels = state.levels;
     const level = getters.level;
+    const skills = Getters.skills;
     const skill = getters.skill;
-    const parents = skill.parents;
+    const parents = skill.parents ?
+      skill.parents
+        .filter(parent => Level.valueOf(levels, skills[parent.id]) < parent.level)
+      : null;
+
     let levelReq = 0;
     let spCost = 0;
 
@@ -289,18 +295,16 @@ export default {
   },
 
   violations(state, getters, State, Getters) {
-    const violations = {
-      parents: [],
-      ascendancies: [],
-      ultimate: null,
-      groups: [],
-      base: [],
-    };
-
+    const violations = {};
     const levels = state.levels;
     const tree = getters.tree;
     const skills = Getters.skills;
     const spTotals = getters.spTotals;
+
+    const parents = {};
+    const conflicts = { group: {}, base: {} };
+    const conflictables = ['group', 'base'];
+    const ascendancies = {};
 
     let index = -1;
 
@@ -309,28 +313,79 @@ export default {
         index += 1;
       }
 
-      const level = levels[i];
+      const skill = skills[tree[index][slot]];
 
-      if (typeof level === 'number') {
-        const skill = skills[tree[index][slot]];
-        const job = skill.job;
+      if (skill) {
+        const level = Level.valueOf(levels, skill);
 
-        if (skill.parents) {
-          skill.parents
-            .filter(parent => Level.valueOf(levels, skills[parent.id]) >= parent.level)
-            .forEach(parent => violations.parents.push({ id: skill.id, ...parent }));
-        }
-
-        skill.ascendancies.forEach((sp, ascendancy) => {
-          if (spTotals[ascendancy] < sp) {
-            violations.ascendancies.push({ id: skill.id, ascendancy, sp });
+        if (level) {
+          if (skill.parents) {
+            parents[skill.id] = [];
+            skill.parents
+              .filter(parent => Level.valueOf(levels, skills[parent.id]) < parent.level)
+              .forEach(parent => parents[skill.id].push({ ...parent }));
           }
-        });
 
+          ascendancies[skill.id] = [];
+          skill.ascendancies.forEach((sp, ascendancy) => {
+            if (spTotals[ascendancy] < sp) {
+              ascendancies[skill.id].push({ ascendancy, sp });
+            }
+          });
 
-        console.log(job);
+          conflictables.forEach((name) => {
+            const value = skill[name];
+            if (value) {
+              if (!conflicts[name][value]) {
+                conflicts[name][value] = [skill.id];
+              } else {
+                conflicts[name][value].push(skill.id);
+              }
+            }
+          });
+        }
       }
     }
+
+    if (conflicts.group[1]) { // there exists ult
+      if (conflicts.group[1].length === 2) {
+        const [ultA, ultB] = conflicts.group[1];
+        if (parents[ultA] || parents[ultB]) {
+          delete parents[ultA];
+          delete parents[ultB];
+        }
+      }
+
+      delete conflicts.group[1];
+    }
+
+    Object.keys(ascendancies)
+      .forEach((id) => {
+        if (ascendancies[id].length) {
+          violations[id] = { type: 'ascendancy', data: ascendancies[id] };
+        }
+      });
+
+    Object.keys(parents)
+      .forEach((id) => {
+        if (!violations[id] && parents[id].length) { // do not add more info than needed
+          violations[id] = { type: 'parent', data: parents[id] };
+        }
+      });
+
+    conflictables.forEach((name) => {
+      Object.keys(conflicts[name])
+        .forEach((key) => {
+          if (conflicts[name][key].length !== 1) {
+            const skillId1 = conflicts[name][key][0];
+            const skillId2 = conflicts[name][key][1];
+            if (skillId1 < skillId2) { // overwrite as this takes priority
+              violations[skillId1] = { type: 'conflict', data: skillId2 };
+              delete violations[skillId2]; // don't duplicate messages
+            }
+          }
+        });
+    });
 
     return violations;
   },
