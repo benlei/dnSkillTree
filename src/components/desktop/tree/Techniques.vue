@@ -9,7 +9,7 @@
           <span class="tech" v-for="tech in skill.techs">
             <a href="javascript:;" class="fa"
                :class="{ 'fa-circle-o': !isTeched(tech), 'fa-check-circle-o': isTeched(tech) }"
-               @click="gearTech(tech)"
+               @click.prevent="gearTech(tech)"
             /> {{ tech | techName }}
           </span>
         </div>
@@ -17,7 +17,7 @@
         <div class="crestTech unselectable">
           <a href="javascript:;" class="fa"
              :class="{ 'fa-circle-o': !isTeched(0), 'fa-check-circle-o': isTeched(0) }"
-             @click="crestTech"
+             @click.prevent="crestTech"
           /> Crest
         </div>
       </div>

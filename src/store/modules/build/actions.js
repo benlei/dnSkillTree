@@ -2,17 +2,12 @@ import * as types from '../../mutation-types';
 import Level from '../../../lib/level';
 
 export default {
-  softReset({ commit }) {
-    commit(types.SOFT_RESET);
+  reset({ commit }) {
+    commit(types.RESET);
   },
 
   setAscendancy({ commit }, ascendancy) {
     commit(types.SET_ASCENDANCY, ascendancy);
-  },
-
-  setTitle({ commit }, title) {
-    commit(types.SET_TITLE, title);
-    document.title = title;
   },
 
   setActive({ commit, getters }, skillId) {

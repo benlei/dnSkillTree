@@ -6,7 +6,7 @@
     <div class="card-block">
       <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"
            :style="skillImageStyle(skill)"
-           @click="jumpToSkill(skill)"
+           @click.prevent="jumpToSkill(skill)"
       >
         <div class="skill-border" :style="border"/>
       </a>

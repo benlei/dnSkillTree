@@ -1,10 +1,11 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <a href="javascript:;" class="skill-icon" :style="skillImageStyle"
-         :class="{ blink: relatedRecently }"
-         @mouseover="setActive(id)"
-         @click.stop.prevent="nextLevel"
-         @contextmenu.stop.prevent="previousLevel"
+       :class="{ blink: relatedRecently }"
+       @mouseover="setActive(id)"
+       @click.prevent
+       @mousedown.stop.prevent="nextLevel"
+       @contextmenu.stop.prevent="previousLevel"
     >
       <div class="skill-border"
            :style="border"
@@ -12,7 +13,8 @@
     </a>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"
-    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}</small>
+    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
+    </small>
   </div>
   <div class="skill" v-else/>
 </template>
@@ -117,6 +119,10 @@
       },
 
       nextLevel(e) {
+        if (e.button) { // left click only
+          return;
+        }
+
         if (e.shiftKey || e.ctrlKey) {
           if (this.level < this.softMaxLevel) {
             this.setActiveLevel(this.softMaxLevel);
@@ -182,6 +188,7 @@
       visibility: hidden;
     }
   }
+
   @-webkit-keyframes blink-animation {
     to {
       visibility: hidden;

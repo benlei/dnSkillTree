@@ -5,7 +5,7 @@
           :class="{active: build.ascendancy == i}"
           @click="setAscendancy(i)"
           v-for="(ascendancy, i) in job.ascendancies">
-        <a href="javascript:;" class="d-flex justify-content-between">
+        <a href="javascript:;" @click.prevent class="d-flex justify-content-between">
           {{ ascendancy.name }}
           <small>{{ spTotals[i] }}{{ ascendancyTechs[i] ? ' +' + ascendancyTechs[i] : ''}} / {{ ascendancy.sp }}</small>
         </a>
@@ -14,7 +14,7 @@
           :class="{active: build.ascendancy == 3}"
           @click="setAscendancy(3)"
           v-if="job.tree.length == 4">
-        <a href="javascript:;">
+        <a href="javascript:;" @click.prevent>
           Awakened
         </a>
       </li>

@@ -7,7 +7,7 @@
       <div class="col-md-2 my-auto">
         <a href="javascript:;" class="fa fa-chevron-left"
            v-if="crest !== -1"
-           @click="setCrest(crest - 1)"
+           @click.prevent="setCrest(crest - 1)"
         />
       </div>
       <div class="col-md-8 text-center" v-html="crestDescription">
@@ -15,7 +15,7 @@
       <div class="col-md-2 text-right my-auto">
         <a href="javascript:;" class="fa fa-chevron-right"
            v-if="crestCount < 7 && crest !== (crests[active].length - 1)"
-           @click="setCrest(crest + 1)"
+           @click.prevent="setCrest(crest + 1)"
         />
       </div>
     </div>

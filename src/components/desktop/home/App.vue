@@ -17,13 +17,16 @@
   export default {
     created() {
       this.$store.dispatch('loadJobs');
-      this.$store.dispatch('softReset');
+      this.$store.dispatch('reset');
+      this.$store.dispatch('setTitle', 'MAZE');
     },
+
     computed: {
       ...mapState([
         'jobs',
         'build',
       ]),
+
       jobPartitions() {
         const list = this.jobs.list;
         const rows = [];
@@ -36,6 +39,7 @@
         return rows;
       },
     },
+
     components: {
       Job,
     },

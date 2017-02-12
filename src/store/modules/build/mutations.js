@@ -8,14 +8,10 @@ export default {
     state.ascendancy = ascendancy;
   },
 
-  [types.SOFT_RESET](state) {
+  [types.RESET](state) {
     const reset = initialState();
     Object.keys(reset)
       .forEach(key => Vue.set(state, key, reset[key]));
-  },
-
-  [types.SET_TITLE](state, title) {
-    state.title = title;
   },
 
   [types.SET_ACTIVE](state, skillId) {

@@ -5,7 +5,6 @@ export function initialState() {
     techs: [-1, -1, -1, -1, -1],
     crestTech: -1,
     crests: {},
-    title: 'MAZE',
     mode: 0,
     active: -1,
     activeAlt: -1,
