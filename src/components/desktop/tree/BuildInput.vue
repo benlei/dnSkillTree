@@ -3,7 +3,7 @@
     <div class="col-lg-11">
       <div class="input-group">
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" @click="softReset">
+          <button class="btn btn-secondary" type="button" @click="reset">
             <i class="fa fa-refresh"/>
           </button>
         </span>
@@ -31,7 +31,7 @@
   export default {
     methods: {
       ...mapActions([
-        'softReset',
+        'reset',
       ]),
     },
 
