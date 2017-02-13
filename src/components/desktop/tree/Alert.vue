@@ -2,14 +2,11 @@
   <div class="col-lg-1">
     <div class="input-group justify-content-end">
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" @click="toggleAlertModal">
-          <i class="fa" :class="{ 'fa-check': validBuild, 'fa-exclamation-triangle': !validBuild }"/>
-        </button>
-      </span>
-
-      <span class="input-group-btn status">
-        <button class="btn btn-secondary" type="button" @click="toggleHelpModal">
-          <i class="fa fa fa-question"/>
+        <button class="btn btn-secondary" type="button"
+                @click="toggleAlertModal"
+                :title="validBuild ? 'Your build is valid!' : 'There are issues with this build.'"
+        >
+          <i class="fa" :class="statusClass"/>
         </button>
       </span>
     </div>
@@ -38,20 +35,6 @@
         </template>
       </div>
     </Modal>
-
-    <Modal title="Controls" :toggle="toggleHelpModal" :display="helpModal">
-      <p><kbd>click</kbd> a skill icon to increase its level by 1.<br/>
-        <kbd><kbd>ctrl</kbd> + <kbd>click</kbd></kbd> a skill icon to cap it out. Alias: <kbd><kbd>shift</kbd> + <kbd>click</kbd></kbd>
-      </p>
-
-      <p><kbd>leftclick</kbd> a skill icon to decrease its level by 1.<br/>
-        <kbd><kbd>ctrl</kbd> + <kbd>leftclick</kbd></kbd> a skill icon set it to its lowest level. Alias: <kbd><kbd>shift</kbd>
-          + <kbd>leftclick</kbd></kbd></p>
-
-      <p>
-        <small>note: the alias controls may not work for all browsers</small>
-      </p>
-    </Modal>
   </div>
 </template>
 
@@ -64,7 +47,6 @@
     data() {
       return {
         alertModal: false,
-        helpModal: false,
       };
     },
 
@@ -79,6 +61,16 @@
       validBuild() {
         return !Object.keys(this.violations).length;
       },
+
+      statusClass() {
+        const valid = this.validBuild;
+        return {
+          'text-success': valid,
+          'fa-check': valid,
+          'text-warning': !valid,
+          'fa-exclamation-triangle': !valid,
+        };
+      },
     },
 
     methods: {
@@ -87,10 +79,6 @@
         'deactivateRelated',
         'setAscendancy',
       ]),
-
-      toggleHelpModal() {
-        this.helpModal = !this.helpModal;
-      },
 
       toggleAlertModal() {
         this.alertModal = !this.alertModal;
@@ -109,10 +97,3 @@
     },
   };
 </script>
-
-
-<style>
-  .fa {
-    line-height: 1.5;
-  }
-</style>

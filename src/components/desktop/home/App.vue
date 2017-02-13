@@ -1,9 +1,11 @@
 <template>
   <div class="home-app container">
-    <div class="row jobsRow" v-for="row in jobPartitions">
-      <div class="col-lg-3" v-for="group in row">
-        <div class="jobGroup" v-for="job in group">
-          <Job :name="job.name" :icon="job.icon" :slug="job.slug" />
+    <div class="row jobsRow" v-for="partitions in jobPartitions">
+      <div class="col-lg-3" v-for="group in partitions">
+        <div class="row" v-for="row in group">
+          <div class="col-lg-6" v-for="job in row">
+            <Job :name="job.name" :icon="job.icon" :slug="job.slug" />
+          </div>
         </div>
       </div>
     </div>
@@ -31,9 +33,18 @@
         const list = this.jobs.list;
         const rows = [];
         const groupings = 4;
+        const cols = 2;
+        const colsList = [];
 
-        for (let i = 0; i < list.length; i += groupings) {
-          rows.push(list.slice(i, i + groupings));
+        list.forEach((group, index) => {
+          colsList[index] = [];
+          for (let i = 0; i < group.length; i += cols) {
+            colsList[index].push(group.slice(i, i + cols));
+          }
+        });
+
+        for (let i = 0; i < colsList.length; i += groupings) {
+          rows.push(colsList.slice(i, i + groupings));
         }
 
         return rows;

@@ -1,26 +1,27 @@
 import parameterize from '../../../lib/parameterize';
 import Level from '../../../lib/level';
+import { BUILD_CHARS } from '../../../consts';
 
 export default {
   spTotals(state, getters, State, Getters) {
-    const levels = state.levels;
+    const indexes = state.indexes;
     const skills = Getters.skills;
     const tree = Getters.tree;
     const sp = [0, 0, 0];
-    let index = -1;
+    let ascendancy = -1;
 
-    for (let i = 0, slot = 0; i < levels.length; i += 1, slot = i % 24) {
-      const level = levels[i];
+    for (let i = 0, slot = 0; i < indexes.length; i += 1, slot = i % 24) {
+      const index = indexes[i];
 
       if (slot === 0) {
-        index += 1;
+        ascendancy += 1;
       }
 
-      if (typeof level === 'number') {
-        const skill = skills[tree[index][slot]];
+      if (typeof index === 'number') {
+        const skill = skills[tree[ascendancy][slot]];
         const job = skill.job;
 
-        sp[job] += skill.spTotal[level];
+        sp[job] += skill.spTotal[index];
       }
     }
 
@@ -34,12 +35,7 @@ export default {
 
   active(state, getters, State, Getters) {
     if (state.active === -1 && Getters.tree.length) {
-      const tree = Getters.tree[0];
-      for (let i = 0; i < 4; i += 1) {
-        if (tree[i] !== null) {
-          return tree[i];
-        }
-      }
+      return Getters.tree[0][0];
     }
 
     return state.active;
@@ -54,7 +50,7 @@ export default {
 
   name: (state, getters, State, Getters) => Getters.messages[getters.skillAlt.name],
 
-  level: (state, getters) => Level.valueOf(state.levels, getters.skill),
+  level: (state, getters) => Level.valueOf(state.indexes, getters.skill),
 
   index: (state, getters) => Level.indexOf(getters.level),
 
@@ -174,13 +170,13 @@ export default {
   },
 
   next(state, getters, State, Getters) {
-    const levels = state.levels;
+    const indexes = state.indexes;
     const level = getters.level;
     const skills = Getters.skills;
     const skill = getters.skill;
     const parents = skill.parents ?
       skill.parents
-        .filter(parent => Level.valueOf(levels, skills[parent.id]) < parent.level)
+        .filter(parent => Level.valueOf(indexes, skills[parent.id]) < parent.level)
       : null;
 
     let levelReq = 0;
@@ -296,7 +292,7 @@ export default {
 
   violations(state, getters, State, Getters) {
     const violations = {};
-    const levels = state.levels;
+    const indexes = state.indexes;
     const tree = getters.tree;
     const skills = Getters.skills;
     const spTotals = getters.spTotals;
@@ -308,7 +304,7 @@ export default {
 
     let index = -1;
 
-    for (let i = 0, slot = 0; i < levels.length; i += 1, slot = i % 24) {
+    for (let i = 0, slot = 0; i < indexes.length; i += 1, slot = i % 24) {
       if (slot === 0) {
         index += 1;
       }
@@ -316,13 +312,13 @@ export default {
       const skill = skills[tree[index][slot]];
 
       if (skill) {
-        const level = Level.valueOf(levels, skill);
+        const level = Level.valueOf(indexes, skill);
 
         if (level) {
           if (skill.parents) {
             parents[skill.id] = [];
             skill.parents
-              .filter(parent => Level.valueOf(levels, skills[parent.id]) < parent.level)
+              .filter(parent => Level.valueOf(indexes, skills[parent.id]) < parent.level)
               .forEach(parent => parents[skill.id].push({ ...parent }));
           }
 
@@ -388,5 +384,80 @@ export default {
     });
 
     return violations;
+  },
+
+  path(state, getters, State, Getters) {
+    const skills = Getters.skills;
+    const indexes = state.indexes;
+    const tree = Getters.tree;
+    const techs = state.techs;
+    const crestTech = state.crestTech;
+    const crests = state.crests;
+    const len = tree.length * 24;
+    const cmap = BUILD_CHARS;
+    const extras = [];
+
+    let path = '';
+    let trim = 0;
+    let ascendancy = -1;
+
+    for (let i = 0, slot = 0; i < len; i += 1, slot = i % 24) {
+      if (slot === 0) {
+        ascendancy += 1;
+      }
+
+      const skill = skills[tree[ascendancy][slot]];
+
+      if (skill) {
+        const level = Level.valueOf(indexes, skill);
+        const id = skill.id;
+        if (level) {
+          if (skill.levelReq[0] === 1) {
+            if (level === 1) {
+              path += cmap[0];
+            } else {
+              path += cmap[level - 1];
+              trim = i + 1;
+            }
+          } else {
+            path += cmap[level];
+            trim = i + 1;
+          }
+        } else {
+          path += cmap[0];
+        }
+
+        const extra = [skill.index];
+        const tech = techs.indexOf(id);
+
+        if (tech !== -1) {
+          extra.push(`t${tech}`);
+        }
+
+        if (crestTech === id) {
+          extra.push('c');
+        }
+
+        if (crests[id] === 0) {
+          extra.push('h');
+        } else if (crests[id] === 1) {
+          extra.push('H');
+        }
+
+        if (extra.length > 1) {
+          extras.push(extra.join('-'));
+        }
+      } else {
+        path += cmap[0];
+      }
+    }
+
+    path = path.substring(0, trim);
+
+    if (extras.length) {
+      path += `.${extras.join('.')}`;
+    }
+
+    return path;
   },
 };

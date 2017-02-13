@@ -2,33 +2,74 @@
   <div class="row build-input">
     <div class="col-lg-11">
       <div class="input-group">
+        <input type="text" class="form-control" :value="buildUrl"/>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" @click="reset">
-            <i class="fa fa-refresh"/>
-          </button>
-        </span>
-        <input type="text" class="form-control"/>
-        <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button">
+          <button class="btn btn-secondary" type="button" title="Copy">
             <i class="fa fa-files-o"/>
           </button>
         </span>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button">
+          <button class="btn btn-secondary" type="button" @click="reset" title="Reset">
+            <i class="fa fa-refresh"/>
+          </button>
+        </span>
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="button" title="Download Single Image">
             <i class="fa fa-download"/>
           </button>
         </span>
       </div>
     </div>
-    <Help/>
+    <Alert/>
+    <!--<Help/>-->
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
-  import Help from './Help';
+  import { mapActions, mapGetters } from 'vuex';
+  import Alert from './Alert';
 
   export default {
+    data() {
+      let location = window.location.href;
+      location = location.substring(0, location.indexOf('#'));
+
+      return {
+        location,
+      };
+    },
+
+    watch: {
+      path(newPath) {
+        const slug = this.$route.params.slug;
+        const name = newPath.length ? 'desktop-build' : 'desktop';
+
+        this.$router.push({
+          name,
+          params: {
+            slug,
+            path: newPath,
+          },
+        });
+      },
+    },
+
+    computed: {
+      ...mapGetters([
+        'path',
+      ]),
+
+      buildUrl() {
+        const path = this.path;
+        const slug = this.$route.params.slug;
+        if (path.length) {
+          return `${this.location}#/${slug}/${this.path}`;
+        }
+
+        return `${this.location}#/${slug}`;
+      },
+    },
+
     methods: {
       ...mapActions([
         'reset',
@@ -36,10 +77,11 @@
     },
 
     components: {
-      Help,
+      Alert,
     },
   };
 </script>
+
 <style>
   .build-input {
     margin-bottom: 1rem;

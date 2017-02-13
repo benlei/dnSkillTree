@@ -1,7 +1,70 @@
 import * as types from '../../mutation-types';
 import Level from '../../../lib/level';
+import { BUILD_CHARS } from '../../../consts';
 
 export default {
+  initBuild({ commit, rootState, dispatch }, path) {
+    const cmap = BUILD_CHARS;
+    const params = path.split('.');
+    const levelsPath = params.shift().split('');
+    const len = levelsPath.length;
+    const skills = rootState.job.skills;
+    const tree = rootState.job.tree;
+
+    let ascendancy = -1;
+
+    for (let i = 0, slot = 0; i < len; i += 1, slot = i % 24) {
+      if (slot === 0) {
+        ascendancy += 1;
+      }
+
+      const skill = skills[tree[ascendancy][slot]];
+
+      if (skill) {
+        let index = cmap.indexOf(levelsPath[i]);
+
+        if (skill.levelReq[0] === 1) {
+          index += 1;
+        }
+
+        dispatch('setLevel', {
+          skillId: skill.id,
+          level: index,
+        });
+      }
+    }
+
+    // params.forEach((extras) => {
+    //   console.log(extras);
+    //   const extra = extras.split('-');
+    //   const index = parseInt(extra.shift(), 10);
+    //   const asc = Math.floor(index / 24);
+    //   const slot = index % 24;
+    //   const skill = skills[tree[asc][slot]];
+    //
+    //   if (extra[1][0] === 't') {
+    //     const techIndex = parseInt(extra[1][1], 10);
+    //     const mapping = [1, 8, 9, 10, 10];
+    //
+    //     dispatch('toggleGearTech', {
+    //       skillId: skill.id,
+    //       tech: mapping[techIndex],
+    //     });
+    //   }
+    //
+    //   if (extra.indexOf('c') !== -1) {
+    //     dispatch('toggleCrestTech', skill.id);
+    //   }
+    //
+    //   if (extra.indexOf('h') !== -1 || extra.indexOf('H') !== -1) {
+    //     dispatch('setSkillCrest', {
+    //       skillId: skill.id,
+    //       index: extra.indexOf('h') !== -1 ? 0 : 1,
+    //     });
+    //   }
+    // });
+  },
+
   reset({ commit }) {
     commit(types.RESET);
   },
@@ -26,12 +89,13 @@ export default {
     const skill = job.skills[skillId];
     const ascendancies = job.ascendancies;
     const index = skill.index;
+    const currentLevel = Level.valueOf(state.indexes, skill);
 
-    if (level > skill.maxLevel) {
+    // out of level range or didn't change
+    if (level > skill.maxLevel || currentLevel === level) {
       return;
     }
 
-    const currentLevel = Level.valueOf(state.levels, skill);
     const spTotals = getters.spTotals;
     const spTotal = getters.spTotal;
     const maxSp = job.sp;
@@ -71,7 +135,7 @@ export default {
     commit(types.SET_MODE, mode);
   },
 
-  toggleGearTech({ commit, state, getters }, { skillId, tech }) {
+  toggleGearTech({ commit, state }, { skillId, tech }) {
     const techs = state.techs;
     const index = techs.indexOf(skillId);
 

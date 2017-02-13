@@ -12,7 +12,7 @@ export default {
       });
   },
 
-  loadJob({ commit, dispatch }, slug) {
+  loadJob({ commit, dispatch }, { slug, path }) {
     const url = `${process.env.ASSETS_URL}/ext/${slug}.json`;
 
     Axios.get(url)
@@ -20,11 +20,14 @@ export default {
       .then((data) => {
         commit(types.INIT_JOB, { ...data });
         dispatch('setTitle', data.ascendancies[2].name);
+
+        if (path) {
+          dispatch('initBuild', path);
+        }
       });
   },
 
   setTitle({ commit }, title) {
     commit(types.SET_TITLE, title);
-    document.title = title;
   },
 };

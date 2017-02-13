@@ -60,9 +60,9 @@
       },
 
       level() {
-        const levels = this.build.levels;
+        const indexes = this.build.indexes;
         const skill = this.job.skills[this.id];
-        return Level.valueOf(levels, skill);
+        return Level.valueOf(indexes, skill);
       },
 
       techCount() {

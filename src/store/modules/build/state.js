@@ -1,7 +1,7 @@
 export function initialState() {
   return {
     ascendancy: 0,
-    levels: [],
+    indexes: [],
     techs: [-1, -1, -1, -1, -1],
     crestTech: -1,
     crests: {},

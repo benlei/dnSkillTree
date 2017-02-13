@@ -1,7 +1,7 @@
 <template>
-  <div class="col-lg-6 jobCell">
+  <div class="text-center">
     <router-link :to="'/' + slug">
-      <div class="jobImage" :style="jobImageStyle" />
+      <div class="jobImage mx-auto" :style="jobImageStyle" />
       <div class="jobTitle">
         {{ name }}
       </div>
@@ -30,21 +30,11 @@
 </script>
 
 <style>
-  .jobCell {
-    text-align: center;
-    float: left;
-  }
-
-  .jobImage {
-    margin: 0 auto;
-    display: block;
-  }
-
   .jobTitle {
     margin-bottom: 5px;
-    height: 45px;
+    height: 50px;
     color: #373a3c;
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
   .jobCell a {

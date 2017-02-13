@@ -23,7 +23,7 @@ export default {
   },
 
   [types.SET_SKILL_LEVEL](state, { index, level }) {
-    Vue.set(state.levels, index, Level.indexOf(level));
+    Vue.set(state.indexes, index, Level.indexOf(level));
   },
 
   [types.SET_MODE](state, mode) {

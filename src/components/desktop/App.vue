@@ -13,6 +13,18 @@
   import F00ter from './Footer';
 
   export default {
+    watch: {
+      title(newTitle) {
+        document.title = newTitle;
+      },
+    },
+
+    computed: {
+      title() {
+        return this.$store.state.title;
+      },
+    },
+
     components: {
       Navigation,
       F00ter,

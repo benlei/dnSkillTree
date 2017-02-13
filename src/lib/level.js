@@ -6,10 +6,10 @@ function indexOf(level) {
   return level - 1;
 }
 
-function valueOf(levels, skill) {
+function valueOf(indexes, skill) {
   const starter = skill.levelReq[0] === 1;
   const index = skill.index;
-  const val = levels[index];
+  const val = indexes[index];
 
   if (typeof val === 'undefined' || val === null) {
     return starter ? 1 : 0;

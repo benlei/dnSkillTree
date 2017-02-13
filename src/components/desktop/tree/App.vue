@@ -1,6 +1,6 @@
 <template>
   <div class="tree-app" v-if="job.loaded">
-    <BuildInput />
+    <BuildInput/>
 
     <div class="row">
       <LeftSidebar/>
@@ -21,7 +21,13 @@
 
   export default {
     created() {
-      this.$store.dispatch('loadJob', this.$route.params.slug);
+      const slug = this.$route.params.slug;
+      const path = this.$route.params.path;
+
+      this.$store.dispatch('loadJob', {
+        slug,
+        path,
+      });
     },
 
     computed: {
@@ -30,6 +36,7 @@
       ]),
 
       ...mapGetters([
+        'active',
         'jobName',
       ]),
 
@@ -61,5 +68,9 @@
 
   .card .list-group .list-group-item:first-child {
     border-top: 0;
+  }
+
+  .fa {
+    line-height: 1.5;
   }
 </style>

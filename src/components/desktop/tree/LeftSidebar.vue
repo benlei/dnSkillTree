@@ -1,18 +1,25 @@
 <template>
   <div class="col-lg-4">
-    <Ascendancies />
+    <Ascendancies/>
 
-    <Techniques />
-    <Crests />
+    <Techniques/>
+    <Crests/>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import Ascendancies from './Ascendancies';
   import Crests from './Crests';
   import Techniques from './Techniques';
 
   export default {
+    computed: {
+      ...mapGetters([
+        'active',
+      ]),
+    },
+
     components: {
       Ascendancies,
       Crests,
