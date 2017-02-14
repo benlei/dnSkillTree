@@ -61,7 +61,7 @@
   }
 
   .card .ascendancy.active {
-    background: #FBB200;
+    background: #107895;
   }
 
   .ascendancies li {

@@ -16,9 +16,9 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import { SKILL_BORDER } from '../../../consts';
-  import skillIconStyle from '../../../lib/skillIconStyle';
-  import jumpToSkill from '../../../lib/jumpToSkill';
+  import { SKILL_BORDER } from '../../../../consts';
+  import skillIconStyle from '../../../../lib/skillIconStyle';
+  import jumpToSkill from '../../../../lib/jumpToSkill';
 
   export default {
     data() {

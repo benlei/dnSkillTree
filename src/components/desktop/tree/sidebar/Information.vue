@@ -76,7 +76,7 @@
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
-  import jumpToSkill from '../../../lib/jumpToSkill';
+  import jumpToSkill from '../../../../lib/jumpToSkill';
 
   export default {
     computed: {

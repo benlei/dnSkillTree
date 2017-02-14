@@ -14,9 +14,9 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex';
-  import LeftSidebar from './LeftSidebar';
+  import LeftSidebar from './sidebar/LeftSidebar';
   import Tree from './Tree';
-  import RightSidebar from './RightSidebar';
+  import RightSidebar from './sidebar/RightSidebar';
   import BuildInput from './BuildInput';
 
   export default {

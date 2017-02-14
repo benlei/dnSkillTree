@@ -41,7 +41,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import jumpToSkill from '../../../lib/jumpToSkill';
-  import Modal from './Modal';
+  import Modal from '../Modal';
 
   export default {
     data() {
