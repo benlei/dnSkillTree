@@ -34,35 +34,40 @@ export default {
       }
     }
 
-    // params.forEach((extras) => {
-    //   console.log(extras);
-    //   const extra = extras.split('-');
-    //   const index = parseInt(extra.shift(), 10);
-    //   const asc = Math.floor(index / 24);
-    //   const slot = index % 24;
-    //   const skill = skills[tree[asc][slot]];
-    //
-    //   if (extra[1][0] === 't') {
-    //     const techIndex = parseInt(extra[1][1], 10);
-    //     const mapping = [1, 8, 9, 10, 10];
-    //
-    //     dispatch('toggleGearTech', {
-    //       skillId: skill.id,
-    //       tech: mapping[techIndex],
-    //     });
-    //   }
-    //
-    //   if (extra.indexOf('c') !== -1) {
-    //     dispatch('toggleCrestTech', skill.id);
-    //   }
-    //
-    //   if (extra.indexOf('h') !== -1 || extra.indexOf('H') !== -1) {
-    //     dispatch('setSkillCrest', {
-    //       skillId: skill.id,
-    //       index: extra.indexOf('h') !== -1 ? 0 : 1,
-    //     });
-    //   }
-    // });
+    const techs = [
+      { letter: 'w', equip: 1 },
+      { letter: 'n', equip: 8 },
+      { letter: 'e', equip: 9 },
+      { letter: 'r', equip: 10 },
+    ];
+
+    params.forEach((param) => {
+      if (!param.match(/^[0-9a-zA-Z-~]+$/)) {
+        return;
+      }
+
+      const index = parseInt(param, 10);
+      const asc = Math.floor(index / 24);
+      const slot = index % 24;
+      const skill = skills[tree[asc][slot]];
+      const skillId = skill.id;
+
+      techs.forEach((tech) => {
+        if (param.indexOf(tech.letter) !== -1) {
+          dispatch('toggleGearTech', { skillId, tech: tech.equip });
+        }
+      });
+
+      if (param.indexOf('c') !== -1) {
+        dispatch('toggleCrestTech', skillId);
+      }
+
+      const h = param.indexOf('h');
+      const H = param.indexOf('H');
+      if (h !== -1 || H !== -1) {
+        dispatch('setSkillCrest', { skillId, index: h !== -1 ? 0 : 1 });
+      }
+    });
   },
 
   reset({ commit }) {

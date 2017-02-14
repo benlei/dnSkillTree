@@ -431,7 +431,21 @@ export default {
         const tech = techs.indexOf(id);
 
         if (tech !== -1) {
-          extra.push(`t${tech}`);
+          switch (tech) {
+            case 0:
+              extra.push('w');
+              break;
+            case 1:
+              extra.push('n');
+              break;
+            case 2:
+              extra.push('e');
+              break;
+            case 3:
+            default:
+              extra.push('r');
+              break;
+          }
         }
 
         if (crestTech === id) {
@@ -445,7 +459,7 @@ export default {
         }
 
         if (extra.length > 1) {
-          extras.push(extra.join('-'));
+          extras.push(extra.join(''));
         }
       } else {
         path += cmap[0];
@@ -456,6 +470,10 @@ export default {
 
     if (extras.length) {
       path += `.${extras.join('.')}`;
+    }
+
+    if (path) {
+      path += '.';
     }
 
     return path;
