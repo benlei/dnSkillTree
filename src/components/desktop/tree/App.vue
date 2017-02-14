@@ -2,7 +2,7 @@
   <div v-if="job.loaded">
     <BuildInput/>
 
-    <div class="row" id="tree-app">
+    <div class="row">
       <LeftSidebar/>
 
       <Tree/>
