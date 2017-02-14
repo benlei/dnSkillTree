@@ -1,5 +1,5 @@
 <template>
-  <div class="tree-app" v-if="job.loaded">
+  <div v-if="job.loaded">
     <BuildInput/>
 
     <div class="row">

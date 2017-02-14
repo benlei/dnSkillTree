@@ -13,11 +13,6 @@
             <i class="fa fa-refresh"/>
           </button>
         </span>
-        <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" title="Download Single Image">
-            <i class="fa fa-download"/>
-          </button>
-        </span>
       </div>
     </div>
     <Alert/>
