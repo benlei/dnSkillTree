@@ -44,7 +44,7 @@
         const slug = this.$route.params.slug;
         const name = newPath.length ? 'desktop-build' : 'desktop';
 
-        this.$router.push({
+        this.$router.replace({
           name,
           params: {
             slug,
