@@ -2,9 +2,9 @@
   <div class="row build-input">
     <div class="col-lg-11">
       <div class="input-group">
-        <input type="text" class="form-control" :value="buildUrl"/>
+        <input type="text" class="form-control" :value="buildUrl" id="build-url"/>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" title="Copy">
+          <button class="btn btn-secondary" type="button" title="Copy" data-clipboard-target="#build-url" id="copy">
             <i class="fa fa-files-o"/>
           </button>
         </span>

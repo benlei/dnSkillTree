@@ -39,12 +39,12 @@
   }
 
   a, a:link, a:visited {
-    color: #FBB200;
+    color: #cb9000;
     text-decoration: none;
   }
 
   a:hover {
-    color: #cb9000;
+    color: #946900;
     text-decoration: none;
   }
 </style>

@@ -10,8 +10,8 @@
         </ul>
 
         <ul class="list-unstyled text-right">
-          <li><a href="#">Mobile</a></li>
           <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
+          <li><a href="#">Mobile</a></li>
         </ul>
       </div>
     </div>
@@ -56,7 +56,7 @@
 
 <style>
   .list-unstyled {
-    margin: 0 1rem;
+    margin: 0 1.5rem;
   }
 
   hr {
