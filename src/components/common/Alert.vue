@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-1">
+  <div :class="col">
     <div class="input-group justify-content-end">
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button"
@@ -40,10 +40,12 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import jumpToSkill from '../../../lib/jumpToSkill';
-  import Modal from '../../common/Modal';
+  import jumpToSkill from '../../lib/jumpToSkill';
+  import Modal from '../Modal';
 
   export default {
+    props: ['col'],
+
     data() {
       return {
         alertModal: false,

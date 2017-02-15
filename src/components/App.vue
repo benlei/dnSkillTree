@@ -1,16 +1,19 @@
 <template>
-  <div class="container">
-    <Navigation />
+  <div>
+    <Navigation/>
 
-    <router-view></router-view>
+    <div class="container">
 
-    <F00ter />
+      <router-view></router-view>
+
+      <F00ter/>
+    </div>
   </div>
 </template>
 
 <script>
-  import Navigation from '../common/Navigation';
-  import F00ter from '../common/Footer';
+  import Navigation from './Navigation';
+  import F00ter from './Footer';
 
   export default {
     watch: {
@@ -34,7 +37,6 @@
 
 <style>
   body {
-    padding-top: 10px;
     padding-bottom: 20px;
   }
 

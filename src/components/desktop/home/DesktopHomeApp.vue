@@ -5,7 +5,7 @@
         <div class="col-lg-3" v-for="group in partitions">
           <div class="row" v-for="row in group">
             <div class="col-lg-6" v-for="job in row">
-              <Job :name="job.name" :icon="job.icon" :slug="job.slug"/>
+              <Job :name="job.name" :icon="job.icon" :to="'/' + job.slug"/>
             </div>
           </div>
         </div>
@@ -16,7 +16,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import Job from './Job';
+  import Job from '../../common/Job';
 
   export default {
     created() {
@@ -28,7 +28,6 @@
     computed: {
       ...mapState([
         'jobs',
-        'build',
       ]),
 
       jobPartitions() {

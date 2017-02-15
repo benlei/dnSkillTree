@@ -1,7 +1,7 @@
 <template>
   <div :class="{ loading: !job.loaded }">
     <template v-if="job.loaded">
-      <BuildInput/>
+      <BuildInput :cols="['col-lg-11', 'col-lg-1']" />
 
       <div class="row">
         <LeftSidebar/>
@@ -19,12 +19,11 @@
   import LeftSidebar from './sidebar/LeftSidebar';
   import Tree from './Tree';
   import RightSidebar from './sidebar/RightSidebar';
-  import BuildInput from './BuildInput';
+  import BuildInput from '../../common/BuildInput';
 
   export default {
     created() {
-      const slug = this.$route.params.slug;
-      const path = this.$route.params.path;
+      const { slug, path } = this.$route.params;
 
       this.$store.dispatch('loadJob', {
         slug,
@@ -41,10 +40,6 @@
         'active',
         'jobName',
       ]),
-
-      title() {
-        this.$store.dispatch('setTitle', this.jobName);
-      },
     },
 
     components: {

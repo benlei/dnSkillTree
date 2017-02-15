@@ -1,8 +1,8 @@
 <template>
   <div class="text-center">
-    <router-link :to="'/' + slug">
-      <div class="jobImage mx-auto" :style="jobImageStyle" />
-      <div class="jobTitle">
+    <router-link :to="to">
+      <div class="mx-auto" :style="jobImageStyle" />
+      <div class="jobTitle" v-if="name">
         {{ name }}
       </div>
     </router-link>
@@ -11,7 +11,7 @@
 
 <script>
   export default {
-    props: ['name', 'icon', 'slug'],
+    props: ['name', 'icon', 'to'],
     computed: {
       jobImageStyle() {
         const scale = 55;

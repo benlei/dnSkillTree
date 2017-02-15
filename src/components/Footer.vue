@@ -1,19 +1,26 @@
 <template>
-  <footer>
+  <footer class="footer">
     <hr/>
 
-    <div class="row">
-      <div class="col-lg-12 d-flex justify-content-between">
-        <ul class="list-unstyled">
-          <li><a href="#">NA</a></li>
-          <li><a href="#">SEA</a></li>
-        </ul>
+    <div class="d-flex justify-content-between">
+      <ul class="list-unstyled">
+        <li><a href="#">NA</a></li>
+        <li><a href="#">SEA</a></li>
+      </ul>
 
-        <ul class="list-unstyled text-right">
-          <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
-          <li><router-link :to="{name:'mobile-home'}">Mobile</router-link></li>
-        </ul>
-      </div>
+      <ul class="list-unstyled text-right">
+        <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
+        <li>
+          <router-link :to="invertedRoute" @click.native="toTop">
+            <template v-if="isMobile()">
+              Desktop
+            </template>
+            <template v-else>
+              Mobile
+            </template>
+          </router-link>
+        </li>
+      </ul>
     </div>
 
     <Modal title="Controls" :toggle="toggleHelpModal" :display="helpModal">
@@ -42,9 +49,25 @@
       };
     },
 
+    computed: {
+      invertedRoute() {
+        const path = this.$route.fullPath;
+
+        if (this.isMobile()) {
+          return path.substring(2);
+        }
+
+        return `/m${path}`;
+      },
+    },
+
     methods: {
       toggleHelpModal() {
         this.helpModal = !this.helpModal;
+      },
+
+      toTop() {
+        window.scrollTo(0, 0);
       },
     },
 
@@ -57,9 +80,5 @@
 <style>
   .list-unstyled {
     margin: 0 1.5rem;
-  }
-
-  hr {
-    margin: .5rem;
   }
 </style>

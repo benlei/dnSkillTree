@@ -1,10 +1,10 @@
 <template>
   <div class="row build-input">
-    <div class="col-lg-11">
+    <div :class="cols[0]">
       <div class="input-group">
         <input type="text" class="form-control" :value="buildUrl" id="build-url"/>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" title="Copy" data-clipboard-target="#build-url" id="copy">
+          <button class="btn btn-secondary" type="button" title="Copy" data-clipboard-target="#foo">
             <i class="fa fa-files-o"/>
           </button>
         </span>
@@ -15,7 +15,7 @@
         </span>
       </div>
     </div>
-    <Alert/>
+    <Alert :class="cols[1]"/>
     <!--<Help/>-->
   </div>
 </template>
@@ -25,6 +25,7 @@
   import Alert from './Alert';
 
   export default {
+    props: ['cols'],
     data() {
       let location = window.location.href;
       location = location.substring(0, location.indexOf('#'));
