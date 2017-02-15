@@ -7,6 +7,7 @@
         <div class="progress-bar bg-info" style="width: 50%"/>
       </div>
 
+      <Tree />
     </template>
   </div>
 </template>
@@ -14,6 +15,7 @@
 <script>
   import { mapState, mapGetters } from 'vuex';
   import BuildInput from '../../common/BuildInput';
+  import Tree from './Tree';
 
   export default {
     created() {
@@ -37,6 +39,7 @@
 
     components: {
       BuildInput,
+      Tree,
     },
   };
 </script>

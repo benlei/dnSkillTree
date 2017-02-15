@@ -38,7 +38,8 @@
     watch: {
       path(newPath) {
         const slug = this.$route.params.slug;
-        const name = newPath.length ? 'desktop-build' : 'desktop';
+        const prefix = this.isMobile() ? 'mobile' : 'desktop';
+        const name = newPath.length ? `${prefix}-build` : prefix;
 
         this.$router.replace({
           name,
