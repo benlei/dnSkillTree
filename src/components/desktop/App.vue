@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import Navigation from './Navigation';
-  import F00ter from './Footer';
+  import Navigation from '../common/Navigation';
+  import F00ter from '../common/Footer';
 
   export default {
     watch: {
@@ -39,12 +39,12 @@
   }
 
   a, a:link, a:visited {
-    color: #cb9000;
+    color: #107d9b;
     text-decoration: none;
   }
 
   a:hover {
-    color: #946900;
+    color: #15a1cb;
     text-decoration: none;
   }
 </style>

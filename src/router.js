@@ -9,56 +9,53 @@ import MobileTreeApp from './components/mobile/tree/App';
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/',
-    component: DesktopApp,
-    children: [
-      {
-        path: '',
-        component: HomeApp,
-      },
-      {
-        path: ':slug',
-        name: 'desktop',
-        component: TreeApp,
-        children: [
-          {
-            path: ':path',
-            name: 'desktop-build',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: 'm',
-    component: MobileApp,
-    children: [
-      {
-        path: '',
-        component: MobileHomeApp,
-      },
-      {
-        path: ':slug',
-        name: 'mobile',
-        component: MobileTreeApp,
-        children: [
-          {
-            path: ':path',
-            name: 'mobile-build',
-          },
-        ],
-      },
-    ],
-  },
-];
-
-function scrollBehavior() {
-  return { x: 0, y: 0 };
-}
+const routes =
+  [
+    {
+      path: '/',
+      component: DesktopApp,
+      children: [
+        {
+          path: '',
+          component: HomeApp,
+        },
+        {
+          path: ':slug',
+          name: 'desktop',
+          component: TreeApp,
+          children: [
+            {
+              path: ':path',
+              name: 'desktop-build',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/m',
+      component: MobileApp,
+      children: [
+        {
+          path: '',
+          name: 'mobile-home',
+          component: MobileHomeApp,
+        },
+        {
+          path: ':slug',
+          name: 'mobile',
+          component: MobileTreeApp,
+          children: [
+            {
+              path: ':path',
+              name: 'mobile-build',
+            },
+          ],
+        },
+      ],
+    },
+  ];
 
 export default new VueRouter({
   routes,
-  scrollBehavior,
 });

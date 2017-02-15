@@ -38,7 +38,7 @@
   };
 </script>
 
-<style scoped>
+<style>
   nav {
     background: #02151D;
     color: #FFF;
@@ -48,16 +48,25 @@
 
   .breadcrumb {
     background: transparent;
+    margin-bottom: 0;
   }
 
   .breadcrumb .active {
     color: #FFF;
   }
-</style>
 
-<style>
   .breadcrumb {
     background: transparent;
     margin-bottom: 0;
+  }
+
+  .breadcrumb a, .breadcrumb a:link, .breadcrumb a:visited {
+    color: #17bce7;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: #18ceff;
+    text-decoration: none;
   }
 </style>

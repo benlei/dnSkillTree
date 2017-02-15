@@ -1,14 +1,16 @@
 <template>
-  <div v-if="job.loaded">
-    <BuildInput/>
+  <div :class="{ loading: !job.loaded }">
+    <template v-if="job.loaded">
+      <BuildInput/>
 
-    <div class="row">
-      <LeftSidebar/>
+      <div class="row">
+        <LeftSidebar/>
 
-      <Tree/>
+        <Tree/>
 
-      <RightSidebar/>
-    </div>
+        <RightSidebar/>
+      </div>
+    </template>
   </div>
 </template>
 

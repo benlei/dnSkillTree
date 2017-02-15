@@ -11,7 +11,7 @@
 
         <ul class="list-unstyled text-right">
           <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
-          <li><a href="#">Mobile</a></li>
+          <li><router-link :to="{name:'mobile-home'}">Mobile</router-link></li>
         </ul>
       </div>
     </div>
