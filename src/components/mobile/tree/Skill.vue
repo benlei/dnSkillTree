@@ -175,7 +175,7 @@
 
   .fa-minus-circle {
     margin-left: 5px;
-    color: #a46a24;
+    color: #a47d50;
   }
 
   .fa-plus-circle {

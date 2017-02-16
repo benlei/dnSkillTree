@@ -1,6 +1,6 @@
 <template>
-  <transition name="fade" v-if="display">
-    <div class="modal-mask" @click.self="toggle">
+  <transition name="fade" v-if="display" v-on:enter="toggleHideOverflow" v-on:after-leave="toggleHideOverflow">
+    <div class="modal" @click.self="toggle">
       <div class="modal-dialog violations">
         <div class="modal-content">
           <div class="modal-header">
@@ -18,13 +18,19 @@
 </template>
 
 <script>
+  const html = document.getElementsByTagName('html')[0];
+
   export default {
     props: ['title', 'toggle', 'display'],
+    methods: {
+      toggleHideOverflow() {
+        html.classList.toggle('hide-overflow-y');
+      },
+    },
   };
 </script>
 
 <style>
-
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s
   }
@@ -33,16 +39,11 @@
     opacity: 0
   }
 
-  .modal-mask {
-    position: fixed;
-    z-index: 9998;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  .modal {
     background-color: rgba(0, 0, 0, .5);
-    display: table;
-    transition: opacity .3s ease;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .violations {
@@ -54,8 +55,12 @@
     right: 0;
   }
 
-  .modal-body {
-    max-height: 240px;
-    overflow-y: auto;
+  .hide-overflow-y {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+
+  body {
+    width: calc(100vw - 34px);
   }
 </style>
