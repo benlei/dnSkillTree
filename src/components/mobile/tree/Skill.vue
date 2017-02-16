@@ -1,22 +1,23 @@
 <template>
-  <div class="skill d-flex flex-column" v-if="id">
-    <a href="javascript:;" class="skill-icon" :style="skillImageStyle"
+  <div class="mobile skill d-flex align-items-stretch" v-if="id">
+    <div class="skill-icon" :style="skillImageStyle"
        :class="{ blink: relatedRecently }"
-       @mouseover="setActive(id)"
-       @click.prevent
-       @mousedown.stop.prevent="nextLevel"
-       @contextmenu.stop.prevent="previousLevel"
     >
       <div class="skill-border"
            :style="border"
            :class="{ grayscale: !level, crested }"/>
-    </a>
-    <small class="skill-level text-center"
-           :class="{ green: techCount === 1, blue: techCount === 2 }"
-    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
-    </small>
+    </div>
+    <div class="d-flex flex-column mobile-level">
+      <small class="skill-level mobile text-center"
+             :class="{ green: techCount === 1, blue: techCount === 2 }"
+      >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
+      </small>
+      <div class="level-btn">
+        <i class="fa mobile fa-minus" /> <i class="fa mobile fa-plus" />
+      </div>
+    </div>
   </div>
-  <div class="skill" v-else/>
+  <div class="mobile skill empty" v-else/>
 </template>
 
 <script>
@@ -134,53 +135,38 @@
 </script>
 
 <style>
-  .skill {
-    height: 65px;
-    width: 50px;
-    margin: 8px 10px 12px 10px;
+  .mobile.skill {
+    width: 105px;
+    height: 52px;
+    margin: 8px 5px 17px 5px;
   }
 
-  .skill-icon, .skill-border {
-    height: 50px;
-    width: 50px;
+  .mobile-level {
+    padding-right: 5px;
+    width: 100%;
   }
 
-  .skill-level {
-    line-height: 1.5;
+  .mobile.skill-level {
+    margin-top: 5px;
+    color: #fff;
   }
 
-  .skill-border.grayscale {
-    -webkit-filter: grayscale(1);
-    filter: grayscale(1);
+  .mobile.skill {
+    background: #3a3a3a;
+    border-radius: 10px 10px 0 10px;
   }
 
-  .skill-border.crested {
-    -webkit-filter: saturate(7) !important;
-    filter: saturate(7) !important;
+  .mobile.skill.empty {
+    background: transparent;
   }
 
-  .skill-level.green {
-    color: #4ea722;
+
+  .level-btn {
+    margin-left: 5px;
   }
 
-  .skill-level.blue {
-    color: #3195bd;
-  }
-
-  .blink {
-    animation: blink-animation .5s steps(2, start) infinite;
-    -webkit-animation: blink-animation .5s steps(2, start) infinite;
-  }
-
-  @keyframes blink-animation {
-    to {
-      visibility: hidden;
-    }
-  }
-
-  @-webkit-keyframes blink-animation {
-    to {
-      visibility: hidden;
-    }
+  .fa-plus, .fa-minus {
+    color: #DEA86C;
+    margin-left: 5px;
   }
 </style>

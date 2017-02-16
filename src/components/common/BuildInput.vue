@@ -59,11 +59,13 @@
       buildUrl() {
         const path = this.path;
         const slug = this.$route.params.slug;
+        const prefix = this.isMobile() ? '/m' : '';
+
         if (path.length) {
-          return `${this.location}#/${slug}/${this.path}`;
+          return `${this.location}#${prefix}/${slug}/${this.path}`;
         }
 
-        return `${this.location}#/${slug}`;
+        return `${this.location}#${prefix}/${slug}`;
       },
     },
 

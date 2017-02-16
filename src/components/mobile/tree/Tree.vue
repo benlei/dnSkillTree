@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-12 unselectable">
+  <div>
     <table class="mobile-tree mx-auto" :style="build.ascendancy < 3 && treeStyle">
       <tr v-for="(_, row) in 6">
         <td v-for="(_, col) in 4">
@@ -20,6 +20,7 @@
         'job',
         'build',
       ]),
+
       treeStyle() {
         const slug = this.job.ascendancies[this.build.ascendancy].slug;
         return {
@@ -27,11 +28,13 @@
         };
       },
     },
+
     methods: {
       skillId(ascendancy, row, col) {
         return this.job.tree[ascendancy][(row * 4) + col];
       },
     },
+
     components: {
       Skill,
     },
@@ -41,5 +44,7 @@
 <style>
   .mobile-tree {
     background-repeat: no-repeat !important;
+    background-size: 512px 512px !important;
+    background-position-y: 1px !important;
   }
 </style>

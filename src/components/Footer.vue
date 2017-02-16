@@ -65,10 +65,6 @@
       toggleHelpModal() {
         this.helpModal = !this.helpModal;
       },
-
-      toTop() {
-        window.scrollTo(0, 0);
-      },
     },
 
     components: {

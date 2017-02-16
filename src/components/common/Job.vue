@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <router-link :to="to">
+    <router-link :to="to" @click.native="toTop">
       <div class="mx-auto" :style="jobImageStyle" />
       <div class="jobTitle" v-if="name">
         {{ name }}
@@ -14,16 +14,7 @@
     props: ['name', 'icon', 'to'],
     computed: {
       jobImageStyle() {
-        const scale = 55;
-        const xPos = (this.icon % 9) * scale;
-        const yPos = Math.floor(this.icon / 9) * scale;
-
-        return {
-          backgroundImage: `url(${process.env.ASSETS_URL}/images/jobicon_main.png)`,
-          height: `${scale}px`,
-          width: `${scale}px`,
-          backgroundPosition: `-${xPos}px -${yPos}px`,
-        };
+        return this.getJobImageStyle(this.icon);
       },
     },
   };

@@ -88,7 +88,7 @@
 
       jumpToSkill(skill) {
         this.toggleAlertModal();
-        window.scrollTo(0, 0);
+        this.toTop();
 
         jumpToSkill(this, skill);
       },

@@ -2,7 +2,7 @@
   <div class="card ascendancies">
     <ul class="list-group list-group-flush">
       <li class="list-group-item ascendancy"
-          :class="{active: build.ascendancy == i}"
+          :class="{active: build.ascendancy === i}"
           @click="setAscendancy(i)"
           v-for="(ascendancy, i) in job.ascendancies">
         <a href="javascript:;" @click.prevent class="d-flex justify-content-between">
@@ -11,9 +11,9 @@
         </a>
       </li>
       <li class="list-group-item ascendancy"
-          :class="{active: build.ascendancy == 3}"
+          :class="{active: build.ascendancy === 3}"
           @click="setAscendancy(3)"
-          v-if="job.tree.length == 4">
+          v-if="job.tree.length === 4">
         <a href="javascript:;" @click.prevent>
           Awakened
         </a>

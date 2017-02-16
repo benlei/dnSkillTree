@@ -1,12 +1,8 @@
 <template>
   <div :class="{ loading: !job.loaded }">
     <template v-if="job.loaded">
-      <BuildInput :cols="['col-sm-10', 'col-sm-2']"/>
-
-      <div class="progress">
-        <div class="progress-bar bg-info" style="width: 50%"/>
-      </div>
-
+      <BuildInput :cols="['col-10', 'col-2']"/>
+      <Ascendancies />
       <Tree />
     </template>
   </div>
@@ -15,6 +11,7 @@
 <script>
   import { mapState, mapGetters } from 'vuex';
   import BuildInput from '../../common/BuildInput';
+  import Ascendancies from './Ascendancies';
   import Tree from './Tree';
 
   export default {
@@ -40,6 +37,7 @@
     components: {
       BuildInput,
       Tree,
+      Ascendancies,
     },
   };
 </script>

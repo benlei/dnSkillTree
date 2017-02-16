@@ -160,7 +160,7 @@
     line-height: 1.5;
   }
 
-  .skill-border.grayscale {
+  .grayscale {
     -webkit-filter: grayscale(1);
     filter: grayscale(1);
   }
