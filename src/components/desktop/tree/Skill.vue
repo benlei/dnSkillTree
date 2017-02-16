@@ -23,7 +23,6 @@
   import { mapState, mapActions, mapGetters } from 'vuex';
   import Level from '../../../lib/level';
   import { SKILL_BORDER } from '../../../consts';
-  import skillIconStyle from '../../../lib/skillIconStyle';
 
   export default {
     props: ['id'],
@@ -32,7 +31,6 @@
         border: {
           background: SKILL_BORDER,
         },
-//        intervalId: null,
       };
     },
     computed: {
@@ -56,7 +54,7 @@
 
       skillImageStyle() {
         const skill = this.skill;
-        return skillIconStyle(skill, this.level);
+        return this.getSkillIconStyle(skill, this.level);
       },
 
       level() {
@@ -93,17 +91,6 @@
         'setActive',
         'setLevel',
       ]),
-
-//      mouseover(id) {
-//        if (id !== this.active) {
-//          const thiz = this;
-//          this.intervalId = setTimeout(() => thiz.setActive(id), 150);
-//        }
-//      },
-//
-//      mouseleave() {
-//        clearInterval(this.intervalId);
-//      },
 
       setActiveLevel(level) {
         if (this.skill.levelReq[Level.indexOf(level)] > process.env.LEVEL_CAP) {

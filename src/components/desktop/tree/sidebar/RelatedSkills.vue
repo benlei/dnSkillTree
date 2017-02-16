@@ -5,8 +5,8 @@
     </div>
     <div class="card-block">
       <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"
-           :style="skillImageStyle(skill)"
-           @click.prevent="jumpToSkill(skill)"
+         :style="skillImageStyle(skill)"
+         @click.prevent="jump(skill)"
       >
         <div class="skill-border" :style="border"/>
       </a>
@@ -17,8 +17,6 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import { SKILL_BORDER } from '../../../../consts';
-  import skillIconStyle from '../../../../lib/skillIconStyle';
-  import jumpToSkill from '../../../../lib/jumpToSkill';
 
   export default {
     data() {
@@ -44,12 +42,12 @@
       ]),
 
       skillImageStyle(skill) {
-        return skillIconStyle(skill, 1);
+        return this.getSkillIconStyle(skill, 1);
       },
 
-      jumpToSkill(skill) {
+      jump(skill) {
         this.toTop();
-        jumpToSkill(this, skill);
+        this.jumpToSkill(skill);
       },
     },
   };
@@ -59,7 +57,6 @@
   .skill-icon {
     margin-right: .5rem;
   }
-
 
   .card-block {
     padding-bottom: .5rem;

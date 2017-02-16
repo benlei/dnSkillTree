@@ -54,7 +54,8 @@
     right: 0;
   }
 
-  .modal-dialog {
-    max-width: 640px;
+  .modal-body {
+    max-height: 240px;
+    overflow-y: auto;
   }
 </style>

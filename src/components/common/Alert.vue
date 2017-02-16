@@ -16,7 +16,7 @@
     </Modal>
     <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-else>
       <div v-for="(violation, skillId) in violations">
-        <a href="javascript:;" @click="jumpToSkill(skills[skillId])">{{ messages[skills[skillId].name]
+        <a href="javascript:;" @click="jump(skills[skillId])">{{ messages[skills[skillId].name]
           }}</a>
         <template v-if="violation.type === 'ascendancy'">
           requires
@@ -40,7 +40,6 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import jumpToSkill from '../../lib/jumpToSkill';
   import Modal from '../Modal';
 
   export default {
@@ -86,11 +85,10 @@
         this.alertModal = !this.alertModal;
       },
 
-      jumpToSkill(skill) {
+      jump(skill) {
         this.toggleAlertModal();
         this.toTop();
-
-        jumpToSkill(this, skill);
+        this.jumpToSkill(skill);
       },
     },
 

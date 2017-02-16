@@ -1,11 +1,8 @@
 <template>
   <div class="mobile skill d-flex align-items-stretch" v-if="id">
-    <div class="skill-icon" :style="skillImageStyle"
-       :class="{ blink: relatedRecently }"
-    >
-      <div class="skill-border"
-           :style="border"
-           :class="{ grayscale: !level, crested }"/>
+    <div class="skill-icon" :style="skillImageStyle" :class="{ blink: relatedRecently }"
+         @click="iconClick">
+      <div class="skill-border" :style="border" :class="{ grayscale: !level, crested }"/>
     </div>
     <div class="d-flex flex-column mobile-level">
       <small class="skill-level mobile text-center"
@@ -13,7 +10,10 @@
       >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
       </small>
       <div class="level-btn">
-        <i class="fa mobile fa-minus" /> <i class="fa mobile fa-plus" />
+        <a href="javascript:;" v-if="canDelevel" @click.stop.prevent="previousLevel"><i
+          class="fa mobile fa-minus-circle"/></a>
+        <a href="javascript:;" v-if="canLevel" @click.stop.prevent="nextLevel"><i
+          class="fa mobile fa-plus-circle float-right"/></a>
       </div>
     </div>
   </div>
@@ -24,18 +24,19 @@
   import { mapState, mapActions, mapGetters } from 'vuex';
   import Level from '../../../lib/level';
   import { SKILL_BORDER } from '../../../consts';
-  import skillIconStyle from '../../../lib/skillIconStyle';
+  import Modal from '../../Modal';
 
   export default {
-    props: ['id'],
+    props: ['id', 'toggle'],
+
     data() {
       return {
         border: {
           background: SKILL_BORDER,
         },
-//        intervalId: null,
       };
     },
+
     computed: {
       ...mapState([
         'job',
@@ -57,7 +58,7 @@
 
       skillImageStyle() {
         const skill = this.skill;
-        return skillIconStyle(skill, this.level);
+        return this.getSkillIconStyle(skill, this.level);
       },
 
       level() {
@@ -88,7 +89,20 @@
       relatedRecently() {
         return this.build.related[this.id] === 1;
       },
+
+      canLevel() {
+        return this.level < this.softMaxLevel;
+      },
+
+      canDelevel() {
+        if (this.skill.levelReq[0] === 1) {
+          return this.level > 1;
+        }
+
+        return this.level;
+      },
     },
+
     methods: {
       ...mapActions([
         'setActive',
@@ -108,28 +122,23 @@
         this.setActive(this.id);
       },
 
-      nextLevel(e) {
-        if (e.button) { // left click only
-          return;
-        }
-
-        if (e.shiftKey || e.ctrlKey) {
-          if (this.level < this.softMaxLevel) {
-            this.setActiveLevel(this.softMaxLevel);
-          }
-        } else {
-          this.setActiveLevel(this.level < this.softMaxLevel ?
-            this.level + 1 : this.level);
-        }
+      nextLevel() {
+        this.setActiveLevel(this.level < this.softMaxLevel ?
+          this.level + 1 : this.level);
       },
 
-      previousLevel(e) {
-        if (e.shiftKey || e.ctrlKey) {
-          this.setActiveLevel(-1);
-        } else {
-          this.setActiveLevel(this.level - 1);
-        }
+      previousLevel() {
+        this.setActiveLevel(this.level - 1);
       },
+
+      iconClick() {
+        this.setActive(this.id);
+        this.toggle();
+      },
+    },
+
+    components: {
+      Modal,
     },
   };
 </script>
@@ -160,13 +169,17 @@
     background: transparent;
   }
 
-
   .level-btn {
     margin-left: 5px;
   }
 
-  .fa-plus, .fa-minus {
-    color: #DEA86C;
+  .fa-minus-circle {
     margin-left: 5px;
+    color: #a46a24;
+  }
+
+  .fa-plus-circle {
+    margin-right: 5px;
+    color: #DEA86C;
   }
 </style>

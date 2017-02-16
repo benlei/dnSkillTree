@@ -49,7 +49,7 @@
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">{{ messages[job.skills[parent.id].name] }}</a> Lv. {{ parent.level }}
+        <a href="javascript:;" @click="jump(job.skills[parent.id])">{{ messages[job.skills[parent.id].name] }}</a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">
@@ -76,7 +76,6 @@
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
-  import jumpToSkill from '../../../../lib/jumpToSkill';
 
   export default {
     computed: {
@@ -140,8 +139,8 @@
         'deactivateRelated',
       ]),
 
-      jumpToSkill(skill) {
-        jumpToSkill(this, skill);
+      jump(skill) {
+        this.jumpToSkill(skill);
       },
     },
 
