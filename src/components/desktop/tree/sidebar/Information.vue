@@ -75,10 +75,10 @@
 </template>
 
 <script>
-  import information from '../../../../mixins/information';
+  import informationMixin from '../../../../mixins/information';
 
   export default {
-    mixins: [information],
+    mixins: [informationMixin],
   };
 </script>
 

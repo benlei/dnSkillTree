@@ -19,10 +19,10 @@
 
 <script>
   import Level from '../../../lib/level';
-  import skill from '../../../mixins/skill';
+  import skillMixin from '../../../mixins/skill';
 
   export default {
-    mixins: [skill],
+    mixins: [skillMixin],
 
     methods: {
       setActiveLevel(level) {

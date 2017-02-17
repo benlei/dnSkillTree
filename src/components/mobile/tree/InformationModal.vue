@@ -1,23 +1,28 @@
 <template>
   <Modal :title="name" :toggle="toggle" :display="display">
     <div class="modal-block">
+      <div class="d-flex justify-content-between mode">
+        <div>
+          <i class="fa"
+             :class="{ 'fa-circle-o': build.mode, 'fa-check-circle-o': !build.mode }"
+             @click="setMode(0)"
+          /> PvE
+        </div>
+
+        <div class="float-right">
+          <i class="fa"
+             :class="{ 'fa-circle-o': !build.mode, 'fa-check-circle-o': build.mode }"
+             @click="setMode(1)"
+          /> PvP
+        </div>
+      </div>
+
       <div class="form-group">
         <select class="form-control" v-model="levelSelected">
           <option v-for="lvl in levels" :disabled="lvl < 0" :value="Math.abs(lvl)">
             Lv. {{ Math.abs(lvl) }}{{ techCount? ' +' + techCount : null}}
           </option>
         </select>
-      </div>
-
-      <div class="lead">
-        <template v-if="build.mode">
-          <a href="javascript:;" @click="setMode(0)">PvE</a>
-          <span class="float-right">PvP</span>
-        </template>
-        <template v-else>
-          <span>PvE</span>
-          <a href="javascript:;" @click="setMode(1)" class="float-right">PvP</a>
-        </template>
       </div>
     </div>
 
@@ -46,6 +51,27 @@
           </template>
         </span>
       </div>
+    </div>
+
+    <div class="modal-block" v-if="skill.techs">
+      <h6>Techniques</h6>
+      <Techniques/>
+    </div>
+
+    <div class="modal-block" v-if="crests[active]">
+      <h6>Crests</h6>
+      <template v-if="crestCount === 7">
+        <div>Cannot equip more than 7 crests.</div>
+      </template>
+      <template v-else>
+        <div class="form-group">
+          <select class="form-control" v-model="crestSelected">
+            <option value="-1">None</option>
+            <option v-for="(crest, crestIndex) in crests[active]" :value="crestIndex"
+                    v-html="crestDescription(crestIndex)"/>
+          </select>
+        </div>
+      </template>
     </div>
 
     <div class="modal-block" v-if="showLevelUpReq">
@@ -81,23 +107,28 @@
 <script>
   import { mapActions } from 'vuex';
   import Modal from '../../Modal';
+  import Techniques from '../../common/Techniques';
   import Level from '../../../lib/level';
-  import information from '../../../mixins/information';
-
+  import informationMixin from '../../../mixins/information';
+  import techsMixin from '../../../mixins/techs';
+  import crestsMixin from '../../../mixins/crests';
+  import parameterize from '../../../lib/parameterize';
 
   export default {
-    mixins: [information],
+    mixins: [informationMixin, techsMixin, crestsMixin],
 
     props: ['toggle', 'display'],
 
     data() {
       return {
         levelSelected: -1,
+        crestSelected: -1,
       };
     },
 
     beforeMount() {
       this.levelSelected = this.level;
+      this.crestSelected = this.crest;
     },
 
     watch: {
@@ -110,8 +141,19 @@
         }
       },
 
+      crestSelected(newVal) {
+        if (newVal !== this.crest) {
+          this.crestSelected = newVal;
+          this.setCrest(newVal);
+        }
+      },
+
       level(newVal) {
         this.levelSelected = newVal;
+      },
+
+      crest(newVal) {
+        this.crestSelected = newVal;
       },
     },
 
@@ -156,10 +198,19 @@
       ...mapActions([
         'setLevel',
       ]),
+
+      crestDescription(index) {
+        const messages = this.messages;
+        const crests = this.crests;
+        const crest = crests[this.active][index];
+
+        return parameterize(messages[crest.description], crest.params, messages);
+      },
     },
 
     components: {
       Modal,
+      Techniques,
     },
   };
 </script>
@@ -167,5 +218,13 @@
 <style>
   .modal-block:not(:last-child) {
     padding-bottom: 1rem;
+  }
+
+  .modal-block .form-group {
+    margin-bottom: .5rem;
+  }
+
+  .mode {
+    margin-bottom: .5rem;
   }
 </style>

@@ -23,35 +23,31 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
+  import parameterize from '../../../../lib/parameterize';
+  import crestsMixin from '../../../../mixins/crests';
 
   export default {
+    mixins: [crestsMixin],
+
     computed: {
-      ...mapState([
-        'build',
-      ]),
       ...mapGetters([
-        'active',
-        'skill',
-        'crests',
-        'crest',
         'crestDescription',
-        'crestCount',
-      ]),
-    },
-
-    methods: {
-      ...mapActions([
-        'setSkillCrest',
-        'removeSkillCrest',
+        'messages',
       ]),
 
-      setCrest(index) {
+      crestDescription() {
+        const messages = this.messages;
+        const crests = this.crests;
+        const index = this.crest;
+        const crestCount = this.crestCount;
+
         if (index === -1) {
-          this.removeSkillCrest(this.active);
-        } else {
-          this.setSkillCrest({ skillId: this.active, index });
+          return crestCount === 7 ? 'Skill Crest Limit Reached' : 'None';
         }
+
+        const crest = crests[this.active][index];
+        return parameterize(messages[crest.description], crest.params, messages);
       },
     },
   };

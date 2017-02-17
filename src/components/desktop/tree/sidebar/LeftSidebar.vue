@@ -2,7 +2,15 @@
   <div class="col-md-4">
     <Ascendancies/>
 
-    <Techniques/>
+    <div class="card" v-if="skill.techs">
+      <div class="card-header active">
+        Techniques
+      </div>
+      <div class="card-block">
+        <Techniques/>
+      </div>
+    </div>
+
     <Crests/>
   </div>
 </template>
@@ -11,12 +19,13 @@
   import { mapGetters } from 'vuex';
   import Ascendancies from './Ascendancies';
   import Crests from './Crests';
-  import Techniques from './Techniques';
+  import Techniques from '../../../common/Techniques';
 
   export default {
     computed: {
       ...mapGetters([
         'active',
+        'skill',
       ]),
     },
 

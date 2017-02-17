@@ -244,22 +244,9 @@ export default {
     return -1;
   },
 
-  crestDescription(state, getters, State, Getters) {
-    const messages = Getters.messages;
-    const crests = Getters.crests;
-    const index = getters.crest;
-    const crestCount = getters.crestCount;
-
-    if (index === -1) {
-      return crestCount === 7 ? 'Skill Crest Limit Reached' : 'None';
-    }
-
-    const crest = crests[getters.active][index];
-    return parameterize(messages[crest.description], crest.params, messages);
-  },
-
   crestCount(state) {
     const crests = state.crests;
+    const add = state.crestTech !== -1 ? 1 : 0;
 
     return Object.keys(crests)
       .reduce((a, key) => {
@@ -267,7 +254,7 @@ export default {
           return a;
         }
         return a + 1;
-      }, 0);
+      }, add);
   },
 
   altSkills(state, getters, State, Getters) {

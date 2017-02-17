@@ -12,11 +12,11 @@
 </template>
 
 <script>
-  import skill from '../../../mixins/skill';
+  import skillMixin from '../../../mixins/skill';
   import Modal from '../../Modal';
 
   export default {
-    mixins: [skill],
+    mixins: [skillMixin],
 
     props: ['id', 'toggle'],
 
