@@ -3,7 +3,7 @@
     <template v-if="jobs.loaded">
       <div class="row jobsRow mobile" v-for="group in jobs.list">
         <div class="col-sm-2 col-2" v-for="job in group">
-          <Job :icon="job.icon" :to="'/m/' + job.slug"/>
+          <Job :icon="job.icon" :to="'/m/' + job.slug" />
         </div>
       </div>
     </template>
@@ -25,27 +25,6 @@
       ...mapState([
         'jobs',
       ]),
-
-//      jobPartitions() {
-//        const list = this.jobs.list;
-//        const rows = [];
-//        const groupings = 4;
-//        const cols = 2;
-//        const colsList = [];
-//
-//        list.forEach((group, index) => {
-//          colsList[index] = [];
-//          for (let i = 0; i < group.length; i += cols) {
-//            colsList[index].push(group.slice(i, i + cols));
-//          }
-//        });
-//
-//        for (let i = 0; i < colsList.length; i += groupings) {
-//          rows.push(colsList.slice(i, i + groupings));
-//        }
-//
-//        return rows;
-//      },
     },
 
     components: {
@@ -56,6 +35,6 @@
 
 <style>
   .mobile.jobsRow {
-
+    margin-bottom: 1rem;
   }
 </style>

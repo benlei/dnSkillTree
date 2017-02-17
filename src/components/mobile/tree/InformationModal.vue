@@ -1,21 +1,23 @@
 <template>
   <Modal :title="name" :toggle="toggle" :display="display">
     <div class="modal-block">
-      <div class="d-flex justify-content-between mode">
+      <div class="d-flex justify-content-between tech mode">
         <div>
           <i class="fa"
-             :class="{ 'fa-circle-o': build.mode, 'fa-check-circle-o': !build.mode }"
+             :class="{ 'fa-circle-thin': build.mode, 'fa-circle': !build.mode }"
              @click="setMode(0)"
           /> PvE
         </div>
 
         <div class="float-right">
           <i class="fa"
-             :class="{ 'fa-circle-o': !build.mode, 'fa-check-circle-o': build.mode }"
+             :class="{ 'fa-circle-thin': !build.mode, 'fa-circle': build.mode }"
              @click="setMode(1)"
           /> PvP
         </div>
       </div>
+
+      <h6>Level</h6>
 
       <div class="form-group">
         <select class="form-control" v-model="levelSelected">
@@ -24,6 +26,27 @@
           </option>
         </select>
       </div>
+    </div>
+
+    <div class="modal-block" v-if="crests[active]">
+      <h6>Crests</h6>
+      <template v-if="crestCount === 7">
+        <div>Cannot equip more than 7 crests.</div>
+      </template>
+      <template v-else>
+        <div class="form-group">
+          <select class="form-control" v-model="crestSelected">
+            <option value="-1">None</option>
+            <option v-for="(crest, crestIndex) in crests[active]" :value="crestIndex"
+                    v-html="crestDescription(crestIndex)"/>
+          </select>
+        </div>
+      </template>
+    </div>
+
+    <div class="modal-block" v-if="skill.techs">
+      <h6>Techniques</h6>
+      <Techniques/>
     </div>
 
     <div class="modal-block">
@@ -51,27 +74,6 @@
           </template>
         </span>
       </div>
-    </div>
-
-    <div class="modal-block" v-if="skill.techs">
-      <h6>Techniques</h6>
-      <Techniques/>
-    </div>
-
-    <div class="modal-block" v-if="crests[active]">
-      <h6>Crests</h6>
-      <template v-if="crestCount === 7">
-        <div>Cannot equip more than 7 crests.</div>
-      </template>
-      <template v-else>
-        <div class="form-group">
-          <select class="form-control" v-model="crestSelected">
-            <option value="-1">None</option>
-            <option v-for="(crest, crestIndex) in crests[active]" :value="crestIndex"
-                    v-html="crestDescription(crestIndex)"/>
-          </select>
-        </div>
-      </template>
     </div>
 
     <div class="modal-block" v-if="showLevelUpReq">

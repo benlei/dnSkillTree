@@ -42,7 +42,7 @@ export default {
     ];
 
     params.forEach((param) => {
-      if (!param.match(/^[0-9a-zA-Z-~]+$/)) {
+      if (!param.match(/^[0-9]+[a-zA-Z]+$/)) {
         return;
       }
 
@@ -62,8 +62,7 @@ export default {
         dispatch('toggleCrestTech', skillId);
       }
 
-      const h = param.indexOf('h');
-      const H = param.indexOf('H');
+      const [h, H] = [param.indexOf('h'), param.indexOf('H')];
       if (h !== -1 || H !== -1) {
         dispatch('setSkillCrest', { skillId, index: h !== -1 ? 0 : 1 });
       }

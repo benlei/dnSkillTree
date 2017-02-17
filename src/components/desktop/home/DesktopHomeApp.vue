@@ -1,10 +1,10 @@
 <template>
   <div class="home-app container" :class="{ loading: !jobs.loaded }">
     <template v-if="jobs.loaded">
-      <div class="row jobsRow" v-for="partitions in jobPartitions">
-        <div class="col-md-3" v-for="group in partitions">
+      <div class="row" v-for="partitions in jobPartitions">
+        <div class="col-md-3 col-12 col-sm-6 jobsCol" v-for="group in partitions">
           <div class="row" v-for="row in group">
-            <div class="col-md-6" v-for="job in row">
+            <div class="col-6" v-for="job in row">
               <Job :name="job.name" :icon="job.icon" :to="'/' + job.slug"/>
             </div>
           </div>
@@ -59,13 +59,9 @@
 </script>
 
 <style>
-  .jobsRow {
-    margin-top: 30px;
-    margin-bottom: 40px;
-  }
-
-  .jobsRow:last-of-type {
-    margin-bottom: 0;
+  .jobsCol {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
   }
 
   .loading {

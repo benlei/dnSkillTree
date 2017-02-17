@@ -3,15 +3,15 @@
     <div class="d-inline unselectable">
       <span class="tech" v-for="tech in skill.techs">
         <a href="javascript:;" class="fa"
-           :class="{ 'fa-circle-o': !isTeched(tech), 'fa-check-circle-o': isTeched(tech) }"
+           :class="{ 'fa-circle-thin': !isTeched(tech), 'fa-circle': isTeched(tech) }"
            @click.prevent="gearTech(tech)"
         /> {{ tech | techName }}
       </span>
     </div>
 
-    <div class="crestTech unselectable">
+    <div class="tech unselectable">
       <a href="javascript:;" class="fa"
-         :class="{ 'fa-circle-o': !isTeched(0), 'fa-check-circle-o': isTeched(0) }"
+         :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
          @click.prevent="crestTech"
       /> Crest
     </div>
@@ -35,6 +35,10 @@
 <style>
   .tech {
     margin-right: 1.25rem;
+  }
+
+  .tech .fa {
+    margin-right: 3px;
   }
 
   a.fa {

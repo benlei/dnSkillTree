@@ -1,7 +1,7 @@
 <template>
   <div :class="{ loading: !job.loaded }">
     <template v-if="job.loaded">
-      <BuildInput :cols="['col-md-11', 'col-md-1']" />
+      <BuildInput :cols="['col-md-11 col-10', 'col-md-1 col-2']" />
 
       <div class="row">
         <LeftSidebar/>
