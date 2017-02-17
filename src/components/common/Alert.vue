@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
   import Modal from '../Modal';
 
   export default {
@@ -75,12 +75,6 @@
     },
 
     methods: {
-      ...mapActions([
-        'activateRelated',
-        'deactivateRelated',
-        'setAscendancy',
-      ]),
-
       toggleAlertModal() {
         this.alertModal = !this.alertModal;
       },

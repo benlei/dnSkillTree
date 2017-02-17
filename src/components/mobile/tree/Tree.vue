@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="mobile-tree mx-auto" :style="build.ascendancy < 3 && treeStyle">
+    <table class="tree mx-auto" :style="build.ascendancy < 3 && treeStyle">
       <tr v-for="(_, row) in 6">
         <td v-for="(_, col) in 4">
           <Skill :id="skillId(build.ascendancy, row, col)" :toggle="toggleInfoModal" />

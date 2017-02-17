@@ -1,23 +1,15 @@
 <template>
-  <div class="mobile skill d-flex align-items-stretch" v-if="id">
+  <div class="skill d-flex flex-column" v-if="id">
     <div class="skill-icon" :style="skillImageStyle" :class="{ blink: relatedRecently }"
          @click="iconClick">
       <div class="skill-border" :style="border" :class="{ grayscale: !level, crested }"/>
     </div>
-    <div class="d-flex flex-column mobile-level">
-      <small class="skill-level mobile text-center"
-             :class="{ green: techCount === 1, blue: techCount === 2 }"
-      >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
-      </small>
-      <div class="level-btn">
-        <a href="javascript:;" v-if="canDelevel" @click.stop.prevent="previousLevel"><i
-          class="fa mobile fa-minus-circle"/></a>
-        <a href="javascript:;" v-if="canLevel" @click.stop.prevent="nextLevel"><i
-          class="fa mobile fa-plus-circle float-right"/></a>
-      </div>
-    </div>
+    <small class="skill-level text-center"
+           :class="{ green: techCount === 1, blue: techCount === 2 }"
+    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
+    </small>
   </div>
-  <div class="mobile skill empty" v-else/>
+  <div class="skill empty" v-else/>
 </template>
 
 <script>
@@ -142,44 +134,3 @@
     },
   };
 </script>
-
-<style>
-  .mobile.skill {
-    width: 105px;
-    height: 52px;
-    margin: 8px 5px 17px 5px;
-  }
-
-  .mobile-level {
-    padding-right: 5px;
-    width: 100%;
-  }
-
-  .mobile.skill-level {
-    margin-top: 5px;
-    color: #fff;
-  }
-
-  .mobile.skill {
-    background: #3a3a3a;
-    border-radius: 10px 10px 0 10px;
-  }
-
-  .mobile.skill.empty {
-    background: transparent;
-  }
-
-  .level-btn {
-    margin-left: 5px;
-  }
-
-  .fa-minus-circle {
-    margin-left: 5px;
-    color: #a47d50;
-  }
-
-  .fa-plus-circle {
-    margin-right: 5px;
-    color: #DEA86C;
-  }
-</style>

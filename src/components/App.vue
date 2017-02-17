@@ -42,6 +42,7 @@
 
   body {
     padding-bottom: 20px;
+    width: calc(100vw);
   }
 
   a, a:link, a:visited {

@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav :class="{ mobile: isMobile() }">
     <div class="d-flex justify-content-between container">
       <ol class="breadcrumb nav-tree">
         <template v-if="title === 'MAZE'">
@@ -69,5 +69,9 @@
   .breadcrumb a:hover {
     color: #18ceff;
     text-decoration: none;
+  }
+
+  nav.mobile {
+    font-size: 80%;
   }
 </style>

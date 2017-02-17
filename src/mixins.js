@@ -1,7 +1,14 @@
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 Vue.mixin({
   methods: {
+    ...mapActions([
+      'setAscendancy',
+      'activateRelated',
+      'deactivateRelated',
+    ]),
+
     isMobile() {
       return this.$route.name.startsWith('mobile');
     },
@@ -44,5 +51,9 @@ Vue.mixin({
 
       setTimeout(() => thiz.deactivateRelated(skill.id), 3000);
     },
+  },
+
+  filters: {
+    join: (arr, separator) => arr.join(separator),
   },
 });

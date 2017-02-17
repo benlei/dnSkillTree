@@ -2,8 +2,8 @@
   <div class="row build-input">
     <div :class="cols[0]">
       <div class="input-group">
-        <input type="text" class="form-control" :value="buildUrl" id="build-url"/>
-        <span class="input-group-btn">
+        <input type="text" class="form-control" :value="buildUrl" id="build-url" @click="this.select()" />
+        <span class="input-group-btn" v-if="!isMobile()">
           <button class="btn btn-secondary" type="button" title="Copy" data-clipboard-target="#foo">
             <i class="fa fa-files-o"/>
           </button>

@@ -43,13 +43,13 @@
       </div>
     </div>
 
-    <div class="card-block">
+    <div class="card-block" v-if="level < skill.maxLevel">
       <h6>Level Up Requirements</h6>
       <div v-if="next.levelReq">
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jump(job.skills[parent.id])">{{ messages[job.skills[parent.id].name] }}</a> Lv. {{ parent.level }}
+        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">{{ messages[job.skills[parent.id].name] }}</a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">
@@ -70,7 +70,6 @@
       <h6>Next Description</h6>
       <div class="next-description" v-html="nextDescription"/>
     </div>
-
   </div>
 </template>
 
@@ -87,6 +86,7 @@
       ...mapGetters([
         'active',
         'activeAlt',
+        'level',
         'messages',
         'skill',
         'name',
@@ -134,18 +134,7 @@
       ...mapActions([
         'setMode',
         'setActiveAlt',
-        'setAscendancy',
-        'activateRelated',
-        'deactivateRelated',
       ]),
-
-      jump(skill) {
-        this.jumpToSkill(skill);
-      },
-    },
-
-    filters: {
-      join: (arr, separator) => arr.join(separator),
     },
   };
 </script>

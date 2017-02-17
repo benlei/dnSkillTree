@@ -35,10 +35,7 @@
 
     methods: {
       ...mapActions([
-        'setAscendancy',
         'setActive',
-        'activateRelated',
-        'deactivateRelated',
       ]),
 
       skillImageStyle(skill) {

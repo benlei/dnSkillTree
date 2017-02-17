@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" v-if="display" v-on:enter="toggleHideOverflow" v-on:after-leave="toggleHideOverflow">
-    <div class="modal" @click.self="toggle">
-      <div class="modal-dialog modal-lg violations">
+    <div class="modal" @click.self="toggle" :class="{ mobile: isMobile() }">
+      <div class="modal-dialog violations">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">{{ title }}</h4>
@@ -52,6 +52,7 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 90%;
   }
 
   .hide-overflow-y {
@@ -59,7 +60,7 @@
     overflow-x: hidden;
   }
 
-  body {
-    width: calc(100vw);
+  .modal.mobile {
+    font-size: 80%;
   }
 </style>
