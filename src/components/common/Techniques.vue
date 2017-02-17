@@ -9,7 +9,7 @@
       </span>
     </div>
 
-    <div class="tech unselectable">
+    <div class="crest-tech unselectable">
       <a href="javascript:;" class="fa"
          :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
          @click.prevent="crestTech"
@@ -37,7 +37,7 @@
     margin-right: 1.25rem;
   }
 
-  .tech .fa {
+  .tech .fa, .crest-tech .fa {
     margin-right: 3px;
   }
 

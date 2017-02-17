@@ -1,23 +1,23 @@
 <template>
   <Modal :title="name" :toggle="toggle" :display="display">
     <div class="modal-block">
-      <div class="d-flex justify-content-between tech mode">
-        <div>
+      <div class="d-flex justify-content-between mode">
+        <span>
           <i class="fa"
              :class="{ 'fa-circle-thin': build.mode, 'fa-circle': !build.mode }"
              @click="setMode(0)"
           /> PvE
-        </div>
+        </span>
 
-        <div class="float-right">
+        <span class="float-right">
           <i class="fa"
              :class="{ 'fa-circle-thin': !build.mode, 'fa-circle': build.mode }"
              @click="setMode(1)"
           /> PvP
-        </div>
+        </span>
       </div>
 
-      <h6>Level</h6>
+      <h5>Level</h5>
 
       <div class="form-group">
         <select class="form-control" v-model="levelSelected">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="modal-block" v-if="crests[active]">
-      <h6>Crests</h6>
+      <h5>Crests</h5>
       <template v-if="crestCount === 7">
         <div>Cannot equip more than 7 crests.</div>
       </template>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="modal-block" v-if="skill.techs">
-      <h6>Techniques</h6>
+      <h5>Techniques</h5>
       <Techniques/>
     </div>
 
@@ -77,7 +77,7 @@
     </div>
 
     <div class="modal-block" v-if="showLevelUpReq">
-      <h6>Level Up Requirements</h6>
+      <h5>Level Up Requirements</h5>
       <div v-if="next.levelReq">
         Character Level {{ next.levelReq }}
       </div>
@@ -96,12 +96,12 @@
     </div>
 
     <div class="modal-block" v-if="description">
-      <h6>Skill Description</h6>
+      <h5>Skill Description</h5>
       <div class="description" v-html="description"/>
     </div>
 
     <div class="modal-block" v-if="nextDescription">
-      <h6>Next Description</h6>
+      <h5>Next Description</h5>
       <div class="next-description" v-html="nextDescription"/>
     </div>
   </Modal>
@@ -229,5 +229,11 @@
 
   .mode {
     margin-bottom: .5rem;
+    font-size: 120%;
+  }
+
+  .mode .fa {
+    margin-right: 3px;
+    font-size: 80%;
   }
 </style>
