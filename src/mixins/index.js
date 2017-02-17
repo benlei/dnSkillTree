@@ -1,7 +1,14 @@
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 Vue.mixin({
+  computed: {
+    ...mapState([
+      'job',
+      'build',
+    ]),
+  },
+
   methods: {
     ...mapActions([
       'setAscendancy',
@@ -44,12 +51,10 @@ Vue.mixin({
     },
 
     jumpToSkill(skill) {
-      const thiz = this;
-
       this.setAscendancy(skill.jobIndex);
       this.activateRelated(skill.id);
 
-      setTimeout(() => thiz.deactivateRelated(skill.id), 3000);
+      // setTimeout(() => thiz.deactivateRelated(skill.id), 3000);
     },
   },
 

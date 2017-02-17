@@ -1,15 +1,13 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id">
     <a href="javascript:;" class="skill-icon" :style="skillImageStyle"
-       :class="{ blink: relatedRecently }"
-       @mouseover="setActive(id)"
        @click.prevent
+       @mouseover="setActive(id)"
        @mousedown.stop.prevent="nextLevel"
-       @contextmenu.stop.prevent="previousLevel"
-    >
+       @contextmenu.stop.prevent="previousLevel">
       <div class="skill-border"
            :style="border"
-           :class="{ grayscale: !level, crested }"/>
+           :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
     </a>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"
@@ -20,78 +18,13 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapGetters } from 'vuex';
   import Level from '../../../lib/level';
-  import { SKILL_BORDER } from '../../../consts';
+  import skill from '../../../mixins/skill';
 
   export default {
-    props: ['id'],
-    data() {
-      return {
-        border: {
-          background: SKILL_BORDER,
-        },
-      };
-    },
-    computed: {
-      ...mapState([
-        'job',
-        'build',
-      ]),
+    mixins: [skill],
 
-      ...mapGetters([
-        'active',
-        'index',
-      ]),
-
-      skill() {
-        return this.job.skills[this.id];
-      },
-
-      softMaxLevel() {
-        return this.skill.maxLevel - this.skill.spMaxLevel;
-      },
-
-      skillImageStyle() {
-        const skill = this.skill;
-        return this.getSkillIconStyle(skill, this.level);
-      },
-
-      level() {
-        const indexes = this.build.indexes;
-        const skill = this.job.skills[this.id];
-        return Level.valueOf(indexes, skill);
-      },
-
-      techCount() {
-        let count = 0;
-
-        if (this.build.crestTech === this.id) {
-          count += 1;
-        }
-
-        if (this.build.techs.indexOf(this.id) !== -1) {
-          count += 1;
-        }
-
-        return Math.min(this.skill.spMaxLevel, count);
-      },
-
-      crested() {
-        const crest = this.build.crests[this.id];
-        return crest >= 0;
-      },
-
-      relatedRecently() {
-        return this.build.related[this.id] === 1;
-      },
-    },
     methods: {
-      ...mapActions([
-        'setActive',
-        'setLevel',
-      ]),
-
       setActiveLevel(level) {
         if (this.skill.levelReq[Level.indexOf(level)] > process.env.LEVEL_CAP) {
           return;

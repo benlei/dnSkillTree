@@ -74,7 +74,11 @@
 </script>
 
 <style>
+  hr {
+    margin-bottom: .5rem;
+  }
+
   .list-unstyled {
-    margin: 0 1.5rem;
+    margin: 0 .5rem;
   }
 </style>

@@ -42,8 +42,9 @@
       ]),
 
       getSpRemaining(ascendancy) {
-        const thisSp = this.job.ascendancies[ascendancy].sp - this.spTotals[ascendancy];
-        return Math.min(thisSp, this.job.sp - this.spTotal);
+        const job = this.job;
+        const thisSp = job.ascendancies[ascendancy].sp - this.spTotals[ascendancy];
+        return Math.min(thisSp, job.sp - this.spTotal);
       },
     },
   };

@@ -3,7 +3,7 @@ import Level from '../../../lib/level';
 import { BUILD_CHARS } from '../../../consts';
 
 export default {
-  initBuild({ commit, rootState, dispatch }, path) {
+  initBuild({ rootState, dispatch }, path) {
     const cmap = BUILD_CHARS;
     const params = path.split('.');
     const levelsPath = params.shift().split('');
@@ -78,11 +78,13 @@ export default {
     commit(types.SET_ASCENDANCY, ascendancy);
   },
 
-  setActive({ commit, getters }, skillId) {
+  setActive({ commit, getters, dispatch }, skillId) {
     if (skillId !== getters.active) {
       commit(types.SET_ACTIVE, skillId);
       commit(types.SET_ACTIVE_ALT, -1);
     }
+
+    dispatch('deactivateRelated', skillId);
   },
 
   setActiveAlt({ commit }, skillId) {
