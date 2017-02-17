@@ -2,9 +2,9 @@
   <div class="home-app container" :class="{ loading: !jobs.loaded }">
     <template v-if="jobs.loaded">
       <div class="row jobsRow" v-for="partitions in jobPartitions">
-        <div class="col-lg-3" v-for="group in partitions">
+        <div class="col-md-3" v-for="group in partitions">
           <div class="row" v-for="row in group">
-            <div class="col-lg-6" v-for="job in row">
+            <div class="col-md-6" v-for="job in row">
               <Job :name="job.name" :icon="job.icon" :to="'/' + job.slug"/>
             </div>
           </div>

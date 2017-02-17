@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-4">
+  <div class="col-md-4">
     <Ascendancies/>
 
     <Techniques/>

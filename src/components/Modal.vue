@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" v-if="display" v-on:enter="toggleHideOverflow" v-on:after-leave="toggleHideOverflow">
     <div class="modal" @click.self="toggle">
-      <div class="modal-dialog violations">
+      <div class="modal-dialog modal-lg violations">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">{{ title }}</h4>
@@ -47,7 +47,6 @@
   }
 
   .violations {
-    z-index: 100;
     position: absolute;
     margin: 30px auto;
     top: 0;
@@ -61,6 +60,6 @@
   }
 
   body {
-    width: calc(100vw - 34px);
+    width: calc(100vw);
   }
 </style>

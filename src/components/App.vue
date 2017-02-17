@@ -36,6 +36,10 @@
 </script>
 
 <style>
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     padding-bottom: 20px;
   }
