@@ -22,8 +22,12 @@
 
     methods: {
       iconClick() {
-        this.setActive(this.id);
-        this.toggle();
+        if (this.relatedRecently && this.level) {
+          this.deactivateRelated(this.id);
+        } else {
+          this.setActive(this.id);
+          this.toggle();
+        }
       },
     },
 

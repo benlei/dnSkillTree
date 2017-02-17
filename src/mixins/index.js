@@ -53,8 +53,6 @@ Vue.mixin({
     jumpToSkill(skill) {
       this.setAscendancy(skill.jobIndex);
       this.activateRelated(skill.id);
-
-      // setTimeout(() => thiz.deactivateRelated(skill.id), 3000);
     },
   },
 

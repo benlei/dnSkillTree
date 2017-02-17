@@ -82,7 +82,8 @@
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        {{ messages[job.skills[parent.id].name] }} Lv. {{ parent.level }}
+        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id]); toggle()">{{ messages[job.skills[parent.id].name]
+          }}</a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">
