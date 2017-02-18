@@ -4,8 +4,8 @@
 
     <div class="d-flex justify-content-between">
       <ul class="list-unstyled">
-        <li><a href="#">NA</a></li>
-        <li><a href="#">SEA</a></li>
+        <li>NA</li>
+        <!--<li><a href="#">SEA</a></li>-->
       </ul>
 
       <ul class="list-unstyled text-right">
@@ -51,10 +51,11 @@
 
     computed: {
       invertedRoute() {
-        const path = this.$route.fullPath;
+        let path = this.$route.fullPath;
 
         if (this.isMobile()) {
-          return path.substring(2);
+          path = path.substring(2);
+          return path.length ? path : '/';
         }
 
         return `/m${path}`;
