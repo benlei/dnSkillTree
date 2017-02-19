@@ -5,7 +5,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">{{ title }}</h4>
-            <a href="javascript:;" class="fa fa-times" @click.prevent="toggle"/>
+            <a href="javascript:;" class="fa fa-times" @click.prevent="toggle" />
           </div>
 
           <div class="modal-body">
@@ -62,5 +62,10 @@
 
   .modal.mobile {
     font-size: 80%;
+  }
+
+  .modal.mobile .fa-times {
+    width: 50px;
+    text-align: right;
   }
 </style>

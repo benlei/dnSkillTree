@@ -2,17 +2,15 @@
   <Modal :title="name" :toggle="toggle" :display="display">
     <div class="modal-block">
       <div class="d-flex justify-content-between mode">
-        <span>
+        <span @click="setMode(0)">
           <i class="fa"
              :class="{ 'fa-circle-thin': build.mode, 'fa-circle': !build.mode }"
-             @click="setMode(0)"
           /> PvE
         </span>
 
-        <span class="float-right">
+        <span class="float-right" @click="setMode(1)">
           <i class="fa"
              :class="{ 'fa-circle-thin': !build.mode, 'fa-circle': build.mode }"
-             @click="setMode(1)"
           /> PvP
         </span>
       </div>

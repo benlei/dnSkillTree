@@ -1,18 +1,16 @@
 <template>
   <div class="d-flex justify-content-between">
     <div class="d-inline unselectable">
-      <span class="tech" v-for="tech in skill.techs">
+      <span class="tech" v-for="tech in skill.techs" @click.prevent="gearTech(tech)">
         <a href="javascript:;" class="fa"
            :class="{ 'fa-circle-thin': !isTeched(tech), 'fa-circle': isTeched(tech) }"
-           @click.prevent="gearTech(tech)"
         /> {{ tech | techName }}
       </span>
     </div>
 
-    <div class="crest-tech unselectable">
+    <div class="crest-tech unselectable" @click.prevent="crestTech">
       <a href="javascript:;" class="fa"
          :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
-         @click.prevent="crestTech"
       /> Crest
     </div>
   </div>
