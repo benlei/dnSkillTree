@@ -58,6 +58,11 @@
 
   .ascendancies .card-footer small {
     float: right;
+    font-size: 90%;
+  }
+
+  .ascendancies small {
+    font-size: 90%;
   }
 
   .card .ascendancy.active {
