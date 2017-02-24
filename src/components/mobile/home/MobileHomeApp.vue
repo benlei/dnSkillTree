@@ -3,7 +3,7 @@
     <template v-if="jobs.loaded">
       <div class="row jobsRow mobile" v-for="group in jobs.list">
         <div class="col-sm-2 col-2" v-for="job in group">
-          <Job :icon="job.icon" :to="'/m/' + job.slug" />
+          <Job :icon="job.icon" :to="'/m/' + job.slug" :awakened="job.awakened" />
         </div>
       </div>
     </template>

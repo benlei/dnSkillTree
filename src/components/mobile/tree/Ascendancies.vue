@@ -5,9 +5,11 @@
         <div class="mx-auto" @click.prevent="setAscendancy(i)" :style="getJobImageStyle(ascendancy.icon)"/>
         <small>{{ getSpRemaining(i) }}</small>
       </div>
-      <div class="mobile ascendancy" v-if="job.tree.length === 4">
-        <div class="mx-auto grayscale" @click.prevent="setAscendancy(3)"
-             :style="getJobImageStyle(job.ascendancies[2].icon)"/>
+      <div class="mobile ascendancy" v-if="job.awakened">
+        <div class="mx-auto" @click.prevent="setAscendancy(3)"
+             :style="getJobImageStyle(job.ascendancies[2].icon)">
+          <i class="fa fa-plus ascended" />
+        </div>
       </div>
     </div>
   </div>

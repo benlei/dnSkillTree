@@ -13,7 +13,7 @@
       <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy === 3}"
           @click="setAscendancy(3)"
-          v-if="job.tree.length === 4">
+          v-if="job.awakened">
         <a href="javascript:;" @click.prevent>
           Awakened
         </a>

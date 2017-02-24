@@ -1,7 +1,9 @@
 <template>
   <div class="text-center">
     <router-link :to="to" @click.native="toTop">
-      <div class="mx-auto" :style="jobImageStyle" />
+      <div class="mx-auto" :style="jobImageStyle">
+        <i class="fa fa-plus ascended" v-if="awakened"/>
+      </div>
       <div class="jobTitle" v-if="name">
         {{ name }}
       </div>
@@ -11,7 +13,7 @@
 
 <script>
   export default {
-    props: ['name', 'icon', 'to'],
+    props: ['name', 'icon', 'to', 'awakened'],
     computed: {
       jobImageStyle() {
         return this.getJobImageStyle(this.icon);
@@ -30,5 +32,10 @@
 
   .jobCell a {
     text-decoration: none;
+  }
+
+  .ascended {
+    float: right;
+    color: #942408;
   }
 </style>
