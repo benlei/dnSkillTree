@@ -17,8 +17,6 @@
   export default {
     created() {
       this.$store.dispatch('loadJobs');
-      this.$store.dispatch('reset');
-      this.$store.dispatch('setTitle', 'MAZE');
     },
 
     computed: {

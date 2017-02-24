@@ -17,6 +17,7 @@
   export default {
     created() {
       const { slug, path } = this.$route.params;
+
       this.$store.dispatch('loadJob', {
         slug,
         path,

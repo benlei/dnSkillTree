@@ -3,11 +3,10 @@ import * as types from './mutation-types';
 import * as storage from '../lib/storage';
 
 export default {
-  loadJobs({ commit, dispatch }) {
+  loadJobs({ commit, dispatch }) { // go to HOME
     const url = `${process.env.ASSETS_URL}/ext/jobs.json`;
 
-    dispatch('reset');
-    dispatch('resetJob');
+    dispatch('resetJobs');
     dispatch('setTitle', 'MAZE');
 
     if (storage.contains(url)) {
@@ -22,10 +21,11 @@ export default {
     }
   },
 
-  loadJob({ commit, dispatch }, { slug, path }) {
+  loadJob({ commit, dispatch }, { slug, path }) { // go to TREE
     const url = `${process.env.ASSETS_URL}/ext/${slug}.json`;
 
-    dispatch('resetJobs');
+    dispatch('reset');
+    dispatch('resetJob');
     dispatch('setDesired', slug);
 
     if (storage.contains(url)) {
