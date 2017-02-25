@@ -3,16 +3,19 @@
     <template v-if="hasTech">
       <h5>Techniques Equipped</h5>
       <ul class="list-unstyled overview-list">
-        <li v-for="(skillId, techIndex) in build.techs" v-if="skillId !== -1">
-          <a href="javascript:;" @click.prevent="jump(skills[skillId])">
-            {{ skillName(skillId) }}
-          </a> - <strong>{{ techIndex | indexName }}</strong>
-        </li>
-
         <li v-if="build.crestTech !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[build.crestTech])">
             {{ skillName(build.crestTech) }}
           </a> - <strong>{{ 0 | typeName }}</strong>
+        </li>
+
+        <li v-for="(skillId, techIndex) in build.techs" v-if="skillId !== -1">
+          <a href="javascript:;" @click.prevent="jump(skills[skillId])">
+            {{ skillName(skillId) }}
+          </a> - <strong>{{ techIndex | indexName }}</strong>
+          <template v-if="techIndex">
+            (Lv. {{ techLevel(skillId, techIndex) }} )
+          </template>
         </li>
       </ul>
     </template>
@@ -23,7 +26,8 @@
         <li v-for="(crestIndex, skillId) in build.crests" v-if="crestIndex !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[skillId])">
             {{ skillName(skillId) }}
-          </a> - <div class="d-inline" v-html="crestDescription(skillId, crestIndex)"/>
+          </a> -
+          <div class="d-inline" v-html="crestDescription(skillId, crestIndex)"/>
         </li>
       </ul>
     </template>
