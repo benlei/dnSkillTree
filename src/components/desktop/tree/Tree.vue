@@ -41,7 +41,7 @@
 <style>
   .tree {
     background-repeat: no-repeat !important;
-    background-position: -4px 7px !important;
+    background-position: -4px 4px !important;
     background-size: 323px 563px !important;
   }
 </style>

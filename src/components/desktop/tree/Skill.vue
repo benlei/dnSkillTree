@@ -78,6 +78,7 @@
 
   .skill-level {
     line-height: 1.5;
+    background: #fff;
   }
 
   .grayscale {
