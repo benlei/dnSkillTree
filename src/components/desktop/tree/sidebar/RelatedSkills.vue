@@ -6,7 +6,7 @@
     <div class="card-block">
       <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"
          :style="skillImageStyle(skill)"
-         @click.prevent="jump(skill)"
+         @click.prevent="jumpToSkillTop(skill)"
       >
         <div class="skill-border" :style="border"/>
       </a>
@@ -26,6 +26,7 @@
         },
       };
     },
+
     computed: {
       ...mapGetters([
         'relatedSkills',
@@ -40,11 +41,6 @@
 
       skillImageStyle(skill) {
         return this.getSkillIconStyle(skill, 1);
-      },
-
-      jump(skill) {
-        this.toTop();
-        this.jumpToSkill(skill);
       },
     },
   };

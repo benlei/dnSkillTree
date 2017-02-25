@@ -12,28 +12,36 @@
     </div>
 
     <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-if="validBuild">
-      This skill tree has no issues.
+      <div class="modal-block">
+        This skill tree has no issues.
+      </div>
+
+      <Overview :jump="jump"/>
     </Modal>
     <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-else>
-      <div v-for="(violation, skillId) in violations">
-        <a href="javascript:;" @click="jump(skills[skillId])">{{ messages[skills[skillId].name]
-          }}</a>
-        <template v-if="violation.type === 'ascendancy'">
-          requires
-          <span class="comma-separated" v-for="d in violation.data">
+      <div class="modal-block">
+        <div v-for="(violation, skillId) in violations">
+          <a href="javascript:;" @click="jump(skills[skillId])">{{ messages[skills[skillId].name]
+            }}</a>
+          <template v-if="violation.type === 'ascendancy'">
+            requires
+            <span class="comma-separated" v-for="d in violation.data">
             {{ ascendancies[d.ascendancy].name }} SP Total {{ d.sp }} or above
           </span>
-        </template>
-        <template v-else-if="violation.type === 'parent'">
-          requires
-          <span class="comma-separated" v-for="d in violation.data">
+          </template>
+          <template v-else-if="violation.type === 'parent'">
+            requires
+            <span class="comma-separated" v-for="d in violation.data">
             {{ messages[skills[d.id].name] }} Lv. {{ d.level }}
           </span>
-        </template>
-        <template v-else>
-          conflicts with {{ messages[skills[violation.data].name] }}
-        </template>
+          </template>
+          <template v-else>
+            conflicts with {{ messages[skills[violation.data].name] }}
+          </template>
+        </div>
       </div>
+
+      <Overview :jump="jump" />
     </Modal>
   </div>
 </template>
@@ -41,6 +49,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import Modal from '../Modal';
+  import Overview from './Overview';
 
   export default {
     props: ['col'],
@@ -81,13 +90,13 @@
 
       jump(skill) {
         this.toggleAlertModal();
-        this.toTop();
-        this.jumpToSkill(skill);
+        this.jumpToSkillTop(skill);
       },
     },
 
     components: {
       Modal,
+      Overview,
     },
   };
 </script>

@@ -248,13 +248,7 @@ export default {
     const crests = state.crests;
     const add = state.crestTech !== -1 ? 1 : 0;
 
-    return Object.keys(crests)
-      .reduce((a, key) => {
-        if (crests[key] === -1) {
-          return a;
-        }
-        return a + 1;
-      }, add);
+    return Object.values(crests).filter(crest => crest !== -1).length + add;
   },
 
   altSkills(state, getters, State, Getters) {
@@ -357,17 +351,28 @@ export default {
       });
 
     conflictables.forEach((name) => {
-      Object.keys(conflicts[name])
-        .forEach((key) => {
-          if (conflicts[name][key].length !== 1) {
-            const skillId1 = conflicts[name][key][0];
-            const skillId2 = conflicts[name][key][1];
+      Object.values(conflicts[name])
+        .forEach((conflict) => {
+          if (conflict.length !== 1) {
+            const skillId1 = conflict[0];
+            const skillId2 = conflict[1];
             if (skillId1 < skillId2) { // overwrite as this takes priority
               violations[skillId1] = { type: 'conflict', data: skillId2 };
               delete violations[skillId2]; // don't duplicate messages
             }
           }
         });
+      // Object.keys(conflicts[name])
+      //   .forEach((key) => {
+      //     if (conflicts[name][key].length !== 1) {
+      //       const skillId1 = conflicts[name][key][0];
+      //       const skillId2 = conflicts[name][key][1];
+      //       if (skillId1 < skillId2) { // overwrite as this takes priority
+      //         violations[skillId1] = { type: 'conflict', data: skillId2 };
+      //         delete violations[skillId2]; // don't duplicate messages
+      //       }
+      //     }
+      //   });
     });
 
     return violations;

@@ -54,6 +54,11 @@ Vue.mixin({
       this.setAscendancy(skill.jobIndex);
       this.activateRelated(skill.id);
     },
+
+    jumpToSkillTop(skill) {
+      this.toTop();
+      this.jumpToSkill(skill);
+    },
   },
 
   filters: {

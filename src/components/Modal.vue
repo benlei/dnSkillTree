@@ -1,11 +1,11 @@
 <template>
   <transition name="fade" v-if="display" v-on:enter="toggleHideOverflow" v-on:after-leave="toggleHideOverflow">
-    <div class="modal" @click.self="toggle" :class="{ mobile: isMobile() }">
+    <div class="modal" @click.self.once="toggle" :class="{ mobile: isMobile() }">
       <div class="modal-dialog violations">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">{{ title }}</h4>
-            <a href="javascript:;" class="fa fa-times" @click.prevent="toggle" />
+            <a href="javascript:;" class="fa fa-times" @click.prevent.once="toggle" />
           </div>
 
           <div class="modal-body">

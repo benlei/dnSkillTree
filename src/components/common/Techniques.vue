@@ -2,26 +2,34 @@
   <div class="techniques">
     <div class="d-flex justify-content-between">
       <div class="d-inline unselectable">
-        <ul class="tech">
-          <li v-for="tech in skill.techs" @click.prevent="maybeTech(tech, false)">
+        <ul class="tech list-unstyled">
+          <li v-for="tech in skill.techs" @click.prevent="maybeTech(tech.type, false)">
             <a href="javascript:;" class="fa"
-               :class="{ 'fa-circle-thin': !isTeched(tech), 'fa-circle': isTeched(tech) }"
+               :class="{ 'fa-circle-thin': !isTeched(tech.type), 'fa-circle': isTeched(tech.type) }"
                @click.prevent
-            /><a href="javascript:;" class="text-black" @click.prevent> {{ tech | techName }}</a>
+            />
+            <a href="javascript:;" class="text-black" @click.prevent> {{ tech.type | typeName }}
+              <template v-if="tech.type > 1">
+                (Lv. {{ tech.level }})
+              </template>
+            </a>
           </li>
         </ul>
       </div>
 
-      <div class="crest-tech unselectable" @click.prevent="maybeTech(tech, false)">
+      <div class="crest-tech unselectable" @click.prevent="maybeTech(0, false)">
         <a href="javascript:;" class="fa"
            :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
            @click.prevent
-        /><a href="javascript:;" class="text-black" @click.prevent>Crest</a>
+        /><a href="javascript:;" class="text-black" @click.prevent>{{ 0 | typeName }}</a>
       </div>
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning">
-      <strong>{{ warningTech | techName }}</strong> currently upgrades <strong>{{ warningSkill }}</strong>.
+      <strong>{{ warningTech | typeName }}</strong>
+      currently upgrades
+      <strong>{{ warningSkill }}</strong>.
+
       Are you sure you want to replace it?
       <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">Yes</a>
       /
@@ -32,8 +40,11 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
+  import techMixin from '../../mixins/techs';
 
   export default {
+    mixins: [techMixin],
+
     data() {
       return {
         warning: false,
@@ -155,23 +166,6 @@
 
       clearWarning() {
         this.warning = false;
-      },
-    },
-
-    filters: {
-      techName(num) {
-        switch (num) {
-          default:
-            return 'Crest';
-          case 1:
-            return 'Weapon';
-          case 8:
-            return 'Necklace';
-          case 9:
-            return 'Earring';
-          case 10:
-            return 'Ring';
-        }
       },
     },
   };
