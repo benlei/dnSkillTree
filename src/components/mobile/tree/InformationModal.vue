@@ -111,12 +111,11 @@
   import Techniques from '../../common/Techniques';
   import Level from '../../../lib/level';
   import informationMixin from '../../../mixins/information';
-  import techsMixin from '../../../mixins/techs';
   import crestsMixin from '../../../mixins/crests';
   import parameterize from '../../../lib/parameterize';
 
   export default {
-    mixins: [informationMixin, techsMixin, crestsMixin],
+    mixins: [informationMixin, crestsMixin],
 
     props: ['toggle', 'display'],
 

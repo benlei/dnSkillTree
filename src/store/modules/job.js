@@ -10,6 +10,7 @@ function initialState() {
     skills: {},
     weapons: {},
     sp: 0,
+    awakened: false,
     loaded: false,
   };
 }

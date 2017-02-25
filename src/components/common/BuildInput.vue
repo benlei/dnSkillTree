@@ -41,8 +41,6 @@
         const prefix = this.isMobile() ? 'mobile' : 'desktop';
         const name = newPath.length ? `${prefix}-build` : prefix;
 
-        console.log(newPath);
-
         this.$router.replace({
           name,
           params: {
