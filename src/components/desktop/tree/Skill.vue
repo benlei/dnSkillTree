@@ -82,13 +82,12 @@
   }
 
   .grayscale {
-    -webkit-filter: grayscale(1);
-    filter: grayscale(1);
+    background-position-y: -52px !important;
   }
 
   .skill-border.crested {
-    -webkit-filter: saturate(7) !important;
-    filter: saturate(7) !important;
+    background-position-y: 52px !important;
+
   }
 
   .skill-level.green {
