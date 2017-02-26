@@ -1,5 +1,5 @@
 <template>
-  <div class="card ascendancies">
+  <div class="card ascendancies" id="ascendancies">
     <ul class="list-group list-group-flush">
       <li class="list-group-item ascendancy"
           :class="{active: build.ascendancy === i}"

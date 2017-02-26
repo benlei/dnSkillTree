@@ -31,5 +31,8 @@ module.exports = {
   },
   "env": {
     "browser": true
+  },
+  "globals": {
+    "html2canvas": true
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 col-md-4 unselectable">
-    <table class="tree mx-auto" :style="build.ascendancy < 3 && treeStyle">
+    <table class="tree mx-auto" :style="build.ascendancy < 3 && treeStyle" id="tree">
       <tr v-for="(_, row) in 6">
         <td v-for="(_, col) in 4">
           <Skill :id="skillId(build.ascendancy, row, col)"/>
@@ -43,5 +43,9 @@
     background-repeat: no-repeat !important;
     background-position: -4px 4px !important;
     background-size: 323px 563px !important;
+  }
+
+  #tree {
+    background-color: #fff !important;
   }
 </style>
