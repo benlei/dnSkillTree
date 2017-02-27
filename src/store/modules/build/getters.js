@@ -54,6 +54,8 @@ export default {
 
   index: (state, getters) => Level.indexOf(getters.level),
 
+  softMaxLevel: (state, getters) => getters.skill.maxLevel - getters.skill.spMaxLevel,
+
   ascendancyTechs(state, getters, State, Getters) {
     const ascendancies = [];
     const techs = state.techs;
@@ -101,7 +103,7 @@ export default {
     const index = Level.indexOf(level);
     const techIndex = index + techCount;
 
-    const maxLevel = skill.maxLevel - skill.spMaxLevel;
+    const maxLevel = getters.softMaxLevel;
     const spTotal = getters.level ? skill.spTotal[index] : 0;
     const hp = skillAlt.hp[state.mode][techIndex];
     const mp = skillAlt.mp[state.mode][techIndex];

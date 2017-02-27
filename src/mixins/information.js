@@ -25,6 +25,7 @@ export default {
       'altSkills',
       'spTotals',
       'spTotal',
+      'softMaxLevel',
     ]),
 
     ascendancyReqs() {

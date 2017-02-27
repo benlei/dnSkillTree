@@ -68,7 +68,8 @@
     </div>
 
     <div class="card-block" v-if="nextDescription">
-      <h6>Next Description</h6>
+      <h6 v-if="level < softMaxLevel">Next Description</h6>
+      <h6 v-else>+1 Item Effect</h6>
       <div class="next-description" v-html="nextDescription"/>
     </div>
   </div>

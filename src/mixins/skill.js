@@ -22,14 +22,11 @@ export default {
     ...mapGetters([
       'active',
       'index',
+      'softMaxLevel',
     ]),
 
     skill() {
       return this.job.skills[this.id];
-    },
-
-    softMaxLevel() {
-      return this.skill.maxLevel - this.skill.spMaxLevel;
     },
 
     skillImageStyle() {

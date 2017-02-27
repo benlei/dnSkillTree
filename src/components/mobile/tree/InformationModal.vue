@@ -42,7 +42,7 @@
       </template>
     </div>
 
-    <div class="modal-block" v-if="skill.techs">
+    <div class="modal-block" v-if="skill.spMaxLevel">
       <h5>Techniques</h5>
       <Techniques/>
     </div>

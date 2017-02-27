@@ -1,7 +1,7 @@
 <template>
   <div class="techniques">
-    <div class="d-flex justify-content-between">
-      <div class="d-inline unselectable">
+    <div class="d-flex justify-content-start">
+      <div class="d-flex justify-content-end unselectable" v-if="skill.techs">
         <ul class="tech list-unstyled">
           <li v-for="tech in skill.techs" @click.prevent="maybeTech(tech.type, false)">
             <a href="javascript:;" class="fa"
@@ -17,7 +17,7 @@
         </ul>
       </div>
 
-      <div class="crest-tech unselectable" @click.prevent="maybeTech(0, false)">
+      <div class="crest-tech unselectable ml-auto" @click.prevent="maybeTech(0, false)">
         <a href="javascript:;" class="fa"
            :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
            @click.prevent
