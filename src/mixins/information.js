@@ -54,11 +54,14 @@ export default {
     },
 
     showLevelUpReq() {
-      return this.level < this.skill.maxLevel
-        || this.next.levelReq
-        || this.next.parents
-        || this.ascendancyReqs.length
-        || this.next.spCost;
+      const { next, ascendancyReqs } = this;
+      const parents = next.parents ? next.parents.length : 0;
+
+      if (this.level < this.skill.maxLevel) {
+        return next.levelReq || parents || ascendancyReqs.length || next.spCost;
+      }
+
+      return parents || ascendancyReqs.length;
     },
   },
 
