@@ -3,8 +3,8 @@
     <a href="javascript:;" class="skill-icon" :style="skillImageStyle"
        @click.prevent
        @mouseover="setActive(id)"
-       @mousedown.stop.prevent="nextLevel"
-       @contextmenu.stop.prevent="previousLevel">
+       @mousedown.stop.prevent="changeLevelEvent"
+       @contextmenu.stop.prevent>
       <div class="skill-border"
            :style="border"
            :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
@@ -38,23 +38,27 @@
         this.setActive(this.id);
       },
 
-      nextLevel(e) {
-        if (e.button) { // left click only
-          return;
-        }
+      changeLevelEvent(e) {
+        const max = e.shiftKey || e.ctrlKey;
 
-        if (e.shiftKey || e.ctrlKey) {
-          if (this.level < this.softMaxLevel) {
-            this.setActiveLevel(this.softMaxLevel);
-          }
+        if (!e.button) { // left click
+          this.nextLevel(max);
+        } else if (e.button === 2) { // right click
+          this.previousLevel(max);
+        }
+      },
+
+      nextLevel(max) {
+        if (max && this.level < this.softMaxLevel) {
+          this.setActiveLevel(this.softMaxLevel);
         } else {
           this.setActiveLevel(this.level < this.softMaxLevel ?
             this.level + 1 : this.level);
         }
       },
 
-      previousLevel(e) {
-        if (e.shiftKey || e.ctrlKey) {
+      previousLevel(max) {
+        if (max) {
           this.setActiveLevel(-1);
         } else {
           this.setActiveLevel(this.level - 1);
