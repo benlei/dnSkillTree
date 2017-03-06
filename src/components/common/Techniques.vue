@@ -25,13 +25,39 @@
       </div>
     </div>
 
-    <div class="tech-alert alert alert-warning" v-if="warning">
+    <div class="tech-alert alert alert-warning" v-if="warning && warningTech !== 10">
       <strong>{{ warningTech | typeName }}</strong>
       currently upgrades
       <strong>{{ warningSkill }}</strong>.
 
-      Are you sure you want to replace it?
+      Do you want to replace it?
+      <br/>
       <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">Yes</a>
+      /
+      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+    </div>
+
+    <div class="tech-alert alert alert-warning" v-if="warning && warningTech === 10">
+      <strong>{{ warningTech | typeName }} 1</strong>
+      currently upgrades
+      <strong>{{ warningSkill[0] }}</strong>.
+
+      Do you want to replace it?
+      <br/>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[3], active)">Yes</a>
+      /
+      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+
+      <br />
+      <br />
+
+      <strong>{{ warningTech | typeName }} 2</strong>
+      currently upgrades
+      <strong>{{ warningSkill[1] }}</strong>.
+
+      Do you want to replace it?
+      <br/>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[4], active)">Yes</a>
       /
       <a href="javascript:;" @click.prevent="clearWarning()">No</a>
     </div>
@@ -138,18 +164,18 @@
             if (techs[3] !== -1 && techs[4] !== -1
               && techs[3] !== skillId && techs[4] !== skillId
               && !force) {
-              this.setWarning(techs[4], tech);
+              this.setWarning([techs[3], techs[4]], tech);
               return;
             }
 
             break;
         }
 
-        this.gearTech(tech);
+        this.gearTech(tech, this.active);
       },
 
-      gearTech(tech) {
-        this.toggleGearTech({ skillId: this.active, tech });
+      gearTech(tech, skillId) {
+        this.toggleGearTech({ skillId, tech });
         this.clearWarning();
       },
 
@@ -158,10 +184,27 @@
         this.clearWarning();
       },
 
+      ringTech(oldSkillId, newSkillId) {
+        this.toggleGearTech({ skillId: oldSkillId, tech: 10 });
+        this.toggleGearTech({ skillId: newSkillId, tech: 10 });
+        this.clearWarning();
+      },
+
       setWarning(skillId, tech) {
         this.warning = true;
-        this.warningSkill = this.messages[this.skills[skillId].name];
         this.warningTech = tech;
+
+        const messages = this.messages;
+        const skills = this.skills;
+
+        if (tech === 10) { // rings
+          this.warningSkill = [
+            messages[skills[skillId[0]].name],
+            messages[skills[skillId[1]].name],
+          ];
+        } else {
+          this.warningSkill = messages[skills[skillId].name];
+        }
       },
 
       clearWarning() {
