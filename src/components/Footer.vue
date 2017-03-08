@@ -4,8 +4,14 @@
 
     <div class="d-flex justify-content-between">
       <ul class="list-unstyled">
-        <li>NA</li>
-        <!--<li><a href="#">SEA</a></li>-->
+        <li v-for="region in regions">
+          <template v-if="region.region !== curr">
+            <a :href="getUrl(region.url)">{{ region.name }}</a>
+          </template>
+          <template v-else>
+            {{ region.name }}
+          </template>
+        </li>
       </ul>
 
       <ul class="list-unstyled text-right">
@@ -25,11 +31,13 @@
 
     <Modal title="Controls" :toggle="toggleHelpModal" :display="helpModal">
       <p><kbd>click</kbd> a skill icon to increase its level by 1.<br/>
-        <kbd><kbd>ctrl</kbd> + <kbd>click</kbd></kbd> a skill icon to cap it out. Alias: <kbd><kbd>shift</kbd> + <kbd>click</kbd></kbd>
+        <kbd><kbd>ctrl</kbd> + <kbd>click</kbd></kbd> a skill icon to cap it out. Alias: <kbd><kbd>shift</kbd>
+          + <kbd>click</kbd></kbd>
       </p>
 
       <p><kbd>leftclick</kbd> a skill icon to decrease its level by 1.<br/>
-        <kbd><kbd>ctrl</kbd> + <kbd>leftclick</kbd></kbd> a skill icon set it to its lowest level. Alias: <kbd><kbd>shift</kbd>
+        <kbd><kbd>ctrl</kbd> + <kbd>leftclick</kbd></kbd> a skill icon set it to its lowest level.
+        Alias: <kbd><kbd>shift</kbd>
           + <kbd>leftclick</kbd></kbd></p>
 
       <p>
@@ -40,12 +48,23 @@
 </template>
 
 <script>
+  import Axios from 'axios';
   import Modal from './Modal';
 
   export default {
+    created() {
+      Axios.get(process.env.REGIONS_URL)
+        .then(response => response.data)
+        .then((data) => {
+          this.regions = data;
+        });
+    },
+
     data() {
       return {
         helpModal: false,
+        curr: process.env.REGION,
+        regions: [],
       };
     },
 
@@ -65,6 +84,10 @@
     methods: {
       toggleHelpModal() {
         this.helpModal = !this.helpModal;
+      },
+
+      getUrl(url) {
+        return `${window.location.protocol}//${url}`;
       },
     },
 
