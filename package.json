@@ -1,6 +1,6 @@
 {
   "name": "dn-maze",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "DragonNest Skill Simulator",
   "author": "Benjamin Lei <benlei.cse@gmail.com>",
   "private": true,
