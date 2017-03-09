@@ -34,6 +34,10 @@ export default {
       return this.getSkillIconStyle(skill, this.level);
     },
 
+    softMaxLevel() {
+      return this.skill.maxLevel - this.skill.spMaxLevel;
+    },
+
     level() {
       const indexes = this.build.indexes;
       const skill = this.job.skills[this.id];
