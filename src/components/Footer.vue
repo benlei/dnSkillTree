@@ -53,7 +53,10 @@
 
   export default {
     created() {
-      Axios.get(process.env.REGIONS_URL)
+      let url = process.env.REGIONS_URL;
+      url = url.replace('http:', window.location.protocol);
+
+      Axios.get(url)
         .then(response => response.data)
         .then((data) => {
           this.regions = data;
