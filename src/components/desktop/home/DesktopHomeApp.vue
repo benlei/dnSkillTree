@@ -63,7 +63,7 @@
   }
 
   .loading {
-    background: url(loading.gif) no-repeat center;
+    background: url(../../static/loading.gif) no-repeat center;
     height: 300px;
   }
 </style>
