@@ -5,8 +5,11 @@
     <div class="container">
       <div class="alert alert-info" v-if="!isLatest">
         The latest version for this region is located here:
-        <strong><a :href="`/${latestVersion}/${latestBuild}/`">/{{ latestVersion }}/{{ latestBuild
-          }}</a></strong>
+        <strong>
+          <a :href="`/${latestVersion}/${latestBuild}`">
+            /{{ latestVersion }}/{{ latestBuild }}
+          </a>
+        </strong>
       </div>
 
       <router-view></router-view>
