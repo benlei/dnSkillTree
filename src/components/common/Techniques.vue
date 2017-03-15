@@ -3,12 +3,13 @@
     <div class="row">
       <div class="col-6 unselectable" v-if="skill.techs">
         <ul class="tech list-unstyled">
-          <li v-for="tech in skill.techs" @click.prevent="maybeTech(tech.type, false)">
-            <a href="javascript:;" class="fa"
+          <li v-for="tech in skill.techs">
+            <a href="javascript:;" class="fa fa-fw"
                :class="{ 'fa-square-o': !isTeched(tech.type), 'fa-check-square': isTeched(tech.type) }"
-               @click.prevent
+               @click.prevent="maybeTech(tech.type, false)"
             />
-            <a href="javascript:;" class="text-black" @click.prevent> {{ tech.type | typeName }}
+            <a href="javascript:;" class="text-black" @click.prevent="maybeTech(tech.type, false)">
+              {{ tech.type | typeName }}
               <template v-if="tech.type > 1">
                 (Lv. {{ tech.level }})
               </template>
@@ -17,11 +18,18 @@
         </ul>
       </div>
 
-      <div class="col-6 crest-tech unselectable" @click.prevent="maybeTech(0, false)">
-        <a href="javascript:;" class="fa"
-           :class="{ 'fa-square-o': !isTeched(0), 'fa-check-square': isTeched(0) }"
-           @click.prevent
-        /><a href="javascript:;" class="text-black" @click.prevent>{{ 0 | typeName }}</a>
+      <div class="col-6 unselectable">
+        <ul class="tech list-unstyled">
+          <li>
+            <a href="javascript:;" class="fa fa-fw"
+               :class="{ 'fa-square-o': !isTeched(0), 'fa-check-square': isTeched(0) }"
+               @click.prevent="maybeTech(0, false)"
+            />
+            <a href="javascript:;" class="text-black" @click.prevent="maybeTech(0, false)">
+              {{ 0 | typeName }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -220,10 +228,6 @@
     padding-left: 0;
     margin-left: 3px;
     margin-bottom: 0;
-  }
-
-  .tech .fa, .crest-tech .fa {
-    margin-right: 3px;
   }
 
   .fa span {
