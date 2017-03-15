@@ -4,13 +4,12 @@
 
     <div class="d-flex justify-content-between">
       <ul class="list-unstyled">
-        <li v-for="region in regions">
-          <template v-if="region.region !== curr">
-            <a :href="getUrl(region.url)">{{ region.name }}</a>
-          </template>
-          <template v-else>
-            {{ region.name }}
-          </template>
+        <li v-for="region in regions" v-if="region.region === curr">
+          {{ region.name }}
+        </li>
+
+        <li v-for="region in regions" v-if="region.region !== curr">
+          <a :href="getUrl(region.url)">{{ region.name }}</a>
         </li>
       </ul>
 
