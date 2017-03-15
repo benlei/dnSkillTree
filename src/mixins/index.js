@@ -16,6 +16,12 @@ Vue.mixin({
       'deactivateRelated',
     ]),
 
+    skillName(id) {
+      const skills = this.job.skills;
+      const messages = this.job.messages;
+      return messages[skills[id].name];
+    },
+
     isMobile() {
       return this.$route.name.startsWith('mobile');
     },
