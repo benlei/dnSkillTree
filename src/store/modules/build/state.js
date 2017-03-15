@@ -2,7 +2,7 @@ export function initialState() {
   return {
     ascendancy: 0,
     indexes: [],
-    techs: [-1, -1, -1, -1, -1],
+    techs: [-1, -1, -1, -1, -1], // [weap, neck, ear, ring, ring]
     crestTech: -1,
     crests: {},
     mode: 0,

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-block overview" v-if="hasTech || hasCrest">
+  <div class="modal-block overview" v-if="hasTech || crestCount > 0">
     <template v-if="hasTech">
       <h5>Techniques Equipped</h5>
       <ul class="list-unstyled overview-list">
@@ -20,7 +20,7 @@
       </ul>
     </template>
 
-    <template v-if="hasCrest">
+    <template v-if="crestCount > 0">
       <h5>Crests Equipped</h5>
       <ul class="list-unstyled overview-list">
         <li v-for="(crestIndex, skillId) in build.crests" v-if="crestIndex !== -1">
@@ -61,17 +61,6 @@
         const techCount = this.build.techs.filter(t => t !== -1).length;
         const crestAdder = this.build.crestTech === -1 ? 0 : 1;
         return techCount + crestAdder > 0;
-      },
-
-      hasCrest() {
-        const crestCount = this.crestCount;
-        const crestTech = this.build.crestTech;
-
-        if (crestTech !== -1) {
-          return crestCount > 1;
-        }
-
-        return crestCount > 0;
       },
     },
 

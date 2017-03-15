@@ -21,8 +21,7 @@
     <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-else>
       <div class="modal-block">
         <div v-for="(violation, skillId) in violations">
-          <a href="javascript:;" @click="jump(skills[skillId])">{{ messages[skills[skillId].name]
-            }}</a>
+          <a href="javascript:;" @click="jump(skills[skillId])">{{ skillName(skillId) }}</a>
           <template v-if="violation.type === 'ascendancy'">
             requires
             <span class="comma-separated" v-for="d in violation.data">
@@ -32,11 +31,11 @@
           <template v-else-if="violation.type === 'parent'">
             requires
             <span class="comma-separated" v-for="d in violation.data">
-            {{ messages[skills[d.id].name] }} Lv. {{ d.level }}
+            {{ skillName(d.id) }} Lv. {{ d.level }}
           </span>
           </template>
           <template v-else>
-            conflicts with {{ messages[skills[violation.data].name] }}
+            conflicts with {{ skillName(violation.data) }}
           </template>
         </div>
       </div>
@@ -63,7 +62,6 @@
     computed: {
       ...mapGetters([
         'skills',
-        'messages',
         'ascendancies',
         'violations',
       ]),

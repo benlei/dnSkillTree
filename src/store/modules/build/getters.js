@@ -248,9 +248,8 @@ export default {
 
   crestCount(state) {
     const crests = state.crests;
-    const add = state.crestTech !== -1 ? 1 : 0;
 
-    return Object.values(crests).filter(crest => crest !== -1).length + add;
+    return Object.values(crests).filter(crest => crest !== -1).length;
   },
 
   altSkills(state, getters, State, Getters) {

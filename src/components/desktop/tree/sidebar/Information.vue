@@ -3,7 +3,8 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item text-center">
-          <a class="nav-link" @click="setMode(0)" :class="{active: !build.mode}" href="javascript:;">PvE</a>
+          <a class="nav-link" @click="setMode(0)" :class="{active: !build.mode}"
+             href="javascript:;">PvE</a>
         </li>
         <li class="nav-item text-center">
           <a class="nav-link" @click="setMode(1)" :class="{active: build.mode}" href="javascript:;">PvP</a>
@@ -37,7 +38,8 @@
             <span>{{ messages[altSkill.name] }}</span>
           </template>
           <template v-else>
-            <a href="javascript:;" @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
+            <a href="javascript:;"
+               @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
           </template>
         </span>
       </div>
@@ -49,8 +51,9 @@
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">{{ messages[job.skills[parent.id].name]
-          }}</a> Lv. {{ parent.level }}
+        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">
+          {{ skillName(parent.id) }}
+        </a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">

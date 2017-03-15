@@ -1,18 +1,15 @@
 <template>
   <Modal :title="name" :toggle="toggle" :display="display">
     <div class="modal-block">
-      <div class="d-flex justify-content-between mode">
-        <span @click="setMode(0)">
-          <i class="fa"
-             :class="{ 'fa-circle-thin': build.mode, 'fa-circle': !build.mode }"
-          /> PvE
-        </span>
-
-        <span class="float-right" @click="setMode(1)">
-          <i class="fa"
-             :class="{ 'fa-circle-thin': !build.mode, 'fa-circle': build.mode }"
-          /> PvP
-        </span>
+      <div class="mx-auto text-center">
+        <div class="btn-group mobile mode">
+          <button type="button" class="btn btn-primary" :class="{ 'active': !build.mode }"
+                  @click="setMode(0)">PvE
+          </button>
+          <button type="button" class="btn btn-primary" :class="{ 'active': build.mode }"
+                  @click="setMode(1)">PvP
+          </button>
+        </div>
       </div>
 
       <h5>Level</h5>
@@ -28,7 +25,7 @@
 
     <div class="modal-block" v-if="crests[active]">
       <h5>Crests</h5>
-      <template v-if="crestCount === 7">
+      <template v-if="crestCount === 7 && (build.crests[active] !== 0 && build.crests[active] !== 1)">
         <div>Cannot equip more than 7 crests.</div>
       </template>
       <template v-else>
@@ -68,7 +65,8 @@
             <span>{{ messages[altSkill.name] }}</span>
           </template>
           <template v-else>
-            <a href="javascript:;" @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
+            <a href="javascript:;"
+               @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
           </template>
         </span>
       </div>
@@ -80,7 +78,8 @@
         Character Level {{ next.levelReq }}
       </div>
       <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id]); toggle()">{{ messages[job.skills[parent.id].name]
+        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id]); toggle()">{{
+          messages[job.skills[parent.id].name]
           }}</a> Lv. {{ parent.level }}
       </div>
       <div class="red" v-if="ascendancyReqs.length">
@@ -112,7 +111,6 @@
   import Level from '../../../lib/level';
   import informationMixin from '../../../mixins/information';
   import crestsMixin from '../../../mixins/crests';
-  import parameterize from '../../../lib/parameterize';
 
   export default {
     mixins: [informationMixin, crestsMixin],
@@ -198,14 +196,6 @@
       ...mapActions([
         'setLevel',
       ]),
-
-      crestDescription(index) {
-        const messages = this.messages;
-        const crests = this.crests;
-        const crest = crests[this.active][index];
-
-        return parameterize(messages[crest.description], crest.params, messages);
-      },
     },
 
     components: {
@@ -229,8 +219,12 @@
     font-size: 120%;
   }
 
-  .mode .fa {
-    margin-right: 3px;
-    font-size: 80%;
+  .mobile.mode {
+    font-size: 125%;
+  }
+
+  .mobile.mode button {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 </style>

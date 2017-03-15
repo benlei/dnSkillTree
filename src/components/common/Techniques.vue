@@ -1,11 +1,11 @@
 <template>
   <div class="techniques">
-    <div class="d-flex justify-content-start">
-      <div class="d-flex justify-content-end unselectable" v-if="skill.techs">
+    <div class="row">
+      <div class="col-6 unselectable" v-if="skill.techs">
         <ul class="tech list-unstyled">
           <li v-for="tech in skill.techs" @click.prevent="maybeTech(tech.type, false)">
             <a href="javascript:;" class="fa"
-               :class="{ 'fa-circle-thin': !isTeched(tech.type), 'fa-circle': isTeched(tech.type) }"
+               :class="{ 'fa-square-o': !isTeched(tech.type), 'fa-check-square': isTeched(tech.type) }"
                @click.prevent
             />
             <a href="javascript:;" class="text-black" @click.prevent> {{ tech.type | typeName }}
@@ -17,9 +17,9 @@
         </ul>
       </div>
 
-      <div class="crest-tech unselectable ml-auto" @click.prevent="maybeTech(0, false)">
+      <div class="col-6 crest-tech unselectable" @click.prevent="maybeTech(0, false)">
         <a href="javascript:;" class="fa"
-           :class="{ 'fa-circle-thin': !isTeched(0), 'fa-circle': isTeched(0) }"
+           :class="{ 'fa-square-o': !isTeched(0), 'fa-check-square': isTeched(0) }"
            @click.prevent
         /><a href="javascript:;" class="text-black" @click.prevent>{{ 0 | typeName }}</a>
       </div>
@@ -95,6 +95,7 @@
         'skill',
         'skills',
         'messages',
+        'crestCount',
       ]),
     },
 
@@ -142,7 +143,7 @@
               return;
             }
 
-            this.crestTech();
+            this.techCrest();
             return;
           case 9:
             techIndex += 1;
@@ -179,7 +180,7 @@
         this.clearWarning();
       },
 
-      crestTech() {
+      techCrest() {
         this.toggleCrestTech(this.active);
         this.clearWarning();
       },
@@ -194,16 +195,13 @@
         this.warning = true;
         this.warningTech = tech;
 
-        const messages = this.messages;
-        const skills = this.skills;
-
         if (tech === 10) { // rings
           this.warningSkill = [
-            messages[skills[skillId[0]].name],
-            messages[skills[skillId[1]].name],
+            this.skillName(skillId[0]),
+            this.skillName(skillId[1]),
           ];
         } else {
-          this.warningSkill = messages[skills[skillId].name];
+          this.warningSkill = this.skillName(skillId);
         }
       },
 
@@ -243,5 +241,9 @@
   .tech-alert {
     margin-bottom: 0;
     margin-top: 1rem;
+  }
+
+  .tech li + li {
+    margin-top: .2rem;
   }
 </style>
