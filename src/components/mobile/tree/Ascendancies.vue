@@ -5,7 +5,7 @@
         <div class="mx-auto" @click.prevent="setAscendancy(i)" :style="getJobImageStyle(ascendancy.icon)"/>
         <small>{{ getSpRemaining(i) }}</small>
       </div>
-      <div class="mobile ascendancy" v-if="job.awakened">
+      <div class="mobile ascendancy" v-if="awakened">
         <div class="mx-auto" @click.prevent="setAscendancy(3)"
              :style="getJobImageStyle(job.ascendancies[2].icon)">
           <i class="fa fa-plus ascended" />
@@ -28,6 +28,7 @@
       ...mapGetters([
         'spTotals',
         'spTotal',
+        'awakened',
       ]),
 
       progressPercent() {

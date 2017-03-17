@@ -10,7 +10,6 @@ function initialState() {
     skills: {},
     weapons: {},
     sp: 0,
-    awakened: false,
     loaded: false,
   };
 }
@@ -31,6 +30,7 @@ const getters = {
   crests: state => state.crests,
   skills: state => state.skills,
   weaponMap: state => state.weapons,
+  awakened: state => state.tree.length > 3,
 };
 
 const actions = {
