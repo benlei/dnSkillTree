@@ -229,10 +229,10 @@ export default {
     if (level > 0 && level < skill.maxLevel) {
       const nextIndex = level + techCount;
       const descriptionId = skill.description[state.mode][nextIndex];
-      let str = messages[descriptionId];
       const params = skill.params[state.mode][nextIndex];
       const nowCd = skill.cd[state.mode][nextIndex - 1];
       const cd = skill.cd[state.mode][nextIndex];
+      let str = messages[descriptionId];
 
       if (str && nowCd !== cd) {
         str = `#pCooldown:#w ${cd} sec\\n${str}`;
