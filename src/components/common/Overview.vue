@@ -14,7 +14,7 @@
             {{ skillName(skillId) }}
           </a> - <strong>{{ techIndex | indexName }}</strong>
           <template v-if="techIndex">
-            (Lv. {{ techLevel(skillId, techIndex) }} )
+            (Lv. {{ techLevel(skillId, techIndex) }})
           </template>
         </li>
       </ul>
