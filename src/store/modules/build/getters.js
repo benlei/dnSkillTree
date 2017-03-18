@@ -227,9 +227,16 @@ export default {
     const techCount = getters.techCount;
 
     if (level > 0 && level < skill.maxLevel) {
-      const descriptionId = skill.description[state.mode][level + techCount];
-      const str = messages[descriptionId];
-      const params = skill.params[state.mode][level + techCount];
+      const nextIndex = level + techCount;
+      const descriptionId = skill.description[state.mode][nextIndex];
+      let str = messages[descriptionId];
+      const params = skill.params[state.mode][nextIndex];
+      const nowCd = skill.cd[state.mode][nextIndex - 1];
+      const cd = skill.cd[state.mode][nextIndex];
+
+      if (str && nowCd !== cd) {
+        str = `#pCooldown:#w ${cd} sec\\n${str}`;
+      }
 
       return parameterize(str, params, messages);
     }
