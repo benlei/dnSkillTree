@@ -47,7 +47,8 @@
 </template>
 
 <script>
-  import Axios from 'axios';
+  import 'whatwg-fetch';
+//  import Axios from 'axios';
   import Modal from './Modal';
 
   export default {
@@ -55,8 +56,8 @@
       let url = process.env.REGIONS_URL;
       url = url.replace('http:', window.location.protocol);
 
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           this.regions = data;
         });

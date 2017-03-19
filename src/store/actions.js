@@ -1,4 +1,5 @@
-import Axios from 'axios';
+// import Axios from 'axios';
+import 'whatwg-fetch';
 import * as types from './mutation-types';
 import * as storage from '../lib/storage';
 
@@ -12,8 +13,8 @@ export default {
     if (storage.contains(url)) {
       commit(types.INIT_JOBS, { data: storage.get(url) });
     } else {
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           storage.put(url, data);
           commit(types.INIT_JOBS, { data });
@@ -31,8 +32,8 @@ export default {
     if (storage.contains(url)) {
       dispatch('initJob', { data: storage.get(url), path });
     } else {
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           storage.put(url, data);
 

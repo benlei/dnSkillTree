@@ -106,11 +106,11 @@
 
 <script>
   import { mapActions } from 'vuex';
-  import Modal from '../../Modal';
-  import Techniques from '../../common/Techniques';
-  import Level from '../../../lib/level';
-  import informationMixin from '../../../mixins/information';
-  import crestsMixin from '../../../mixins/crests';
+  import Modal from '../Modal';
+  import Techniques from '../common/Techniques';
+  import Level from '../../lib/level';
+  import informationMixin from '../../mixins/information';
+  import crestsMixin from '../../mixins/crests';
 
   export default {
     mixins: [informationMixin, crestsMixin],

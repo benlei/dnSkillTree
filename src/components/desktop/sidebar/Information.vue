@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import informationMixin from '../../../../mixins/information';
+  import informationMixin from '../../../mixins/information';
 
   export default {
     mixins: [informationMixin],

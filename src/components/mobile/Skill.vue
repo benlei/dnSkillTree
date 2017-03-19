@@ -12,8 +12,8 @@
 </template>
 
 <script>
-  import skillMixin from '../../../mixins/skill';
-  import Modal from '../../Modal';
+  import skillMixin from '../../mixins/skill';
+  import Modal from '../Modal';
 
   export default {
     mixins: [skillMixin],

@@ -20,7 +20,8 @@
 </template>
 
 <script>
-  import Axios from 'axios';
+  import 'whatwg-fetch';
+//  import Axios from 'axios';
   import Navigation from './Navigation';
   import F00ter from './Footer';
 
@@ -29,8 +30,8 @@
       let url = process.env.VERSION_URL;
       url = url.replace('http:', window.location.protocol);
 
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           this.latestVersion = data.version;
           this.latestBuild = data.build;

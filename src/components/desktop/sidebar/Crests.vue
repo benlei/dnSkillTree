@@ -21,7 +21,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import crestsMixin from '../../../../mixins/crests';
+  import crestsMixin from '../../../mixins/crests';
 
   export default {
     mixins: [crestsMixin],

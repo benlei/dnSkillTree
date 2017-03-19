@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import Level from '../../../lib/level';
-  import skillMixin from '../../../mixins/skill';
+  import Level from '../../lib/level';
+  import skillMixin from '../../mixins/skill';
 
   export default {
     mixins: [skillMixin],

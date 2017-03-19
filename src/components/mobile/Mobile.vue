@@ -10,7 +10,7 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex';
-  import BuildInput from '../../common/BuildInput';
+  import BuildInput from '../common/BuildInput';
   import Ascendancies from './Ascendancies';
   import Tree from './Tree';
 

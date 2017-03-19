@@ -19,7 +19,7 @@
   import { mapGetters } from 'vuex';
   import Ascendancies from './Ascendancies';
   import Crests from './Crests';
-  import Techniques from '../../../common/Techniques';
+  import Techniques from '../../common/Techniques';
 
   export default {
     computed: {

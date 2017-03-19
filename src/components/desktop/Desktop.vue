@@ -19,7 +19,7 @@
   import LeftSidebar from './sidebar/LeftSidebar';
   import Tree from './Tree';
   import RightSidebar from './sidebar/RightSidebar';
-  import BuildInput from '../../common/BuildInput';
+  import BuildInput from '../common/BuildInput';
 
   export default {
     created() {
