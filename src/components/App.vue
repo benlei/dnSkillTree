@@ -6,7 +6,7 @@
       <div class="alert alert-info" v-if="!isLatest">
         The latest version for this region is located here:
         <strong>
-          <a :href="`/${latestVersion}/${latestBuild}`">
+          <a :href="updateUrl">
             /{{ latestVersion }}/{{ latestBuild }}
           </a>
         </strong>
@@ -60,6 +60,16 @@
 
       isLatest() {
         return this.build === this.latestBuild && this.version === this.latestVersion;
+      },
+
+      updateUrl() {
+        let url = `/${this.latestVersion}/${this.latestBuild}`;
+
+        if (this.isMobile()) {
+          url = `${url}/#/m/`;
+        }
+
+        return url;
       },
     },
 
