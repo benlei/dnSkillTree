@@ -15,8 +15,8 @@
     <div class="card-block">
       <h5>{{ name }}</h5>
       <div>
-        <span>Skill Lv: {{ meta.level }}{{ techCount? ' +' + techCount : null}}</span>
-        <span class="float-right">Max Skill Lv: {{ meta.maxLevel }}</span>
+        <span>Level: {{ meta.level }}{{ techCount? ' +' + techCount : null}}</span>
+        <span class="float-right">Max Level: {{ meta.maxLevel }}</span>
       </div>
       <div>
         <span>Type: {{ type }}</span>
@@ -71,9 +71,9 @@
     </div>
 
     <div class="card-block" v-if="nextDescription">
-      <h6 v-if="level < softMaxLevel">Next Description</h6>
+      <h6 v-if="level < softMaxLevel">Next Level</h6>
       <h6 v-else>+1 Item Effect</h6>
-      <div class="next-description" v-html="nextDescription"/>
+      <div v-html="nextDescription"/>
     </div>
   </div>
 </template>
@@ -86,13 +86,11 @@
   };
 </script>
 
-<style scoped>
+<style>
   .card .card-block + .card-block {
     padding-top: 0;
   }
-</style>
 
-<style>
   .information .card-header {
     background: #02151D;
     color: #fff;

@@ -2,6 +2,13 @@ import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 
 Vue.mixin({
+  data() {
+    return {
+      locale: process.env.LOCALE,
+      skillBorder: { background: `url('${process.env.ASSETS_URL}/images/uit_gesturebutton.png')` },
+    };
+  },
+
   computed: {
     ...mapState([
       'job',

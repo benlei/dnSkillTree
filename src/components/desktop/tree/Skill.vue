@@ -6,7 +6,7 @@
        @mousedown.stop.prevent="changeLevelEvent"
        @contextmenu.stop.prevent>
       <div class="skill-border"
-           :style="border"
+           :style="skillBorder"
            :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
     </a>
     <small class="skill-level text-center"

@@ -1,7 +1,7 @@
 <template>
   <div class="card" v-if="crests[active]">
     <div class="card-header active">
-      Crest
+      {{ locale.skillCrest }}
     </div>
     <ul class="list-group list-group-flush crest">
       <li class="list-group-item" @click="setCrest(-1)">

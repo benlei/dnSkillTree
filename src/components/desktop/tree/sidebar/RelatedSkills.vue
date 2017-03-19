@@ -8,7 +8,7 @@
          :style="skillImageStyle(skill)"
          @click.prevent="jumpToSkillTop(skill)"
       >
-        <div class="skill-border" :style="border"/>
+        <div class="skill-border" :style="skillBorder"/>
       </a>
     </div>
   </div>
@@ -16,17 +16,8 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import { SKILL_BORDER } from '../../../../consts';
 
   export default {
-    data() {
-      return {
-        border: {
-          background: SKILL_BORDER,
-        },
-      };
-    },
-
     computed: {
       ...mapGetters([
         'relatedSkills',

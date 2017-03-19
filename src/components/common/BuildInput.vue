@@ -2,7 +2,7 @@
   <div class="row build-input">
     <div :class="cols[0]">
       <div class="input-group">
-        <input type="text" class="form-control" :value="buildUrl" id="build-url"/>
+        <input title="Build URL" type="text" class="form-control" :value="buildUrl" id="build-url"/>
         <span class="input-group-btn">
           <button class="btn btn-secondary" type="button" @click="selectUrl">
             <i class="fa fa-files-o"/>

@@ -1,3 +1,4 @@
+
 module.exports = {
   NODE_ENV: '"production"',
   ASSETS_URL: '"."',
@@ -7,4 +8,5 @@ module.exports = {
   REGIONS_URL: '"http://dnmaze.com/regions.json"', // this I will hard code
   VERSION: 'VERSION',
   VERSION_URL: '"/version.json"',
+  LOCALE: require('./locale')(process.env.REGION),
 }

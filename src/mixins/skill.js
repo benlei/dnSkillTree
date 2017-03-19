@@ -1,17 +1,8 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
-import { SKILL_BORDER } from '../consts';
 import Level from '../lib/level';
 
 export default {
   props: ['id'],
-
-  data() {
-    return {
-      border: {
-        background: SKILL_BORDER,
-      },
-    };
-  },
 
   computed: {
     ...mapState([

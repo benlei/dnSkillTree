@@ -1,7 +1,7 @@
 <template>
   <div class="skill d-flex flex-column" v-if="id" @click="iconClick">
     <div class="skill-icon" :style="skillImageStyle">
-      <div class="skill-border" :style="border" :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
+      <div class="skill-border" :style="skillBorder" :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
     </div>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"

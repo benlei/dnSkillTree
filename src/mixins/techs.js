@@ -1,8 +1,8 @@
 const typeMap = {
-  0: 'Crest',
+  0: 'Skill-Up Crest',
   1: 'Weapon',
   8: 'Necklace',
-  9: 'Earring',
+  9: 'Earrings',
   10: 'Ring',
 };
 

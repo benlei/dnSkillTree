@@ -21,7 +21,7 @@ export default {
     }
   },
 
-  loadJob({ commit, dispatch }, { slug, path }) { // go to TREE
+  loadJob({ dispatch }, { slug, path }) { // go to TREE
     const url = `${process.env.ASSETS_URL}/ext/${slug}.json`;
 
     dispatch('reset');
