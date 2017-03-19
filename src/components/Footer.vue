@@ -90,7 +90,13 @@
       },
 
       getUrl(url) {
-        return `${window.location.protocol}//${url}`;
+        const retUrl = `${window.location.protocol}//${url}`;
+
+        if (this.isMobile()) {
+          return `${retUrl}/#/m/`;
+        }
+
+        return retUrl;
       },
     },
 
