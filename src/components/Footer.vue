@@ -92,6 +92,7 @@
       getUrl(url) {
         const retUrl = `${window.location.protocol}//${url}`;
 
+        // S3 site redirects seem to retain the '/#/' stuff.
         if (this.isMobile()) {
           return `${retUrl}/#/m/`;
         }
