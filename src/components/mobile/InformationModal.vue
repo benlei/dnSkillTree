@@ -24,7 +24,7 @@
     </div>
 
     <div class="modal-block" v-if="crests[active]">
-      <h5>Crests</h5>
+      <h5>{{ locale.skillCrest }}</h5>
       <template v-if="crestCount === 7 && (build.crests[active] !== 0 && build.crests[active] !== 1)">
         <div>Cannot equip more than 7 crests.</div>
       </template>
@@ -98,7 +98,8 @@
     </div>
 
     <div class="modal-block" v-if="nextDescription">
-      <h5>Next Description</h5>
+      <h5 v-if="level < softMaxLevel">Next Level</h5>
+      <h5 v-else>+1 Item Effect</h5>
       <div class="next-description" v-html="nextDescription"/>
     </div>
   </Modal>

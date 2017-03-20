@@ -21,7 +21,7 @@
     </template>
 
     <template v-if="crestCount > 0">
-      <h5>Crests Equipped</h5>
+      <h5>{{ locale.crestsEquipped }}</h5>
       <ul class="list-unstyled overview-list">
         <li v-for="(crestIndex, skillId) in build.crests" v-if="crestIndex !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[skillId])">
