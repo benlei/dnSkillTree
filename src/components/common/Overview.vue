@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
   import techMixin from '../../mixins/techs';
   import parameterize from '../../lib/parameterize';
 
@@ -45,16 +45,9 @@
     props: ['jump'],
 
     computed: {
-      ...mapState([
-        'build',
-      ]),
-
       ...mapGetters([
-        'skills',
-        'messages',
         'crests',
         'crestCount',
-        'techCount',
       ]),
 
       hasTech() {

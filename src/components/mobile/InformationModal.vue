@@ -56,7 +56,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
   import Modal from '../Modal';
   import Techniques from '../common/Techniques';
   import InformationMeta from '../common/InformationMeta';
@@ -142,12 +141,6 @@
 
         return levels;
       },
-    },
-
-    methods: {
-      ...mapActions([
-        'setLevel',
-      ]),
     },
 
     components: {

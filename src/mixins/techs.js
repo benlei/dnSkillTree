@@ -1,3 +1,5 @@
+import { mapGetters } from 'vuex';
+
 const typeMap = {
   0: 'Skill-Up Crest',
   1: 'Weapon',
@@ -9,6 +11,12 @@ const typeMap = {
 const indexMap = [typeMap[1], typeMap[8], typeMap[9], typeMap[10], typeMap[10]];
 
 export default {
+  computed: {
+    ...mapGetters([
+      'techCount',
+    ]),
+  },
+
   methods: {
     techLevel(skillId, index) {
       const skills = this.skills;

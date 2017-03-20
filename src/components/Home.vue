@@ -25,7 +25,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import Job from './common/Job';
 
   export default {
@@ -34,10 +33,6 @@
     },
 
     computed: {
-      ...mapState([
-        'jobs',
-      ]),
-
       jobPartitions() {
         const list = this.jobs.list;
         const rows = [];

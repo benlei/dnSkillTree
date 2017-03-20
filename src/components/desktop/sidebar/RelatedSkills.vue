@@ -21,7 +21,6 @@
     computed: {
       ...mapGetters([
         'relatedSkills',
-        'messages',
       ]),
     },
 

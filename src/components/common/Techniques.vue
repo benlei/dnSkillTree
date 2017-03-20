@@ -73,7 +73,7 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import techMixin from '../../mixins/techs';
 
   export default {
@@ -91,20 +91,6 @@
       active() {
         this.clearWarning();
       },
-    },
-
-    computed: {
-      ...mapState([
-        'build',
-      ]),
-
-      ...mapGetters([
-        'active',
-        'skill',
-        'skills',
-        'messages',
-        'crestCount',
-      ]),
     },
 
     methods: {

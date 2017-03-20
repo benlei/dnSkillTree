@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 Vue.mixin({
   data() {
@@ -12,7 +12,17 @@ Vue.mixin({
   computed: {
     ...mapState([
       'job',
+      'jobs',
       'build',
+      'title',
+    ]),
+
+    ...mapGetters([
+      'active',
+      'messages',
+      'skill',
+      'skills',
+      'jobName',
     ]),
   },
 

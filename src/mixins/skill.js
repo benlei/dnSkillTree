@@ -1,17 +1,11 @@
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Level from '../lib/level';
 
 export default {
   props: ['id'],
 
   computed: {
-    ...mapState([
-      'job',
-      'build',
-    ]),
-
     ...mapGetters([
-      'active',
       'index',
       'softMaxLevel',
     ]),
@@ -58,6 +52,7 @@ export default {
       return this.build.related[this.id] === 1;
     },
   },
+
   methods: {
     ...mapActions([
       'setActive',

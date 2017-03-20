@@ -20,17 +20,10 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import crestsMixin from '../../../mixins/crests';
 
   export default {
     mixins: [crestsMixin],
-
-    computed: {
-      ...mapGetters([
-        'messages',
-      ]),
-    },
   };
 </script>
 

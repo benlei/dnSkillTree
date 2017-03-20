@@ -15,7 +15,6 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
   import LeftSidebar from './sidebar/LeftSidebar';
   import Tree from './Tree';
   import RightSidebar from './sidebar/RightSidebar';
@@ -29,17 +28,6 @@
         slug,
         path,
       });
-    },
-
-    computed: {
-      ...mapState([
-        'job',
-      ]),
-
-      ...mapGetters([
-        'active',
-        'jobName',
-      ]),
     },
 
     components: {

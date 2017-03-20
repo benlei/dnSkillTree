@@ -11,15 +11,10 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import Skill from './Skill';
 
   export default {
     computed: {
-      ...mapState([
-        'job',
-        'build',
-      ]),
       treeStyle() {
         const slug = this.job.ascendancies[this.build.ascendancy].slug;
         return {

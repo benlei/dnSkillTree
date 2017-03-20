@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import Alert from './Alert';
 
   export default {
@@ -58,10 +58,6 @@
     },
 
     computed: {
-      ...mapState([
-        'build',
-      ]),
-
       ...mapGetters([
         'path',
         'ascendancies',
