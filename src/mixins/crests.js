@@ -13,6 +13,7 @@ export default {
       'crests',
       'crest',
       'crestCount',
+      'messages',
     ]),
   },
 

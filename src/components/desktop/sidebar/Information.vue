@@ -12,77 +12,32 @@
       </ul>
     </div>
 
-    <div class="card-block">
-      <h5>{{ name }}</h5>
-      <div>
-        <span>Level: {{ meta.level }}{{ techCount? ' +' + techCount : null}}</span>
-        <span class="float-right">Max Level: {{ meta.maxLevel }}</span>
-      </div>
-      <div>
-        <span>Type: {{ type }}</span>
-        <span class="float-right">Attribute: {{ attribute }}</span>
-      </div>
-      <div v-if="meta.hp || meta.mp">
-        <span v-if="meta.mp">Fee MP: {{ meta.mp }}</span>
-        <span class="float-right" v-if="meta.hp">Fee HP: {{ meta.hp }}</span>
-      </div>
-      <div v-if="meta.cd || meta.spTotal">
-        <span v-if="meta.cd">Cooldown: {{ meta.cd }} sec</span>
-        <span class="float-right" v-if="meta.spTotal">Total SP: {{ meta.spTotal }}</span>
-      </div>
-      <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
-      <div v-if="altSkills">
-        Alternatives:
-        <span v-for="altSkill in altSkills" class="comma-separated">
-          <template v-if="altSkill.id === activeAlt">
-            <span>{{ messages[altSkill.name] }}</span>
-          </template>
-          <template v-else>
-            <a href="javascript:;"
-               @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
-          </template>
-        </span>
-      </div>
-    </div>
+    <InformationMeta />
 
-    <div class="card-block" v-if="showLevelUpReq">
-      <h6>Level Up Requirements</h6>
-      <div v-if="next.levelReq">
-        Character Level {{ next.levelReq }}
-      </div>
-      <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id])">
-          {{ skillName(parent.id) }}
-        </a> Lv. {{ parent.level }}
-      </div>
-      <div class="red" v-if="ascendancyReqs.length">
-        <span v-for="req in ascendancyReqs">
-          {{ job.ascendancies[req.ascendancy].name }} SP Total {{ req.sp }} or above
-        </span>
-      </div>
-      <div :class="{ red: lackSp }" v-if="next.spCost">
-        SP {{ next.spCost }}
-      </div>
-    </div>
+    <InformationLevelUp />
 
-    <div class="card-block" v-if="description">
-      <h6>Skill Description</h6>
-      <div class="description" v-html="description"/>
-    </div>
+    <InformationDescription />
 
-    <div class="card-block" v-if="nextDescription">
-      <h6 v-if="level < softMaxLevel">Next Level</h6>
-      <h6 v-else>+1 Item Effect</h6>
-      <div v-html="nextDescription"/>
-    </div>
+    <InformationNext />
   </div>
 </template>
 
 <script>
+  import InformationMeta from '../../common/InformationMeta';
+  import InformationLevelUp from '../../common/InformationLevelUp';
+  import InformationDescription from '../../common/InformationDescription';
+  import InformationNext from '../../common/InformationNext';
   import informationMixin from '../../../mixins/information';
 
   export default {
     mixins: [informationMixin],
+
+    components: {
+      InformationMeta,
+      InformationLevelUp,
+      InformationDescription,
+      InformationNext,
+    },
   };
 </script>
 
