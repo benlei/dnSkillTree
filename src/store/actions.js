@@ -12,12 +12,14 @@ export default {
 
     if (storage.contains(url)) {
       commit(types.INIT_JOBS, { data: storage.get(url) });
+      storage.cleanup();
     } else {
       fetch(url)
         .then(response => response.json())
         .then((data) => {
           storage.put(url, data);
           commit(types.INIT_JOBS, { data });
+          storage.cleanup();
         });
     }
   },
@@ -31,6 +33,7 @@ export default {
 
     if (storage.contains(url)) {
       dispatch('initJob', { data: storage.get(url), path });
+      storage.cleanup();
     } else {
       fetch(url)
         .then(response => response.json())
@@ -38,6 +41,7 @@ export default {
           storage.put(url, data);
 
           dispatch('initJob', { data, path });
+          storage.cleanup();
         });
     }
   },
