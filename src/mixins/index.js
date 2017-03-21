@@ -23,6 +23,7 @@ Vue.mixin({
       'skill',
       'skills',
       'jobName',
+      'ascendancies',
     ]),
   },
 
@@ -31,6 +32,7 @@ Vue.mixin({
       'setAscendancy',
       'activateRelated',
       'deactivateRelated',
+      'setActive',
     ]),
 
     skillName(id) {

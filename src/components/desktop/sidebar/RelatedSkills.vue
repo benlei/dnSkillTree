@@ -15,20 +15,20 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-
   export default {
     computed: {
-      ...mapGetters([
-        'relatedSkills',
-      ]),
+      relatedSkills() {
+        const skill = this.skill;
+        const skills = this.skills;
+        if (!skill.related) {
+          return null;
+        }
+
+        return skill.related.map(id => skills[id]);
+      },
     },
 
     methods: {
-      ...mapActions([
-        'setActive',
-      ]),
-
       skillImageStyle(skill) {
         return this.getSkillIconStyle(skill, 1);
       },

@@ -9,7 +9,7 @@
           </button>
         </span>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" @click="reset" title="Reset">
+          <button class="btn btn-secondary" type="button" @click="$store.dispatch('reset')" title="Reset">
             <i class="fa fa-refresh"/>
           </button>
         </span>
@@ -27,8 +27,9 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
   import Alert from './Alert';
+  import { BUILD_CHARS } from '../../consts';
+  import Level from '../../lib/level';
 
   export default {
     props: ['cols'],
@@ -58,10 +59,99 @@
     },
 
     computed: {
-      ...mapGetters([
-        'path',
-        'ascendancies',
-      ]),
+      path() {
+        const skills = this.skills;
+        const build = this.build;
+        const indexes = build.indexes;
+        const tree = this.$store.getters.tree;
+        const techs = build.techs;
+        const crestTech = build.crestTech;
+        const crests = build.crests;
+        const len = tree.length * 24;
+        const cmap = BUILD_CHARS;
+        const extras = [];
+
+        let path = '';
+        let trim = 0;
+        let ascendancy = -1;
+
+        for (let i = 0, slot = 0; i < len; i += 1, slot = i % 24) {
+          if (slot === 0) {
+            ascendancy += 1;
+          }
+
+          const skill = skills[tree[ascendancy][slot]];
+
+          if (skill) {
+            const level = Level.valueOf(indexes, skill);
+            const id = skill.id;
+            if (level) {
+              if (skill.levelReq[0] === 1) {
+                if (level === 1) {
+                  path += cmap[0];
+                } else {
+                  path += cmap[level - 1];
+                  trim = i + 1;
+                }
+              } else {
+                path += cmap[level];
+                trim = i + 1;
+              }
+            } else {
+              path += cmap[0];
+            }
+
+            const extra = [skill.index];
+            const tech = techs.indexOf(id);
+
+            if (tech !== -1) {
+              switch (tech) {
+                case 0:
+                  extra.push('w');
+                  break;
+                case 1:
+                  extra.push('n');
+                  break;
+                case 2:
+                  extra.push('e');
+                  break;
+                case 3:
+                default:
+                  extra.push('r');
+                  break;
+              }
+            }
+
+            if (crestTech === id) {
+              extra.push('c');
+            }
+
+            if (crests[id] === 0) {
+              extra.push('h');
+            } else if (crests[id] === 1) {
+              extra.push('H');
+            }
+
+            if (extra.length > 1) {
+              extras.push(extra.join(''));
+            }
+          } else {
+            path += cmap[0];
+          }
+        }
+
+        path = path.substring(0, trim);
+
+        if (extras.length) {
+          path += `.${extras.join('.')}`;
+        }
+
+        if (path) {
+          path += '.';
+        }
+
+        return path;
+      },
 
       buildUrl() {
         const path = this.path;
@@ -77,10 +167,6 @@
     },
 
     methods: {
-      ...mapActions([
-        'reset',
-      ]),
-
       selectUrl() {
         document.getElementById('build-url').select();
       },
