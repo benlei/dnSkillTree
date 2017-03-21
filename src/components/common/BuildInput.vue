@@ -44,17 +44,7 @@
 
     watch: {
       path(newPath) {
-        const slug = this.$route.params.slug;
-        const prefix = this.isMobile() ? 'mobile' : 'desktop';
-        const name = newPath.length ? `${prefix}-build` : prefix;
-
-        this.$router.replace({
-          name,
-          params: {
-            slug,
-            path: newPath,
-          },
-        });
+        this.updatePath(newPath);
       },
     },
 

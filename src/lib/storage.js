@@ -13,13 +13,12 @@ function storageAvailable() {
 }
 
 function getPrefix() {
-  let href = location.href;
+  const appVersion = process.env.VERSION;
+  const buildVersion = process.env.BUILD_VERSION;
 
-  href = href.substring(href.indexOf('/') + 2);
-  href = href.substring(0, href.indexOf('#'));
-  href = href.replace(/\/+$/, '');
-
-  return href;
+  // "The following snippet accesses the current domain's local Storage...."
+  // this mean that no prefix is necessary, just app version + build version prefix.
+  return `${appVersion}_${buildVersion}`;
 }
 
 export function put(key, value) {
