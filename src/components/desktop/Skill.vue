@@ -11,7 +11,7 @@
     </a>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"
-    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
+    >{{ displayLevel }}/{{ softMaxLevel }}
     </small>
   </div>
   <div class="skill" v-else/>

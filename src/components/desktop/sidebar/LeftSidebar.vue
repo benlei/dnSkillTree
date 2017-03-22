@@ -2,7 +2,7 @@
   <div class="col-md-4">
     <Ascendancies/>
 
-    <div class="card" v-if="skill.spMaxLevel">
+    <div class="card" v-if="skill.spMaxLevel || skill.techs">
       <div class="card-header active">
         Techniques
       </div>

@@ -40,7 +40,15 @@ export default {
         count += 1;
       }
 
-      return Math.min(this.skill.spMaxLevel, count);
+      return count;
+    },
+
+    displayLevel() {
+      const level = this.level;
+      const maxLevel = this.skill.maxLevel;
+      const techCount = this.techCount;
+
+      return Math.min(maxLevel, level ? level + techCount : 0);
     },
 
     crested() {

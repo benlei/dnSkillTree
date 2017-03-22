@@ -91,7 +91,7 @@ export default {
       count += 1;
     }
 
-    return Math.min(getters.skill.spMaxLevel, count);
+    return count;
   },
 
   meta(state, getters) {
@@ -209,7 +209,7 @@ export default {
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
     const techCount = getters.techCount;
-    const techIndex = index + techCount;
+    const techIndex = Math.min(Level.indexOf(skill.maxLevel), index + techCount);
 
     const descriptionId = skill.description[state.mode][techIndex];
 
@@ -228,7 +228,7 @@ export default {
     // require actual level show when current level is not 0 and not maxed out.
     if (level > 0 && level < skill.maxLevel) {
       // the next index is the current level (next index) + the # of techs to skill
-      const nextIndex = level + techCount;
+      const nextIndex = level + techCount; // a bad index is still ok (undefined)
 
       const descriptionId = skill.description[state.mode][nextIndex];
       const params = skill.params[state.mode][nextIndex];
