@@ -45,10 +45,8 @@ export default {
     const skills = Getters.skills;
     let initActive = getters.active;
 
-    if (skill.sub) {
-      if (Level.valueOf(state.indexes, skills[skill.subReq])) {
-        initActive = skill.sub;
-      }
+    if (skill.sub && Level.valueOf(state.indexes, skills[skill.subReq])) {
+      initActive = skill.sub;
     }
 
     return state.activeAlt === -1 ? initActive : state.activeAlt;
@@ -282,10 +280,8 @@ export default {
     }
 
     const initSkill = [skill];
-    if (skill.sub) {
-      if (Level.valueOf(state.indexes, skills[skill.subReq])) {
-        initSkill[0] = skills[skill.sub];
-      }
+    if (skill.sub && Level.valueOf(state.indexes, skills[skill.subReq])) {
+      initSkill[0] = skills[skill.sub];
     }
 
     return initSkill.concat(skill.alts.map(id => skills[id]));
