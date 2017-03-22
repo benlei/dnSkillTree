@@ -40,8 +40,18 @@ export default {
     return state.active;
   },
 
-  activeAlt(state, getters) {
-    return state.activeAlt === -1 ? getters.active : state.activeAlt;
+  activeAlt(state, getters, State, Getters) {
+    const skill = getters.skill;
+    const skills = Getters.skills;
+    let initActive = getters.active;
+
+    if (skill.sub) {
+      if (Level.valueOf(state.indexes, skills[skill.subReq])) {
+        initActive = skill.sub;
+      }
+    }
+
+    return state.activeAlt === -1 ? initActive : state.activeAlt;
   },
 
   skill: (state, getters, State, Getters) => Getters.skills[getters.active],
@@ -204,13 +214,14 @@ export default {
   },
 
   description(state, getters, State, Getters) {
+    const realSkill = getters.skill;
     const skill = getters.skillAlt;
     const messages = Getters.messages;
 
     const level = Math.max(1, getters.level);
     const index = Level.indexOf(level);
     const techCount = getters.techCount;
-    const techIndex = Math.min(Level.indexOf(skill.maxLevel), index + techCount);
+    const techIndex = Math.min(Level.indexOf(realSkill.maxLevel), index + techCount);
 
     const descriptionId = skill.description[state.mode][techIndex];
 
@@ -270,6 +281,13 @@ export default {
       return null;
     }
 
-    return [skill].concat(skill.alts.map(id => skills[id]));
+    const initSkill = [skill];
+    if (skill.sub) {
+      if (Level.valueOf(state.indexes, skills[skill.subReq])) {
+        initSkill[0] = skills[skill.sub];
+      }
+    }
+
+    return initSkill.concat(skill.alts.map(id => skills[id]));
   },
 };
