@@ -159,7 +159,8 @@ export default {
   },
 
   weapons(state, getters, State, Getters) {
-    const weapons = getters.skill.weapons;
+    const skillAlt = getters.skillAlt;
+    const weapons = skillAlt.weapons;
     const messages = Getters.messages;
     const weaponMap = Getters.weaponMap;
 
