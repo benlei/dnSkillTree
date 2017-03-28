@@ -1,7 +1,7 @@
 <template>
   <div class="modal-block overview" v-if="hasTech || crestCount > 0">
     <template v-if="hasTech">
-      <h5>Techniques Equipped</h5>
+      <h5>{{ locale.techniques }}</h5>
       <ul class="list-unstyled overview-list">
         <li v-if="build.crestTech !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[build.crestTech])">
@@ -14,7 +14,7 @@
             {{ skillName(skillId) }}
           </a> - <strong>{{ techIndex | indexName }}</strong>
           <template v-if="techIndex">
-            (Lv. {{ techLevel(skillId, techIndex) }})
+            ({{ locale.lv }} {{ techLevel(skillId, techIndex) }})
           </template>
         </li>
       </ul>

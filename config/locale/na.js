@@ -39,4 +39,6 @@ module.exports = {
   noBuildIssues: 'There are no issues',
   needs: 'requires',
   conflictsWith: 'conflicts with',
+  relatedSkills: 'Related Skills',
+  updateHere: 'The latest version for this region is located here',
 }

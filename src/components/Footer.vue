@@ -4,9 +4,7 @@
 
     <div class="d-flex justify-content-between">
       <ul class="list-unstyled">
-        <li v-for="region in regions" v-if="region.region === curr">
-          {{ region.name }}
-        </li>
+        <li v-for="region in regions" v-if="region.region === curr">{{ region.name }}</li>
 
         <li v-for="region in regions" v-if="region.region !== curr">
           <a :href="getUrl(region.url)">{{ region.name }}</a>
@@ -17,12 +15,8 @@
         <li><a href="javascript:;" @click.prevent="toggleHelpModal">{{ locale.help }}</a></li>
         <li>
           <router-link :to="invertedRoute" @click.native="toTop">
-            <template v-if="isMobile()">
-              {{ locale.desktop }}
-            </template>
-            <template v-else>
-              {{ locale.mobile }}
-            </template>
+            <template v-if="isMobile()">{{ locale.desktop }}</template>
+            <template v-else>{{ locale.mobile }}</template>
           </router-link>
         </li>
       </ul>
@@ -42,13 +36,17 @@
       <p>
         <small>note: the alias controls may not work for all browsers</small>
       </p>
+
+      <p>
+        <small>note 2: need a real translator for other regions</small>
+      </p>
     </Modal>
   </footer>
 </template>
 
 <script>
   import 'whatwg-fetch';
-//  import Axios from 'axios';
+  //  import Axios from 'axios';
   import Modal from './Modal';
 
   export default {

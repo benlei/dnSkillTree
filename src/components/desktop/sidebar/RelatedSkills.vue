@@ -1,7 +1,7 @@
 <template>
   <div class="card" v-if="relatedSkills">
     <div class="card-header active">
-      Related Skills
+      {{ locale.relatedSkills }}
     </div>
     <div class="card-block">
       <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"

@@ -47,4 +47,6 @@ module.exports = merge.strategy({
   noBuildIssues: '没问题',
   needs: '需要',
   conflictsWith: '重叠',
+  relatedSkills: '连锁技能',
+  updateHere: '该地区的最新版本位于这里',
 });

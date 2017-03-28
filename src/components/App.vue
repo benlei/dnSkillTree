@@ -4,7 +4,7 @@
 
     <div class="container">
       <div class="alert alert-info" v-if="!isLatest">
-        The latest version for this region is located here:
+        {{ locale.updateHere }}:
         <strong>
           <a :href="updateUrl">
             /{{ latestVersion }}/{{ latestBuild }}

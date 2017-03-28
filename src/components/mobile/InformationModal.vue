@@ -17,7 +17,7 @@
       <div class="form-group">
         <select class="form-control" v-model="levelSelected">
           <option v-for="lvl in levels" :disabled="lvl < 0" :value="Math.abs(lvl)">
-            Lv. {{ Math.abs(lvl) }}{{ techCount? ' +' + techCount : null}}
+            {{ locale.lv }} {{ Math.abs(lvl) }}{{ techCount? ' +' + techCount : null}}
           </option>
         </select>
       </div>
