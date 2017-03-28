@@ -4,7 +4,7 @@
 
     <div class="card" v-if="skill.spMaxLevel || skill.techs">
       <div class="card-header active">
-        Techniques
+        {{ locale.techniques }}
       </div>
       <div class="card-block">
         <Techniques/>

@@ -15,12 +15,12 @@
           @click="setAscendancy(3)"
           v-if="awakened">
         <a href="javascript:;" @click.prevent>
-          Awakened
+          {{ locale.awakened }}
         </a>
       </li>
     </ul>
     <div class="card-footer d-flex text-muted justify-content-between disabled">
-      Total SP
+      {{ locale.totalSP }}
       <small>{{ spTotal }} / {{ job.sp }}</small>
     </div>
   </div>

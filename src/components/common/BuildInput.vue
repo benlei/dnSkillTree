@@ -2,19 +2,21 @@
   <div class="row build-input">
     <div :class="cols[0]">
       <div class="input-group">
-        <input title="Build URL" type="text" class="form-control" :value="buildUrl" id="build-url"/>
+        <input :title="locale.buildUrl" type="text" class="form-control" :value="buildUrl"
+               id="build-url"/>
         <span class="input-group-btn">
           <button class="btn btn-secondary" type="button" @click="selectUrl">
             <i class="fa fa-files-o"/>
           </button>
         </span>
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button" @click="$store.dispatch('reset')" title="Reset">
+          <button class="btn btn-secondary" type="button" @click="$store.dispatch('reset')"
+                  :title="locale.reset">
             <i class="fa fa-refresh"/>
           </button>
         </span>
         <span class="input-group-btn" v-if="!isMobile()">
-          <button class="btn btn-secondary" type="button" title="Download Single Image"
+          <button class="btn btn-secondary" type="button" :title="locale.downloadImage"
                   @click="download">
             <i class="fa fa-download"/>
           </button>

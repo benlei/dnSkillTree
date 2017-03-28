@@ -190,34 +190,6 @@ export default {
     return parameterize(str, params, messages);
   },
 
-  nextDescription(state, getters, State, Getters) {
-    const skill = getters.skillAlt;
-    const messages = Getters.messages;
-    const level = getters.level;
-    const techCount = getters.techCount;
-
-    // require actual level show when current level is not 0 and not maxed out.
-    if (level > 0 && level < skill.maxLevel) {
-      // the next index is the current level (next index) + the # of techs to skill
-      const nextIndex = level + techCount; // a bad index is still ok (undefined)
-
-      const descriptionId = skill.description[state.mode][nextIndex];
-      const params = skill.params[state.mode][nextIndex];
-      const nowCd = skill.cd[state.mode][nextIndex - 1];
-      const cd = skill.cd[state.mode][nextIndex];
-      let str = messages[descriptionId];
-
-      // there is a description + next level has a cd diff, so prepend to description.
-      if (str && nowCd !== cd) {
-        str = `#pCooldown:#w ${cd} sec\\n${str}`;
-      }
-
-      return parameterize(str, params, messages);
-    }
-
-    return null;
-  },
-
   crest(state, getters) {
     const crest = state.crests[getters.active];
     if (crest === 0 || crest) {

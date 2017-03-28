@@ -27,12 +27,12 @@
       <h5>{{ locale.skillCrest }}</h5>
       <template
         v-if="crestCount === 7 && (build.crests[active] !== 0 && build.crests[active] !== 1)">
-        <div>Cannot equip more than 7 crests.</div>
+        <div>{{ locale.maxedOutCrests }}</div>
       </template>
       <template v-else>
         <div class="form-group">
           <select class="form-control" v-model="crestSelected">
-            <option value="-1">None</option>
+            <option value="-1">{{ locale.none }}</option>
             <option v-for="(crest, crestIndex) in crests[active]" :value="crestIndex"
                     v-html="crestDescription(crestIndex)"/>
           </select>
@@ -41,7 +41,7 @@
     </div>
 
     <div class="modal-block" v-if="skill.spMaxLevel || skill.techs">
-      <h5>Techniques</h5>
+      <h5>{{ locale.techniques }}</h5>
       <Techniques/>
     </div>
 

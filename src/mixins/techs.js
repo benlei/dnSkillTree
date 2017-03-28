@@ -1,16 +1,25 @@
-const typeMap = {
-  0: 'Skill-Up Crest',
-  1: 'Weapon',
-  8: 'Necklace',
-  9: 'Earrings',
-  10: 'Ring',
-};
+let typeMap = {};
+let indexMap = [];
 
-const indexMap = [typeMap[1], typeMap[8], typeMap[9], typeMap[10], typeMap[10]];
+function initMaps(locale) {
+  if (!indexMap.length) {
+    typeMap = {
+      0: locale[4],
+      1: locale[0],
+      8: locale[1],
+      9: locale[2],
+      10: locale[3],
+    };
+
+    indexMap = [typeMap[1], typeMap[8], typeMap[9], typeMap[10], typeMap[10]];
+  }
+}
 
 export default {
   methods: {
     techLevel(skillId, index) {
+      initMaps(this.locale.techGear);
+
       const skills = this.skills;
       const skill = skills[skillId];
       const name = indexMap[index];
@@ -18,14 +27,16 @@ export default {
 
       return tech.level;
     },
-  },
 
-  filters: {
     typeName(type) {
+      initMaps(this.locale.techGear);
+
       return typeMap[type];
     },
 
     indexName(index) {
+      initMaps(this.locale.techGear);
+
       return indexMap[index];
     },
   },

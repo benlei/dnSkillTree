@@ -14,14 +14,14 @@
       </ul>
 
       <ul class="list-unstyled text-right">
-        <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
+        <li><a href="javascript:;" @click.prevent="toggleHelpModal">{{ locale.help }}</a></li>
         <li>
           <router-link :to="invertedRoute" @click.native="toTop">
             <template v-if="isMobile()">
-              Desktop
+              {{ locale.desktop }}
             </template>
             <template v-else>
-              Mobile
+              {{ locale.mobile }}
             </template>
           </router-link>
         </li>

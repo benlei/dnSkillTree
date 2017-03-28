@@ -9,9 +9,9 @@
                @click.prevent="maybeTech(tech.type, false)"
             />
             <a href="javascript:;" class="text-black" @click.prevent="maybeTech(tech.type, false)">
-              {{ tech.type | typeName }}
+              {{ typeName(tech.type) }}
               <template v-if="tech.type > 1">
-                (Lv. {{ tech.level }})
+                ({{ locale.lv }} {{ tech.level }})
               </template>
             </a>
           </li>
@@ -26,7 +26,7 @@
                @click.prevent="maybeTech(0, false)"
             />
             <a href="javascript:;" class="text-black" @click.prevent="maybeTech(0, false)">
-              {{ 0 | typeName }}
+              {{ typeName(0) }}
             </a>
           </li>
         </ul>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech !== 10">
-      <strong>{{ warningTech | typeName }}</strong>
+      <strong>{{ typeName(warningTech) }}</strong>
       currently upgrades
       <strong>{{ warningSkill }}</strong>.
 
@@ -46,7 +46,7 @@
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech === 10">
-      <strong>{{ warningTech | typeName }} 1</strong>
+      <strong>{{ typeName(warningTech) }} 1</strong>
       currently upgrades
       <strong>{{ warningSkill[0] }}</strong>.
 
@@ -59,7 +59,7 @@
       <br />
       <br />
 
-      <strong>{{ warningTech | typeName }} 2</strong>
+      <strong>{{ typeName(warningTech) }} 2</strong>
       currently upgrades
       <strong>{{ warningSkill[1] }}</strong>.
 

@@ -8,19 +8,19 @@
     </template>
 
     <div v-if="next.levelReq">
-      Character Level {{ next.levelReq }}
+      {{ locale.charLevel }} {{ next.levelReq }}
     </div>
 
     <div class="red" v-if="next.parents" v-for="parent in next.parents">
       <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id]); toggle && toggle()">
         {{ skillName(parent.id) }}
       </a>
-      Lv. {{ parent.level }}
+      {{ locale.lv }} {{ parent.level }}
     </div>
 
     <div class="red" v-if="ascendancyReqs.length">
         <span v-for="req in ascendancyReqs">
-          {{ job.ascendancies[req.ascendancy].name }} SP Total {{ req.sp }} or above
+          {{ job.ascendancies[req.ascendancy].name }} {{ locale.jobSPReq[0] }} {{ req.sp }} {{ locale.jobSPReq[1] }}
         </span>
     </div>
 

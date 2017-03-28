@@ -5,6 +5,6 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   LEVEL_CAP: '93',
   BUILD_VERSION: '591',
-  REGION: '"na"',
+  REGION: '"cn"',
   VERSION: '"2.2.0"',
 })
