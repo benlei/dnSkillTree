@@ -5,4 +5,7 @@ module.exports = {
   skillDescription: 'Skill Description',
   nextLevel: 'Next Level',
   plus1ItemEffect: '+1 Item Effect',
+  elements: ['Fire', 'Water', 'Light', 'Dark'],
+  noElement: 'None',
+  skillTypes: ['Instant', 'Buff', 'Debuff', 'Passive', 'Passive Enhanced'],
 }

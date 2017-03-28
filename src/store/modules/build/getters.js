@@ -127,45 +127,6 @@ export default {
     };
   },
 
-  type(state, getters) {
-    const type = getters.skillAlt.type;
-    const durationType = getters.skillAlt.durationType;
-
-    if (!type) {
-      switch (durationType) {
-        case 0:
-          return 'Instant';
-        case 1:
-          return 'Buff';
-        case 2:
-          return 'Debuff';
-        default:
-          break;
-      }
-    } else if (type === 3) {
-      return 'Passive Enhanced';
-    }
-
-    return 'Passive';
-  },
-
-  attribute(state, getters) {
-    switch (getters.skillAlt.element) {
-      case 0:
-        return 'Fire';
-      case 1:
-        return 'Water';
-      case 2:
-        return 'Light';
-      case 3:
-        return 'Dark';
-      default:
-        break;
-    }
-
-    return 'None';
-  },
-
   weapons(state, getters, State, Getters) {
     const skillAlt = getters.skillAlt;
     const weapons = skillAlt.weapons;

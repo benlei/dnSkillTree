@@ -53,9 +53,46 @@
         'type',
         'attribute',
         'weapons',
+        'skillAlt',
         'altSkills',
         'activeAlt',
       ]),
+
+      attribute() {
+        const elements = this.locale.elements;
+        const noElement = this.locale.noElement;
+        const skill = this.skillAlt;
+
+        if (elements[skill.element]) {
+          return elements[skill.element];
+        }
+
+        return noElement;
+      },
+
+      type() {
+        const skill = this.skillAlt;
+        const type = skill.type;
+        const durationType = skill.durationType;
+        const locale = this.locale.skillTypes;
+
+        if (!type) {
+          switch (durationType) {
+            case 0:
+              return locale[0];
+            case 1:
+              return locale[1];
+            case 2:
+              return locale[2];
+            default:
+              break;
+          }
+        } else if (type === 3) {
+          return locale[4];
+        }
+
+        return locale[3];
+      },
     },
 
     methods: {
