@@ -4,9 +4,9 @@
 
     <div class="container">
       <div class="alert alert-info" v-if="!isLatest">
-        The latest version for this region is located here:
+        {{ locale.updateHere }}:
         <strong>
-          <a :href="`/${latestVersion}/${latestBuild}`">
+          <a :href="updateUrl">
             /{{ latestVersion }}/{{ latestBuild }}
           </a>
         </strong>
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-  import Axios from 'axios';
+  import 'whatwg-fetch';
+//  import Axios from 'axios';
   import Navigation from './Navigation';
   import F00ter from './Footer';
 
@@ -29,8 +30,8 @@
       let url = process.env.VERSION_URL;
       url = url.replace('http:', window.location.protocol);
 
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           this.latestVersion = data.version;
           this.latestBuild = data.build;
@@ -59,6 +60,16 @@
 
       isLatest() {
         return this.build === this.latestBuild && this.version === this.latestVersion;
+      },
+
+      updateUrl() {
+        let url = `/${this.latestVersion}/${this.latestBuild}`;
+
+        if (this.isMobile()) {
+          url = `${url}/#/m/`;
+        }
+
+        return url;
       },
     },
 

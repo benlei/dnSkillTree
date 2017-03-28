@@ -4,9 +4,7 @@
 
     <div class="d-flex justify-content-between">
       <ul class="list-unstyled">
-        <li v-for="region in regions" v-if="region.region === curr">
-          {{ region.name }}
-        </li>
+        <li v-for="region in regions" v-if="region.region === curr">{{ region.name }}</li>
 
         <li v-for="region in regions" v-if="region.region !== curr">
           <a :href="getUrl(region.url)">{{ region.name }}</a>
@@ -14,15 +12,11 @@
       </ul>
 
       <ul class="list-unstyled text-right">
-        <li><a href="javascript:;" @click.prevent="toggleHelpModal">Help</a></li>
+        <li><a href="javascript:;" @click.prevent="toggleHelpModal">{{ locale.help }}</a></li>
         <li>
           <router-link :to="invertedRoute" @click.native="toTop">
-            <template v-if="isMobile()">
-              Desktop
-            </template>
-            <template v-else>
-              Mobile
-            </template>
+            <template v-if="isMobile()">{{ locale.desktop }}</template>
+            <template v-else>{{ locale.mobile }}</template>
           </router-link>
         </li>
       </ul>
@@ -42,12 +36,17 @@
       <p>
         <small>note: the alias controls may not work for all browsers</small>
       </p>
+
+      <p>
+        <small>note 2: need a real translator for other regions</small>
+      </p>
     </Modal>
   </footer>
 </template>
 
 <script>
-  import Axios from 'axios';
+  import 'whatwg-fetch';
+  //  import Axios from 'axios';
   import Modal from './Modal';
 
   export default {
@@ -55,8 +54,8 @@
       let url = process.env.REGIONS_URL;
       url = url.replace('http:', window.location.protocol);
 
-      Axios.get(url)
-        .then(response => response.data)
+      fetch(url)
+        .then(response => response.json())
         .then((data) => {
           this.regions = data;
         });
@@ -89,7 +88,14 @@
       },
 
       getUrl(url) {
-        return `${window.location.protocol}//${url}`;
+        const retUrl = `${window.location.protocol}//${url}`;
+
+        // S3 site redirects seem to retain the '/#/' stuff.
+        if (this.isMobile()) {
+          return `${retUrl}/#/m/`;
+        }
+
+        return retUrl;
       },
     },
 

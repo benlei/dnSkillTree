@@ -17,21 +17,22 @@
       <div class="form-group">
         <select class="form-control" v-model="levelSelected">
           <option v-for="lvl in levels" :disabled="lvl < 0" :value="Math.abs(lvl)">
-            Lv. {{ Math.abs(lvl) }}{{ techCount? ' +' + techCount : null}}
+            {{ locale.lv }} {{ Math.abs(lvl) }}{{ techCount? ' +' + techCount : null}}
           </option>
         </select>
       </div>
     </div>
 
     <div class="modal-block" v-if="crests[active]">
-      <h5>Crests</h5>
-      <template v-if="crestCount === 7 && (build.crests[active] !== 0 && build.crests[active] !== 1)">
-        <div>Cannot equip more than 7 crests.</div>
+      <h5>{{ locale.skillCrest }}</h5>
+      <template
+        v-if="crestCount === 7 && (build.crests[active] !== 0 && build.crests[active] !== 1)">
+        <div>{{ locale.maxedOutCrests }}</div>
       </template>
       <template v-else>
         <div class="form-group">
           <select class="form-control" v-model="crestSelected">
-            <option value="-1">None</option>
+            <option value="-1">{{ locale.none }}</option>
             <option v-for="(crest, crestIndex) in crests[active]" :value="crestIndex"
                     v-html="crestDescription(crestIndex)"/>
           </select>
@@ -39,78 +40,31 @@
       </template>
     </div>
 
-    <div class="modal-block" v-if="skill.spMaxLevel">
-      <h5>Techniques</h5>
+    <div class="modal-block" v-if="skill.spMaxLevel || skill.techs">
+      <h5>{{ locale.techniques }}</h5>
       <Techniques/>
     </div>
 
-    <div class="modal-block">
-      <div>
-        <span>Type: {{ type }}</span>
-        <span class="float-right">Attribute: {{ attribute }}</span>
-      </div>
-      <div v-if="meta.hp || meta.mp">
-        <span v-if="meta.mp">Fee MP: {{ meta.mp }}</span>
-        <span class="float-right" v-if="meta.hp">Fee HP: {{ meta.hp }}</span>
-      </div>
-      <div v-if="meta.cd || meta.spTotal">
-        <span v-if="meta.cd">Cooldown: {{ meta.cd }} sec</span>
-        <span class="float-right" v-if="meta.spTotal">Total SP: {{ meta.spTotal }}</span>
-      </div>
-      <div v-if="weapons">Required Weapon: {{ weapons | join(', ') }}</div>
-      <div v-if="altSkills">
-        Alternatives:
-        <span v-for="altSkill in altSkills" class="comma-separated">
-          <template v-if="altSkill.id === activeAlt">
-            <span>{{ messages[altSkill.name] }}</span>
-          </template>
-          <template v-else>
-            <a href="javascript:;"
-               @click="setActiveAlt(altSkill.id)">{{ messages[altSkill.name] }}</a>
-          </template>
-        </span>
-      </div>
-    </div>
+    <InformationMeta/>
 
-    <div class="modal-block" v-if="showLevelUpReq">
-      <h5>Level Up Requirements</h5>
-      <div v-if="next.levelReq">
-        Character Level {{ next.levelReq }}
-      </div>
-      <div class="red" v-if="next.parents" v-for="parent in next.parents">
-        <a href="javascript:;" @click="jumpToSkill(job.skills[parent.id]); toggle()">{{
-          messages[job.skills[parent.id].name]
-          }}</a> Lv. {{ parent.level }}
-      </div>
-      <div class="red" v-if="ascendancyReqs.length">
-        <span v-for="req in ascendancyReqs">
-          {{ job.ascendancies[req.ascendancy].name }} SP Total {{ req.sp }} or above
-        </span>
-      </div>
-      <div :class="{ red: lackSp }" v-if="next.spCost">
-        SP {{ next.spCost }}
-      </div>
-    </div>
+    <InformationLevelUp :toggle="toggle"/>
 
-    <div class="modal-block" v-if="description">
-      <h5>Skill Description</h5>
-      <div class="description" v-html="description"/>
-    </div>
+    <InformationDescription/>
 
-    <div class="modal-block" v-if="nextDescription">
-      <h5>Next Description</h5>
-      <div class="next-description" v-html="nextDescription"/>
-    </div>
+    <InformationNext/>
   </Modal>
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
-  import Modal from '../../Modal';
-  import Techniques from '../../common/Techniques';
-  import Level from '../../../lib/level';
-  import informationMixin from '../../../mixins/information';
-  import crestsMixin from '../../../mixins/crests';
+  import Modal from '../Modal';
+  import Techniques from '../common/Techniques';
+  import InformationMeta from '../common/InformationMeta';
+  import InformationLevelUp from '../common/InformationLevelUp';
+  import InformationDescription from '../common/InformationDescription';
+  import InformationNext from '../common/InformationNext';
+  import Level from '../../lib/level';
+  import informationMixin from '../../mixins/information';
+  import crestsMixin from '../../mixins/crests';
 
   export default {
     mixins: [informationMixin, crestsMixin],
@@ -157,11 +111,8 @@
 
     computed: {
       levels() {
-        const skill = this.skill;
-        const level = this.level;
-        const jobSpTotal = this.spTotals[skill.job];
-        const spTotal = this.spTotal;
-        const job = this.job;
+        const { skill, level, spTotals, spTotal, job, meta } = this;
+        const jobSpTotal = spTotals[skill.job];
         const ascendancyMaxSp = job.ascendancies[skill.job].sp;
         const maxSp = job.sp;
         const levels = [];
@@ -173,8 +124,8 @@
         const nowSp = !level ? 0 : skill.spTotal[Level.indexOf(level)];
         let multi = 1;
 
-        for (let i = 1; i <= this.meta.maxLevel; i += 1) {
-          if (i > this.level && multi > 0) {
+        for (let i = 1; i <= meta.maxLevel; i += 1) {
+          if (i > level && multi > 0) {
             const index = Level.indexOf(i);
             const nextSp = skill.spTotal[index];
             const diff = nextSp - nowSp;
@@ -192,15 +143,13 @@
       },
     },
 
-    methods: {
-      ...mapActions([
-        'setLevel',
-      ]),
-    },
-
     components: {
       Modal,
       Techniques,
+      InformationMeta,
+      InformationLevelUp,
+      InformationDescription,
+      InformationNext,
     },
   };
 </script>

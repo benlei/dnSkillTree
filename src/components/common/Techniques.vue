@@ -9,9 +9,9 @@
                @click.prevent="maybeTech(tech.type, false)"
             />
             <a href="javascript:;" class="text-black" @click.prevent="maybeTech(tech.type, false)">
-              {{ tech.type | typeName }}
+              {{ typeName(tech.type) }}
               <template v-if="tech.type > 1">
-                (Lv. {{ tech.level }})
+                ({{ locale.lv }} {{ tech.level }})
               </template>
             </a>
           </li>
@@ -26,7 +26,7 @@
                @click.prevent="maybeTech(0, false)"
             />
             <a href="javascript:;" class="text-black" @click.prevent="maybeTech(0, false)">
-              {{ 0 | typeName }}
+              {{ typeName(0) }}
             </a>
           </li>
         </ul>
@@ -34,46 +34,46 @@
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech !== 10">
-      <strong>{{ warningTech | typeName }}</strong>
-      currently upgrades
+      <strong>{{ typeName(warningTech) }}</strong>
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">Yes</a>
+      <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech === 10">
-      <strong>{{ warningTech | typeName }} 1</strong>
-      currently upgrades
+      <strong>{{ typeName(warningTech) }} 1</strong>
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill[0] }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="ringTech(build.techs[3], active)">Yes</a>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[3], active)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
 
       <br />
       <br />
 
-      <strong>{{ warningTech | typeName }} 2</strong>
-      currently upgrades
+      <strong>{{ typeName(warningTech) }} 2</strong>
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill[1] }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="ringTech(build.techs[4], active)">Yes</a>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[4], active)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import techMixin from '../../mixins/techs';
 
   export default {
@@ -91,20 +91,6 @@
       active() {
         this.clearWarning();
       },
-    },
-
-    computed: {
-      ...mapState([
-        'build',
-      ]),
-
-      ...mapGetters([
-        'active',
-        'skill',
-        'skills',
-        'messages',
-        'crestCount',
-      ]),
     },
 
     methods: {

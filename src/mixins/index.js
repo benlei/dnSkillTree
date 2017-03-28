@@ -1,11 +1,29 @@
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 Vue.mixin({
+  data() {
+    return {
+      locale: process.env.LOCALE,
+      skillBorder: { background: `url('${process.env.ASSETS_URL}/images/uit_gesturebutton.png')` },
+    };
+  },
+
   computed: {
     ...mapState([
       'job',
+      'jobs',
       'build',
+      'title',
+    ]),
+
+    ...mapGetters([
+      'active',
+      'messages',
+      'skill',
+      'skills',
+      'jobName',
+      'ascendancies',
     ]),
   },
 
@@ -14,6 +32,7 @@ Vue.mixin({
       'setAscendancy',
       'activateRelated',
       'deactivateRelated',
+      'setActive',
     ]),
 
     skillName(id) {
@@ -64,6 +83,28 @@ Vue.mixin({
     jumpToSkillTop(skill) {
       this.toTop();
       this.jumpToSkill(skill);
+    },
+
+    updatePath(newPath) {
+      const slug = this.$route.params.slug;
+      const prefix = this.isMobile() ? 'mobile' : 'desktop';
+      const name = newPath.length ? `${prefix}-build` : prefix;
+
+      // replace URL (do not add to history)
+      this.$router.replace({
+        name,
+        params: {
+          slug,
+          path: newPath,
+        },
+      });
+
+      // if new path is empty, just delete the cookie. otherwise, set it.
+      if (!newPath) {
+        this.$cookies.remove(slug, location.pathname, location.hostname);
+      } else {
+        this.$cookies.set(slug, newPath, Infinity, location.pathname, location.hostname);
+      }
     },
   },
 

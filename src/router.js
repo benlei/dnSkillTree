@@ -1,10 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './components/App';
-import DesktopHomeApp from './components/desktop/home/DesktopHomeApp';
-import DesktopTreeApp from './components/desktop/tree/DesktopTreeApp';
-import MobileHomeApp from './components/mobile/home/MobileHomeApp';
-import MobileTreeApp from './components/mobile/tree/MobileTreeApp';
+import HomeApp from './components/Home';
+import DesktopTreeApp from './components/desktop/Desktop';
+import MobileTreeApp from './components/mobile/Mobile';
 
 Vue.use(VueRouter);
 
@@ -13,7 +12,7 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', component: DesktopHomeApp, name: 'desktop-home' },
+      { path: '', component: HomeApp, name: 'desktop-home' },
       {
         path: ':slug([a-z]{2,})',
         name: 'desktop',
@@ -26,7 +25,7 @@ const routes = [
         ],
       },
 
-      { path: 'm', component: MobileHomeApp, name: 'mobile-home' },
+      { path: 'm', component: HomeApp, name: 'mobile-home' },
       {
         path: 'm/:slug([a-z]{2,})',
         name: 'mobile',

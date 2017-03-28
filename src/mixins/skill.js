@@ -1,26 +1,11 @@
-import { mapState, mapGetters, mapActions } from 'vuex';
-import { SKILL_BORDER } from '../consts';
+import { mapGetters, mapActions } from 'vuex';
 import Level from '../lib/level';
 
 export default {
   props: ['id'],
 
-  data() {
-    return {
-      border: {
-        background: SKILL_BORDER,
-      },
-    };
-  },
-
   computed: {
-    ...mapState([
-      'job',
-      'build',
-    ]),
-
     ...mapGetters([
-      'active',
       'index',
       'softMaxLevel',
     ]),
@@ -55,7 +40,15 @@ export default {
         count += 1;
       }
 
-      return Math.min(this.skill.spMaxLevel, count);
+      return count;
+    },
+
+    displayLevel() {
+      const level = this.level;
+      const maxLevel = this.skill.maxLevel;
+      const techCount = this.techCount;
+
+      return Math.min(maxLevel, level ? level + techCount : 0);
     },
 
     crested() {
@@ -67,6 +60,7 @@ export default {
       return this.build.related[this.id] === 1;
     },
   },
+
   methods: {
     ...mapActions([
       'setActive',

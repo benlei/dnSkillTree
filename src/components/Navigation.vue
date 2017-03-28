@@ -22,20 +22,12 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-
   export default {
     data() {
       return {
         levelCap: process.env.LEVEL_CAP,
         buildVersion: process.env.BUILD_VERSION,
       };
-    },
-
-    computed: {
-      ...mapState([
-        'title',
-      ]),
     },
   };
 </script>

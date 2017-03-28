@@ -6,20 +6,20 @@
        @mousedown.stop.prevent="changeLevelEvent"
        @contextmenu.stop.prevent>
       <div class="skill-border"
-           :style="border"
+           :style="skillBorder"
            :class="{ grayscale: !level, crested, blink: relatedRecently }"/>
     </a>
     <small class="skill-level text-center"
            :class="{ green: techCount === 1, blue: techCount === 2 }"
-    >{{ level ? level + techCount : 0 }}/{{ softMaxLevel }}
+    >{{ displayLevel }}/{{ softMaxLevel }}
     </small>
   </div>
   <div class="skill" v-else/>
 </template>
 
 <script>
-  import Level from '../../../lib/level';
-  import skillMixin from '../../../mixins/skill';
+  import Level from '../../lib/level';
+  import skillMixin from '../../mixins/skill';
 
   export default {
     mixins: [skillMixin],

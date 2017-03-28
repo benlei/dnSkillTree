@@ -1,44 +1,34 @@
 <template>
   <div class="card" v-if="relatedSkills">
     <div class="card-header active">
-      Related Skills
+      {{ locale.relatedSkills }}
     </div>
     <div class="card-block">
       <a href="javascript:;" class="skill-icon d-inline-block" v-for="skill in relatedSkills"
          :style="skillImageStyle(skill)"
          @click.prevent="jumpToSkillTop(skill)"
       >
-        <div class="skill-border" :style="border"/>
+        <div class="skill-border" :style="skillBorder"/>
       </a>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import { SKILL_BORDER } from '../../../../consts';
-
   export default {
-    data() {
-      return {
-        border: {
-          background: SKILL_BORDER,
-        },
-      };
-    },
-
     computed: {
-      ...mapGetters([
-        'relatedSkills',
-        'messages',
-      ]),
+      relatedSkills() {
+        const skill = this.skill;
+        const skills = this.skills;
+        if (!skill.related) {
+          return null;
+        }
+
+        return skill.related.map(id => skills[id]);
+      },
     },
 
     methods: {
-      ...mapActions([
-        'setActive',
-      ]),
-
       skillImageStyle(skill) {
         return this.getSkillIconStyle(skill, 1);
       },

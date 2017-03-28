@@ -1,7 +1,7 @@
 <template>
   <div class="modal-block overview" v-if="hasTech || crestCount > 0">
     <template v-if="hasTech">
-      <h5>Techniques Equipped</h5>
+      <h5>{{ locale.techniques }}</h5>
       <ul class="list-unstyled overview-list">
         <li v-if="build.crestTech !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[build.crestTech])">
@@ -14,14 +14,14 @@
             {{ skillName(skillId) }}
           </a> - <strong>{{ techIndex | indexName }}</strong>
           <template v-if="techIndex">
-            (Lv. {{ techLevel(skillId, techIndex) }} )
+            ({{ locale.lv }} {{ techLevel(skillId, techIndex) }})
           </template>
         </li>
       </ul>
     </template>
 
     <template v-if="crestCount > 0">
-      <h5>Crests Equipped</h5>
+      <h5>{{ locale.crestsEquipped }}</h5>
       <ul class="list-unstyled overview-list">
         <li v-for="(crestIndex, skillId) in build.crests" v-if="crestIndex !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[skillId])">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
   import techMixin from '../../mixins/techs';
   import parameterize from '../../lib/parameterize';
 
@@ -45,16 +45,9 @@
     props: ['jump'],
 
     computed: {
-      ...mapState([
-        'build',
-      ]),
-
       ...mapGetters([
-        'skills',
-        'messages',
         'crests',
         'crestCount',
-        'techCount',
       ]),
 
       hasTech() {

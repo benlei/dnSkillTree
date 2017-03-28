@@ -1,15 +1,9 @@
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import parameterize from '../lib/parameterize';
 
 export default {
   computed: {
-    ...mapState([
-      'build',
-    ]),
-
     ...mapGetters([
-      'active',
-      'skill',
       'crests',
       'crest',
       'crestCount',

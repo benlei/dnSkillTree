@@ -13,7 +13,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import Skill from './Skill';
   import InformationModal from './InformationModal';
 
@@ -25,11 +24,6 @@
     },
 
     computed: {
-      ...mapState([
-        'job',
-        'build',
-      ]),
-
       treeStyle() {
         const slug = this.job.ascendancies[this.build.ascendancy].slug;
         return {
@@ -54,12 +48,3 @@
     },
   };
 </script>
-
-<style>
-  .mobile-tree {
-    margin-top: .5rem;
-    background-repeat: no-repeat !important;
-    background-size: 512px 512px !important;
-    background-position-y: 1px !important;
-  }
-</style>

@@ -2,9 +2,9 @@
   <div class="col-md-4">
     <Ascendancies/>
 
-    <div class="card" v-if="skill.spMaxLevel">
+    <div class="card" v-if="skill.spMaxLevel || skill.techs">
       <div class="card-header active">
-        Techniques
+        {{ locale.techniques }}
       </div>
       <div class="card-block">
         <Techniques/>
@@ -16,19 +16,11 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import Ascendancies from './Ascendancies';
   import Crests from './Crests';
-  import Techniques from '../../../common/Techniques';
+  import Techniques from '../../common/Techniques';
 
   export default {
-    computed: {
-      ...mapGetters([
-        'active',
-        'skill',
-      ]),
-    },
-
     components: {
       Ascendancies,
       Crests,
