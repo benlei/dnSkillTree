@@ -35,39 +35,39 @@
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech !== 10">
       <strong>{{ typeName(warningTech) }}</strong>
-      currently upgrades
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">Yes</a>
+      <a href="javascript:;" @click.prevent="maybeTech(warningTech, true)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
     </div>
 
     <div class="tech-alert alert alert-warning" v-if="warning && warningTech === 10">
       <strong>{{ typeName(warningTech) }} 1</strong>
-      currently upgrades
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill[0] }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="ringTech(build.techs[3], active)">Yes</a>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[3], active)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
 
       <br />
       <br />
 
       <strong>{{ typeName(warningTech) }} 2</strong>
-      currently upgrades
+      {{ locale.techUsedBy }}
       <strong>{{ warningSkill[1] }}</strong>.
 
-      Do you want to replace it?
+      {{ locale.techWantToReplace }}?
       <br/>
-      <a href="javascript:;" @click.prevent="ringTech(build.techs[4], active)">Yes</a>
+      <a href="javascript:;" @click.prevent="ringTech(build.techs[4], active)">{{ locale.yes }}</a>
       /
-      <a href="javascript:;" @click.prevent="clearWarning()">No</a>
+      <a href="javascript:;" @click.prevent="clearWarning()">{{ locale.no }}</a>
     </div>
   </div>
 </template>

@@ -31,4 +31,12 @@ module.exports = {
   maxedOutCrests: 'Cannot equip more than 7 crests',
   techniques: 'Techniques',
   techGear: ['Weapon', 'Necklace', 'Earrings', 'Ring', 'Skill-up Crest'],
+  techUsedBy: 'currently upgrades',
+  techWantToReplace: 'Do you want to replace it',
+  yes: 'Yes',
+  no: 'No',
+  buildIssues: 'There are issues',
+  noBuildIssues: 'There are no issues',
+  needs: 'requires',
+  conflictsWith: 'conflicts with',
 }

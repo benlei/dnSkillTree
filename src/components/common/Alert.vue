@@ -4,7 +4,7 @@
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button"
                 @click="toggleAlertModal"
-                :title="validBuild ? 'Your build is valid!' : 'There are issues with this build.'"
+                :title="validBuild ? locale.noBuildIssues : locale.buildIssues"
         >
           <i class="fa" :class="statusClass"/>
         </button>
@@ -13,7 +13,7 @@
 
     <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-if="validBuild">
       <div class="modal-block">
-        This skill tree has no issues.
+        {{ locale.noBuildIssues }}.
       </div>
 
       <Overview :jump="jump"/>
@@ -23,24 +23,26 @@
         <div v-for="(violation, skillId) in violations">
           <a href="javascript:;" @click="jump(skills[skillId])">{{ skillName(skillId) }}</a>
           <template v-if="violation.type === 'ascendancy'">
-            requires
+            {{ locale.needs }}
             <span class="comma-separated" v-for="d in violation.data">
-            {{ ascendancies[d.ascendancy].name }} SP Total {{ d.sp }} or above
+            {{ ascendancies[d.ascendancy].name }} {{ locale.jobSPReq[0] }} {{ d.sp
+            }} {{ locale.jobSPReq[1] }}
           </span>
           </template>
           <template v-else-if="violation.type === 'parent'">
-            requires
+            {{ locale.needs }}
             <span class="comma-separated" v-for="d in violation.data">
-            {{ skillName(d.id) }} Lv. {{ d.level }}
+            {{ skillName(d.id) }} {{ locale.lv }} {{ d.level }}
           </span>
           </template>
           <template v-else>
-            conflicts with {{ skillName(violation.data) }}
+            {{ locale.conflictsWith }} {{ skillName(violation.data) }}
+
           </template>
         </div>
       </div>
 
-      <Overview :jump="jump" />
+      <Overview :jump="jump"/>
     </Modal>
   </div>
 </template>

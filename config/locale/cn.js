@@ -39,4 +39,12 @@ module.exports = merge.strategy({
   maxedOutCrests: '缺货',
   techniques: '制作技巧',
   techGear: ['武器', '项链', '耳环', '戒指', '技能升级纹章'],
+  techUsedBy: '使用',
+  techWantToReplace: '你要替换吗',
+  yes: '是',
+  no: '没有',
+  buildIssues: '有问题',
+  noBuildIssues: '没问题',
+  needs: '需要',
+  conflictsWith: '重叠',
 });
