@@ -1,14 +1,12 @@
 <template>
-  <Modal :title="name" :toggle="toggle" :display="display">
+  <Modal :header="name" :toggle="toggle" :display="display">
     <div class="modal-block">
       <div class="mx-auto text-center">
         <div class="btn-group mobile mode">
-          <button type="button" class="btn btn-primary" :class="{ 'active': !build.mode }"
-                  @click="setMode(0)">PvE
-          </button>
-          <button type="button" class="btn btn-primary" :class="{ 'active': build.mode }"
-                  @click="setMode(1)">PvP
-          </button>
+          <button type="button" class="btn btn-primary" :class="{active: !build.mode}"
+                  @click="setMode(0)">PvE</button>
+          <button type="button" class="btn btn-primary" :class="{active: build.mode}"
+                  @click="setMode(1)">PvP</button>
         </div>
       </div>
 

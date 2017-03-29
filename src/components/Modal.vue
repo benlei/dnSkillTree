@@ -3,8 +3,8 @@
     <div class="modal" @click.self.once="toggle" :class="{ mobile: isMobile() }">
       <div class="modal-dialog violations">
         <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">{{ title }}</h4>
+          <div class="modal-header" :class="{mobile: isMobile()}">
+            <h4 class="modal-title">{{ header }}</h4>
             <a href="javascript:;" class="fa fa-times" @click.prevent.once="toggle" />
           </div>
 
@@ -21,7 +21,7 @@
   const html = document.getElementsByTagName('html')[0];
 
   export default {
-    props: ['title', 'toggle', 'display'],
+    props: ['header', 'toggle', 'display'],
     methods: {
       toggleHideOverflow() {
         html.classList.toggle('hide-overflow-y');
@@ -67,5 +67,9 @@
   .modal.mobile .fa-times {
     width: 50px;
     text-align: right;
+  }
+
+  .mobile.modal-header .fa-times {
+    font-size: 200%;
   }
 </style>

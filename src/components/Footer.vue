@@ -22,7 +22,7 @@
       </ul>
     </div>
 
-    <Modal title="Controls" :toggle="toggleHelpModal" :display="helpModal">
+    <Modal header="Controls" :toggle="toggleHelpModal" :display="helpModal">
       <p><kbd>click</kbd> a skill icon to increase its level by 1.<br/>
         <kbd><kbd>ctrl</kbd> + <kbd>click</kbd></kbd> a skill icon to cap it out. Alias: <kbd><kbd>shift</kbd>
           + <kbd>click</kbd></kbd>
