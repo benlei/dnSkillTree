@@ -11,14 +11,14 @@
       </span>
     </div>
 
-    <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-if="validBuild">
+    <Modal header="Issues" :toggle="toggleAlertModal" :display="alertModal" v-if="validBuild">
       <div class="modal-block">
         {{ locale.noBuildIssues }}.
       </div>
 
       <Overview :jump="jump"/>
     </Modal>
-    <Modal title="Issues" :toggle="toggleAlertModal" :display="alertModal" v-else>
+    <Modal header="Issues" :toggle="toggleAlertModal" :display="alertModal" v-else>
       <div class="modal-block">
         <div v-for="(violation, skillId) in violations">
           <a href="javascript:;" @click="jump(skills[skillId])">{{ skillName(skillId) }}</a>

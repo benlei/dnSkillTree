@@ -13,7 +13,6 @@
 
 <script>
   import skillMixin from '../../mixins/skill';
-  import Modal from '../Modal';
 
   export default {
     mixins: [skillMixin],
@@ -29,10 +28,6 @@
           this.toggle();
         }
       },
-    },
-
-    components: {
-      Modal,
     },
   };
 </script>
