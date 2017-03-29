@@ -22,26 +22,7 @@
 
   export default {
     created() {
-      const { slug, path } = this.$route.params;
-      let loadedPath;
-
-      // if a path is given, do not save it (could just be for viewing + pls no overwrite)
-      // but if a change is made to this build, then there is an intention to save it
-      if (path) {
-//        this.$cookies.set(slug, path, Infinity, location.pathname, location.hostname);
-        loadedPath = path;
-      } else if (this.$cookies.isKey(slug)) {
-        // if you have saved build, get it + load it up
-        loadedPath = this.$cookies.get(slug);
-
-        // this has to be done because path is empty, so update it to what cookie is
-        this.updatePath(loadedPath);
-      }
-
-      this.$store.dispatch('loadJob', {
-        slug,
-        path: loadedPath,
-      });
+      this.doCreate();
     },
 
     components: {
