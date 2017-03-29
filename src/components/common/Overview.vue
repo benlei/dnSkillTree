@@ -6,13 +6,13 @@
         <li v-if="build.crestTech !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[build.crestTech])">
             {{ skillName(build.crestTech) }}
-          </a> - <strong>{{ 0 | typeName }}</strong>
+          </a> - <strong>{{ typeName(0) }}</strong>
         </li>
 
         <li v-for="(skillId, techIndex) in build.techs" v-if="skillId !== -1">
           <a href="javascript:;" @click.prevent="jump(skills[skillId])">
             {{ skillName(skillId) }}
-          </a> - <strong>{{ techIndex | indexName }}</strong>
+          </a> - <strong>{{ indexName(techIndex) }}</strong>
           <template v-if="techIndex">
             ({{ locale.lv }} {{ techLevel(skillId, techIndex) }})
           </template>
